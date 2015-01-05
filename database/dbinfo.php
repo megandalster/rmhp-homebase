@@ -19,7 +19,7 @@ function connect() {
     $host = "localhost";
     $database = "rmhphomebasedb";
     $user = "rmhphomebasedb";
-    $pass = "foodyWr1!";
+    $pass = "math204";
 
     $connected = mysql_connect($host, $user, $pass);
     if (!$connected)

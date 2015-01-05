@@ -17,25 +17,16 @@ include_once('dbinfo.php');
 function create_dbMasterSchedule() {
     connect();
     mysql_query("DROP TABLE IF EXISTS dbMasterSchedule");
-    $result = mysql_query("CREATE TABLE dbMasterSchedule (schedule_type TEXT NOT NULL, day TEXT NOT NULL, week_no TEXT NOT NULL,
+    $result = mysql_query("CREATE TABLE dbMasterSchedule (venue TEXT NOT NULL, day TEXT NOT NULL, week_no TEXT NOT NULL,
 							start_time TEXT, end_time TEXT, slots INT, persons TEXT, notes TEXT, id TEXT)");
-    // id is a unique string for each entry: id = schedule_type.day.week_no.start_time."-".end_time and week_no == odd, even, 1st, 2nd, ... 5th
+    // id is a unique string for each entry: id = venue.day.week_no.start_time."-".end_time and week_no == odd, even, 1st, 2nd, ... 5th
     if (!$result) {
         echo mysql_error() . " - Error creating dbMasterSchedule table.\n";
         return false;
     }
-    $schedule_types = array("weekly", "monthly");
-    $week_days = array("Mon", "Tue", "Wed", "Thu", "Fri");
-    $weekend_days = array("Sat", "Sun");
-    $weekday_weeks = array("odd", "even");
-    $weekend_weeks = array("1st", "2nd", "3rd", "4th", "5th");
-    // insert a single entry into the table
-    $e = new MasterScheduleEntry("weekly", "Mon", "odd", 9, 12, 0, "", "");
-    insert_dbMasterSchedule($e);
-    $e = new MasterScheduleEntry("weekly", "Tue", "odd", "overnight", 0, 0, "", "");
-    insert_dbMasterSchedule($e);
-    // add more of these if we want to pre-fill some standard master schedule shifts; 
-    // otherwise, leave the rest of the table blank	
+    $venues = array("house","fam");
+    $days = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
+    $weeks = array("1st", "2nd", "3rd", "4th", "5th", "odd", "even");
     mysql_close();
     return true;
 }
@@ -51,9 +42,8 @@ function insert_dbMasterSchedule($entry) {
         connect();
     }
 
-
     $query = "INSERT INTO dbMasterSchedule VALUES ('" .
-            $entry->get_schedule_type() . "','" .
+            $entry->get_venue() . "','" .
             $entry->get_day() . "','" .
             $entry->get_week_no() . "','" .
             $entry->get_start_time() . "','" .
@@ -82,7 +72,7 @@ function retrieve_dbMasterSchedule($id) {
         return false;
     }
     $result_row = mysql_fetch_assoc($result);
-    $theEntry = new MasterScheduleEntry($result_row['schedule_type'], $result_row['day'], $result_row['week_no'],
+    $theEntry = new MasterScheduleEntry($result_row['venue'], $result_row['day'], $result_row['week_no'],
                     $result_row['start_time'], $result_row['end_time'], $result_row['slots'], $result_row['persons'],
                     $result_row['notes']);
     mysql_close();
@@ -118,7 +108,7 @@ function delete_dbMasterSchedule($id) {
 }
 
 function insert_nonoverlapping($shift) {
-    $other_shifts = get_master_shifts($shift->get_schedule_type(), $shift->get_week_no(), $shift->get_day());
+    $other_shifts = get_master_shifts($shift->get_venue(), $shift->get_week_no(), $shift->get_day());
 
     foreach ($other_shifts as $other_shift) {
         if (masterslots_overlap($shift->get_start_time(), $shift->get_end_time(), $other_shift->get_start_time(), $other_shift->get_end_time()))
@@ -132,9 +122,9 @@ function insert_nonoverlapping($shift) {
  * @result == true if $s1's timeslot overlaps $s2's timeslot, and false otherwise.
  */
 function masterslots_overlap($s1_start, $s1_end, $s2_start, $s2_end) {
-    if ($s1_start == "overnight" && $s2_start == "overnight")
+    if ($s1_start == "night" && $s2_start == "night")
         return true;
-    else if ($s1_start == "overnight" || $s2_start == "overnight")
+    else if ($s1_start == "night" || $s2_start == "night")
         return false;
     if ($s1_end > $s2_start) {
         if ($s1_start >= $s2_end)
@@ -156,7 +146,7 @@ function get_master_shifts($type, $week_no, $day) {
     connect();
     //$outcome = array();
     $query = "SELECT * FROM dbMasterSchedule WHERE week_no = '" . $week_no . "' AND day = '" . $day .
-            "' AND schedule_type = '" . $type . "'";
+            "' AND venue = '" . $type . "'";
     $result = mysql_query($query);
     mysql_close();
     $outcome = array();
@@ -167,7 +157,7 @@ function get_master_shifts($type, $week_no, $day) {
     	$result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     	// problem - something about this call is faulty - it does not seem to be going through
     	// to the constructor. 
-        $testVar = new MasterScheduleEntry($result_row['schedule_type'], $result_row['day'], 
+        $testVar = new MasterScheduleEntry($result_row['venue'], $result_row['day'], 
             $result_row['week_no'], $result_row['start_time'], $result_row['end_time'], 
             $result_row['slots'], $result_row['persons'], $result_row['notes']); 
         $outcome[] = $testVar;
@@ -275,7 +265,7 @@ function unschedule_person($venue, $group, $day, $time, $person_id) {
 
 function make_notes($venue, $group, $day, $time, $notes) {
     connect();
-    $query = "SELECT * FROM dbMasterSchedule WHERE schedule_type = '" .
+    $query = "SELECT * FROM dbMasterSchedule WHERE venue = '" .
             $venue . "' AND week_no = '" .
             $group . "' AND day = '" .
             $day . "' AND time = '" . $time . "'";
@@ -289,7 +279,7 @@ function make_notes($venue, $group, $day, $time, $notes) {
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $result_row['notes'] = $notes;
-    mysql_query("UPDATE dbMasterSchedule SET notes = '" . $result_row['notes'] . "' WHERE schedule_type = '" .
+    mysql_query("UPDATE dbMasterSchedule SET notes = '" . $result_row['notes'] . "' WHERE venue = '" .
             $venue . "' AND week_no = '" .
             $group . "' AND day = '" . $day . "' AND time = '" . $time . "'");
     mysql_close();
@@ -303,7 +293,7 @@ function make_notes($venue, $group, $day, $time, $notes) {
 
 function is_scheduled($venue, $group, $day, $time, $person_id) {
     connect();
-    $query = "SELECT * FROM dbMasterSchedule WHERE schedule_type = '" .
+    $query = "SELECT * FROM dbMasterSchedule WHERE venue = '" .
             $venue . "' AND week_no = '" .
             $group . "' AND day = '" .
             $day . "' AND time = '" . $time . "'";
@@ -329,10 +319,10 @@ function is_scheduled($venue, $group, $day, $time, $person_id) {
  * entries indexed by the field names of a person in dbPersons.
  */
 
-function get_persons($schedule_type, $week_no, $day, $time) {
+function get_persons($venue, $week_no, $day, $time) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $schedule_type . $day . $week_no . "-" . $time . "'";
+            $venue . $day . $week_no . "-" . $time . "'";
     $result = mysql_query($query1);
     if (!$result)
         die("get_persons could not query the database");
@@ -362,13 +352,13 @@ function get_persons($schedule_type, $week_no, $day, $time) {
 }
 
 /*
- * @return ids of all persons scheduled for a particular schedule_type, week_no, day, and time
+ * @return ids of all persons scheduled for a particular venue, week_no, day, and time
  */
 
-function get_person_ids($schedule_type, $week_no, $day, $time) {
+function get_person_ids($venue, $week_no, $day, $time) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $schedule_type . $day . $week_no . "-" . $time . "'";
+            $venue . $day . $week_no . "-" . $time . "'";
     $result = mysql_query($query1);
     if (!$result)
         die("get_person_ids could not query the database");
@@ -383,14 +373,14 @@ function get_person_ids($schedule_type, $week_no, $day, $time) {
 }
 
 /*
- * @return number of slots for a particular schedule_type, week_no, day, and time
+ * @return number of slots for a particular venue, week_no, day, and time
  * this is fixed with a kluge.
  */
 
-function get_total_slots($schedule_type, $week_no, $day, $time) {
+function get_total_slots($venue, $week_no, $day, $time) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $schedule_type . $day . $week_no . "-" . $time . "'";
+            $venue . $day . $week_no . "-" . $time . "'";
     $result = mysql_query($query1);
     if (!$result)
         die("get_total_slots could not query the database");
@@ -403,23 +393,23 @@ function get_total_slots($schedule_type, $week_no, $day, $time) {
 }
 
 /*
- * @return number of vacancies for a particular schedule_type, week_no, day, and time
+ * @return number of vacancies for a particular venue, week_no, day, and time
  */
 
-function get_total_vacancies($schedule_type, $week_no, $day, $time) {
-    $slots = get_total_slots($schedule_type, $week_no, $day, $time);
-    $persons = count(get_persons($schedule_type, $week_no, $day, $time));
+function get_total_vacancies($venue, $week_no, $day, $time) {
+    $slots = get_total_slots($venue, $week_no, $day, $time);
+    $persons = count(get_persons($venue, $week_no, $day, $time));
     return $slots - $persons;
 }
 
 /*
- * @return number of vacancies for a particular schedule_type, week_no, day, and time
+ * @return number of vacancies for a particular venue, week_no, day, and time
  */
 
-function check_valid_schedule($schedule_type, $week_no, $day, $time) {
+function check_valid_schedule($venue, $week_no, $day, $time) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $schedule_type . $day . $week_no . "-" . $time . "'";
+            $venue . $day . $week_no . "-" . $time . "'";
     $result = mysql_query($query1);
     mysql_close();
     if (!$result)
@@ -434,10 +424,10 @@ function check_valid_schedule($schedule_type, $week_no, $day, $time) {
  * @return number of vacancies for a particular venue, group, day, and time
  */
 
-function edit_schedule_vacancy($schedule_type, $week_no, $day, $time, $change) {
+function edit_schedule_vacancy($venue, $week_no, $day, $time, $change) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $schedule_type . $day . $week_no . "-" . $time . "'";
+            $venue . $day . $week_no . "-" . $time . "'";
     $result = mysql_query($query1);
     if (!$result)
         die("edit_schedule_vacancy could not query the database");
@@ -447,9 +437,9 @@ function edit_schedule_vacancy($schedule_type, $week_no, $day, $time, $change) {
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $result_row['slots'] = $result_row['slots'] + $change;
-    // id = schedule_type.day.week_no.start_time."-".end_time
+    // id = venue.day.week_no.start_time."-".end_time
     mysql_query("UPDATE dbMasterSchedule SET slots = '" . $result_row['slots'] .
-            "' WHERE id = '" . $schedule_type . $day . $week_no . "-" . $time . "'");
+            "' WHERE id = '" . $venue . $day . $week_no . "-" . $time . "'");
     mysql_close();
     return true;
 }
