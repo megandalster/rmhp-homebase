@@ -1,8 +1,6 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
+ * Copyright 2013 by ... and Allen Tucker. 
  * This program is part of RMH Homebase, which is free software.  It comes with 
  * absolutely no warranty. You can redistribute and/or modify it under the terms 
  * of the GNU General Public License as published by the Free Software Foundation
@@ -25,7 +23,7 @@ class AllTests extends GroupTest {
        			$this->addTestFile(dirname(__FILE__).'/testWeek.php');
        			$this->addTestFile(dirname(__FILE__).'/testMonth.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbSCL.php');
-       		//	$this->addTestFile(dirname(__FILE__).'/testdbPersons.php');
+       			$this->addTestFile(dirname(__FILE__).'/testdbPersons.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbSchedules.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbShifts.php');
       	 		$this->addTestFile(dirname(__FILE__).'/testdbDates.php');
