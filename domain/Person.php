@@ -1,20 +1,15 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Yonah Biers-Ariel, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
-
-
 /**
- * Person class for RMH homebase.
+ * Person class for RMHP-Hmebase.
  * @author Oliver Radwan, Judy Yang and Allen Tucker
- * @version May 1, 2008, modified 2/15/2012
+ * @version May 1, 2008, modified January 21, 2015
  */
 include_once(dirname(__FILE__).'/../database/dbZipCodes.php');
 include_once(dirname(__FILE__).'/../database/dbShifts.php');
