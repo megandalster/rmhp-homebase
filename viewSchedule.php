@@ -84,7 +84,7 @@ function show_master_schedule($venue) {
             	echo do_shift($master_shift,1);
             } else {
                 //$t = $hour . "-" . ($hour+1);
-                $master_shift = new MasterScheduleEntry($venue, $day, $group, $start_time, $end_time, 1, "", "");
+                $master_shift = new MasterScheduleEntry($venue, $day, $group, $start_time, $end_time, 0, "", "");
                 echo do_shift($master_shift, 0);
             }
             $i++;
@@ -110,13 +110,14 @@ function show_master_schedule($venue) {
         echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
         $i = 0;
         foreach ($days as $day => $dayname) {
+        	if ($start_time==0) $start_time = "night";
         	$master_shift = retrieve_dbMasterSchedule($venue . $day . $group . "-" . $start_time);
             /* retrieves a MasterScheduleEntry whose start time is $hour */
             if ($master_shift) {
             	echo do_shift($master_shift,1);
             } else {
                 //$t = $hour . "-" . ($hour+1);
-                $master_shift = new MasterScheduleEntry($venue, $day, $group, $start_time, $end_time, 1, "", "");
+                $master_shift = new MasterScheduleEntry($venue, $day, $group, $start_time, $end_time, 0, "", "");
                 echo do_shift($master_shift, 0);
             }
             $i++;
