@@ -137,7 +137,7 @@ session_cache_expire(30);
                     else if ($post['new_start'] != "night" && $post['new_end'] == "0")
                         $error = "Can't add new shift: you must select an end time.<br><br>";
                     else {
-                        $entry = new MasterScheduleEntry($venue, $day, $group, $post['new_start'], $post['new_end'], 0, "", "");
+                        $entry = new MasterScheduleEntry($venue, $day, $group, $post['new_start']."-". $post['new_end'], 0, "", "");
                         if (!insert_nonoverlapping($entry))
                             $error = "Can't insert a new shift into an overlapping time slot.<br><br>";
                     }

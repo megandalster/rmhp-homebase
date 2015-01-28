@@ -58,7 +58,7 @@ include_once("domain/MasterScheduleEntry.php");
 function show_master_schedule($venue) {
 	$groups = array("1st", "2nd", "3rd", "4th", "5th");
 	$altgroups = array("odd", "even");
-    $shifts = array("09-13"=>"9-1","13-17"=>"1-5","17-21"=>"5-9","00-00"=>"night");
+    $shifts = array("9-1","1-5","5-9","night");
 	$venues = array("house"=>"House","fam"=>"Family Room");
     $days = array("Mon" => "Monday", "Tue" => "Tuesday", "Wed" => "Wednesday",
                     "Thu" => "Thursday", "Fri" => "Friday", "Sat" => "Saturday", "Sun" => "Sunday");
@@ -71,21 +71,17 @@ function show_master_schedule($venue) {
     $columns = sizeof($days);
     foreach ($groups as $group){
       $showgroup = $group;
-      foreach ($shifts as $start_end=>$hour) {
-      	$start_time = intval(substr($start_end,0,2));
-      	$end_time = intval(substr($start_end,3,2));
-        echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
+      foreach ($shifts as $hour) {
+      	echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
         $i = 0;
         foreach ($days as $day => $dayname) {
-        	if ($start_time==0) $start_time = "night";
-        	$master_shift = retrieve_dbMasterSchedule($venue . $day . $group . "-" . $start_time);
-        	/* retrieves a MasterScheduleEntry whose start time is $hour */
-            if ($master_shift) {
+        	$master_shift = retrieve_dbMasterSchedule($venue . $day . $group . "-" . $hour);
+        	if ($master_shift) {
             	echo do_shift($master_shift,1);
             } else {
-                //$t = $hour . "-" . ($hour+1);
-                $master_shift = new MasterScheduleEntry($venue, $day, $group, $start_time, $end_time, 0, "", "");
-                echo do_shift($master_shift, 0);
+                $master_shift = new MasterScheduleEntry($venue, $day, $group, $hour, 0, "", "");
+                insert_dbMasterSchedule($master_shift);
+                echo do_shift($master_shift, 1);
             }
             $i++;
         }
@@ -104,21 +100,19 @@ function show_master_schedule($venue) {
     $columns = sizeof($days);
     foreach ($altgroups as $group){
       $showgroup = $group;
-      foreach ($shifts as $start_end=>$hour) {
-        $start_time = intval(substr($start_end,0,2));
-      	$end_time = intval(substr($start_end,3,2));
+      foreach ($shifts as $hour) {
         echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
         $i = 0;
         foreach ($days as $day => $dayname) {
-        	if ($start_time==0) $start_time = "night";
-        	$master_shift = retrieve_dbMasterSchedule($venue . $day . $group . "-" . $start_time);
+        	$master_shift = retrieve_dbMasterSchedule($venue . $day . $group . "-" . $hour);
             /* retrieves a MasterScheduleEntry whose start time is $hour */
             if ($master_shift) {
             	echo do_shift($master_shift,1);
             } else {
                 //$t = $hour . "-" . ($hour+1);
-                $master_shift = new MasterScheduleEntry($venue, $day, $group, $start_time, $end_time, 0, "", "");
-                echo do_shift($master_shift, 0);
+                $master_shift = new MasterScheduleEntry($venue, $day, $group, $hour, 0, "", "");
+                insert_dbMasterSchedule($master_shift);
+                echo do_shift($master_shift, 1);
             }
             $i++;
         }
@@ -136,21 +130,21 @@ function do_shift($master_shift, $master_shift_length) {
         $s = "<td bgcolor=\"lightgray\" rowspan='" . $master_shift_length . "'>" .
                 "<a id=\"shiftlink\" href=\"editMasterSchedule.php?group=" .
                 $master_shift->get_week_no() . "&day=" . $master_shift->get_day() . "&shift=" .
-                $master_shift->get_time() . "&venue=" . $master_shift->get_venue() . "\">" .
+                $master_shift->get_hours() . "&venue=" . $master_shift->get_venue() . "\">" .
                 "<br>" .
                 "</td>";
     } else if ($master_shift->get_slots() == 0) {  // shift with no slots
         $s = "<td rowspan='" . $master_shift_length . "'>" .
                 "<a id=\"shiftlink\" href=\"editMasterSchedule.php?group=" .
                 $master_shift->get_week_no() . "&day=" . $master_shift->get_day() . "&shift=" .
-                $master_shift->get_time() . "&venue=" . $master_shift->get_venue() . "\">" .
+                $master_shift->get_hours() . "&venue=" . $master_shift->get_venue() . "\">" .
                 "<br>" .
                 "</td>";
     } else {									// shift with slots (and people)
         $s = "<td rowspan='" . $master_shift_length . "'>" .
                 "<a id=\"shiftlink\" href=\"editMasterSchedule.php?group=" .
                 $master_shift->get_week_no() . "&day=" . $master_shift->get_day() . "&shift=" .
-                $master_shift->get_time() . "&venue=" . $master_shift->get_venue() . "\">" .
+                $master_shift->get_hours() . "&venue=" . $master_shift->get_venue() . "\">" .
                 get_people_for_shift($master_shift, $master_shift_length) .
                 "</td>";
     }
@@ -161,8 +155,8 @@ function get_people_for_shift($master_shift, $master_shift_length) {
     /* $master_shift is a MasterScheduleEntry object
      * an associative array of (venue, my_group, day, time, 
      * start, end, slots, persons, notes) */
-    $people = get_persons($master_shift->get_venue(), $master_shift->get_week_no(), $master_shift->get_day(), $master_shift->get_time());
-    $slots = get_total_slots($master_shift->get_venue(), $master_shift->get_week_no(), $master_shift->get_day(), $master_shift->get_time());
+    $people = get_persons($master_shift->get_venue(), $master_shift->get_week_no(), $master_shift->get_day(), $master_shift->get_hours());
+    $slots = get_total_slots($master_shift->get_venue(), $master_shift->get_week_no(), $master_shift->get_day(), $master_shift->get_hours());
     if (!$people[0])
         array_shift($people);
     $p = "<br>";

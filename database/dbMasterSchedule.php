@@ -18,7 +18,7 @@ function create_dbMasterSchedule() {
     connect();
     mysql_query("DROP TABLE IF EXISTS dbMasterSchedule");
     $result = mysql_query("CREATE TABLE dbMasterSchedule (venue TEXT NOT NULL, day TEXT NOT NULL, week_no TEXT NOT NULL,
-							start_time TEXT, end_time TEXT, slots INT, persons TEXT, notes TEXT, id TEXT)");
+							hours TEXT, slots INT, persons TEXT, notes TEXT, id TEXT)");
     // id is a unique string for each entry: id = venue.day.week_no.start_time."-".end_time and week_no == odd, even, 1st, 2nd, ... 5th
     if (!$result) {
         echo mysql_error() . " - Error creating dbMasterSchedule table.\n";
@@ -41,13 +41,11 @@ function insert_dbMasterSchedule($entry) {
         delete_dbMasterSchedule($entry->get_id());
         connect();
     }
-
     $query = "INSERT INTO dbMasterSchedule VALUES ('" .
             $entry->get_venue() . "','" .
             $entry->get_day() . "','" .
             $entry->get_week_no() . "','" .
-            $entry->get_start_time() . "','" .
-            $entry->get_end_time() . "','" .
+            $entry->get_hours() . "','" .
             $entry->get_slots() . "','" .
             implode(',', $entry->get_persons()) . "','" .
             $entry->get_notes() . "','" .
@@ -73,7 +71,7 @@ function retrieve_dbMasterSchedule($id) {
     }
     $result_row = mysql_fetch_assoc($result);
     $theEntry = new MasterScheduleEntry($result_row['venue'], $result_row['day'], $result_row['week_no'],
-                    $result_row['start_time'], $result_row['end_time'], $result_row['slots'], $result_row['persons'],
+                    $result_row['hours'], $result_row['slots'], $result_row['persons'],
                     $result_row['notes']);
     mysql_close();
     return $theEntry;
@@ -106,7 +104,7 @@ function delete_dbMasterSchedule($id) {
     mysql_close();
     return true;
 }
-
+/*
 function insert_nonoverlapping($shift) {
     $other_shifts = get_master_shifts($shift->get_venue(), $shift->get_week_no(), $shift->get_day());
 
@@ -118,9 +116,7 @@ function insert_nonoverlapping($shift) {
     return true;
 }
 
-/**
- * @result == true if $s1's timeslot overlaps $s2's timeslot, and false otherwise.
- */
+// @result == true if $s1's timeslot overlaps $s2's timeslot, and false otherwise.
 function masterslots_overlap($s1_start, $s1_end, $s2_start, $s2_end) {
     if ($s1_start == "night" && $s2_start == "night")
         return true;
@@ -135,7 +131,7 @@ function masterslots_overlap($s1_start, $s1_end, $s2_start, $s2_end) {
     else
         return false;
 }
-
+*/
 /*
  * @return all master schedule entries for a particular venue and day
  * Each row in the array is a MasterScheduleEntry
@@ -158,7 +154,7 @@ function get_master_shifts($type, $week_no, $day) {
     	// problem - something about this call is faulty - it does not seem to be going through
     	// to the constructor. 
         $testVar = new MasterScheduleEntry($result_row['venue'], $result_row['day'], 
-            $result_row['week_no'], $result_row['start_time'], $result_row['end_time'], 
+            $result_row['week_no'], $result_row['hours'], 
             $result_row['slots'], $result_row['persons'], $result_row['notes']); 
         $outcome[] = $testVar;
     }

@@ -21,18 +21,18 @@ class testMasterScheduleEntry extends UnitTestCase {
 	
 	function testMasterScheduleEntryModule() {
 		
-		$new_MasterScheduleEntry = new MasterScheduleEntry("house","Wed", "1st", 13, 17, 2,
+		$new_MasterScheduleEntry = new MasterScheduleEntry("house","Wed", "1st", "1-5", 2,
 		"joe2071234567,sue2079876543", "This is a super fun shift.");
 		
 		//first assertion - check that a getter is working from the superconstructor's initialized data
 		$this->assertTrue($new_MasterScheduleEntry->get_day()=="Wed");
 		
-		$this->assertTrue($new_MasterScheduleEntry->get_time()=="13-17");
+		$this->assertTrue($new_MasterScheduleEntry->get_hours()=="1-5");
 		$this->assertTrue($new_MasterScheduleEntry->get_week_no(), "1st");
 		$this->assertTrue($new_MasterScheduleEntry->get_slots()==2);
 		$this->assertTrue($new_MasterScheduleEntry->get_persons()==array("joe2071234567","sue2079876543"));
 		$this->assertTrue($new_MasterScheduleEntry->get_notes()=="This is a super fun shift.");
-		$this->assertTrue($new_MasterScheduleEntry->get_id()=="houseWed1st-13-17");
+		$this->assertTrue($new_MasterScheduleEntry->get_id()=="houseWed1st-1-5");
 		
 		echo("testMasterScheduleEntry complete");
 	}
