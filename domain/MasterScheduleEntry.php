@@ -19,12 +19,12 @@ class MasterScheduleEntry {
 	private $venue; 		// "house" or "fam" for House or Family Room
 	private $day;           // "Mon", "Tue", ... "Sun"
 	private $week_no;       // week of month 1st-5th, or week of year 'odd' or 'even'
-	private $hours;    		// "9-1", "1-5", "5-0, or "night
+	private $hours;    		// "9-1", "1-5", "5-9", or "night
 	private $slots;         // the number of slots to be filled for this shift
 	private $persons;       // array of ids, eg ["alex2071234567", "jane1112345567"]
-	private $notes;         // notes to be displayed for this shift on the schedule
-	private $id;	        // unique string for each entry = venue.day.week."-".start_time."-".end_time
-							//    or (for night shifts) = venue.day.week."-"."night"  
+	private $notes;         // notes to be displayed for this entry
+	private $id;	        // unique string for each entry = venue.day.week."-".$hours
+	  
 	/**
 	* constructor for all MasterScheduleEntries
 	*/

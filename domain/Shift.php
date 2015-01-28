@@ -24,17 +24,17 @@ include_once(dirname(__FILE__).'/../database/dbPersons.php');
 class Shift {
 
     private $mm_dd_yy;      // String: "mm-dd-yy".
-    private $name;          // String: 'ss-ee' or 'overnight', where ss = start time and ee = end time e.g., '9-12'
-    private $start_time;    // Integer: e.g. 10 (meaning 10:00am)
-    private $end_time;      // Integer: e.g. 13 (meaning 1:00pm)
-    private $venue;         //  "weekly" or "monthly"
+    private $name;          // String: '9-1', '1-5', '5-9' or 'night'
+    private $start_time;    // Integer: e.g. 10 (meaning 10:00am)     NOTE: NOT SURE WE NEED THESE TWO
+    private $end_time;      // Integer: e.g. 13 (meaning 1:00pm)	  DEPENDS ON WHETHER USER CAN MOVE A SHIFT OR NOT
+    private $venue;         // "house" or "fam"
     private $vacancies;     // number of vacancies in this shift
     private $persons;       // array of person ids filling slots, followed by their name, ie "malcom1234567890+Malcom+Jones"
     private $removed_persons; // array of persons who have previously been removed from this shift.
     private $sub_call_list; // SCL if sub call list exists, otherwise null
-    private $day;         // string name of day "Monday"...
-    private $id;            // "mm-dd-yy-ss-ee" is a unique key for this shift
-    private $notes;  // notes written by the manager
+    private $day;           // string name of day "Monday"...
+    private $id;            // "mm-dd-yy-".$name.":".$venue is a unique key for this shift
+    private $notes;         // notes written by the manager
 
     /*
      * construct an empty shift with a certain number of vacancies

@@ -44,8 +44,8 @@ class Person {
     private $maywecontact; // "yes" or "no" for permission to contact references
     private $motivation;   // App: why interested in RMH?
     private $specialties;  // App: special interests and hobbies related to RMH
-    private $availability; // array of frequency:week:day:shift quads; e.g., weekly:odd:Mon:morning
-    private $schedule;     // array of scheduled shifts; e.g.,  weekly:odd:Mon:morning
+    private $availability; // array of venue:day:hours:frequency quads; e.g., house:Mon:9-1:odd
+    private $schedule;     // array of scheduled shifts
     private $birthday;     // format: 03-12-64
     private $start_date;   // format: 03-12-99
     private $notes;        // notes that only the manager can see and edit
