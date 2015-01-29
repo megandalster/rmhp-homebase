@@ -33,9 +33,8 @@ class Person {
     private $contact_preference; // prefer being contacted by phone or email
     private $emergency_contact; // contact in case of emergencies
     private $emergency_phone; // phone number of emergency caontact
-    private $type;       // array of "volunteer", "sub", 
-    // "weekendmgr", "guestchef", "parking", "cleaning", "other", "manager"
-    private $screening_type; // if "applicant, type of screening used for this applicant
+    private $type;       // array of "volunteer", "sub", "mealprep", "activities", "other", "manager"
+    private $screening_type; // if status is "applicant", type of screening used for this applicant
     private $screening_status; // array of dates showing completion of 
     // screening steps for this applicant 
     private $status;     // a person may be an "applicant", "active", "LOA", or "former"
@@ -55,7 +54,9 @@ class Person {
      * constructor for all persons
      */
 
-    function __construct($f, $l, $g, $a, $c, $s, $z, $co, $p1, $p2, $e, $cp, $ec, $ep, $t, $screening_type, $screening_status, $st, $oc, $re, $mwc, $mot, $spe, $av, $sch, $bd, $sd, $notes, $pass) {
+    function __construct($f, $l, $g, $a, $c, $s, $z, $co, $p1, $p2, $e, $cp, $ec, $ep, $t, 
+    		$screening_type, $screening_status, $st, $oc, $re, $mwc, $mot, $spe, 
+    		$av, $sch, $bd, $sd, $notes, $pass) {
         $this->id = $f . $p1;
         $this->first_name = $f;
         $this->last_name = $l;
