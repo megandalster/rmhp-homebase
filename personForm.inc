@@ -160,9 +160,7 @@ else {
 }
 echo('</select>');
 // $st = implode(',', $person->get_type());
-$types = array('volunteer' => 'House Volunteer', 'sub' => 'Sub', 'weekendmanager' => 'Weekend manager', 'manager' => 'Manager', 
-	'guestchef' => 'Guest chef', 'parking' => 'Parking', 'cleaning' => 'Cleaning', 'other' => 'Other'
-);
+$types = array('volunteer' => 'Volunteer', 'sub' => 'Sub', 'mealprep' => 'Meal Prep', 'activities' => 'Activities', 'other' => 'Other', 'manager' => 'Manager');
 echo('<p>Position type(s):');
 // $ts = $types;
 echo('<span style="font-size:x-small;color:FF0000">*</span>');
@@ -175,28 +173,61 @@ foreach ($types as $key => $value) {
 }
 ?>
     <fieldset id='availability'>
-        <legend>Availability:<span style="font-size:x-small;color:FF0000">*</span> </legend>
+        <legend>Availability:<span style="font-size:x-small;color:FF0000">*</span> (Check at least one Week, Shift, and Venue) </legend>
         <span class="bigTable">
             <table>
                 <?PHP
-                $shifts = array('morning' => 'Morning (9-12)', 'earlypm' => 'Early afternoon (12-3)', 'latepm' => 'Late afternoon (3-6)',
-                    'evening' => 'evening (6-9)', 'overnight' => "Overnight");
+                $shifts = array('9-1' => 'Morning (9-1)', '1-5' => 'Afternoon (1-5)', '5-9' => 'Evening (5-9)',
+                    'night' => "Overnight");
+                $venues = array('house'=>"House", 'fam'=>"Family Room");
                 $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+                $weeks = array('1st', '2nd', '3rd', '4th', '5th', 'Week of year', 'odd', 'even');
                 $person_availability = implode(',', $person->get_availability());
-    			echo "<table>".
-					"<tr><td> &nbsp;&nbsp;</td><td>Mon&nbsp;&nbsp;</td><td>Tue&nbsp;&nbsp;</td><td>Wed&nbsp;&nbsp;</td>".
-					"<td>Thu&nbsp;&nbsp;</td><td>Fri&nbsp;&nbsp;</td><td>Sat&nbsp;&nbsp;</td><td>Sun</td></tr>";
-    			foreach ($shifts as $weekno => $weekvalue) {
-       				echo ('<tr><td>'. $weekvalue . '</td>');
-       				foreach ($days as $day) {
-       	  				$realkey = $day . ":". $weekno;
-       	  				echo ('<td><input type="checkbox" name="availability[]" value=' . $realkey);
-    	  				if (in_array($day.":".$weekno, $person->get_availability())) echo(' CHECKED');
+    		
+   		 		echo "<table>";  
+   		 		echo "<td>";	// weeks and days
+   		 		echo "<table><tr>";
+   		 			echo "<td>Week of month</td>";
+   		 			foreach ($days as $day)
+   		 				echo "<td>".$day."</td>";	
+   		 		    echo "</tr>";
+   		 		    foreach ($weeks as $week_no) {
+   		 		    	echo "<tr><td align='center'>".$week_no."</td>";
+   		 		    	if ($week_no !="Week of year")
+   		 		    	  foreach ($days as $day) {
+   		 		    		echo ('<td><input type="checkbox" name="availweek[]" value=' . $week_no . ":". $day);
+    	  				    if (in_array($week_no.":".$day, $person->get_availdays())) echo(' CHECKED');
+    	  				    echo ('></td>');	
+   		 		    	}	
+   		 		    	echo "</tr>";
+   		 		    }  
+   		 		echo "</table>";
+   		 		echo "</td>";
+   		 		echo "<td valign='top'>";	// shifts
+   		 		echo "<table><tr><td>Shift</td>";	
+   		 		    echo "</tr>";
+   		 		    foreach ($shifts as $hours=>$shiftname) {
+   		 		    	echo "<tr><td>".$shiftname."</td>";
+   		 		    	echo ('<td><input type="checkbox" name="availshift[]" value=' . $hours);
+    	  				if (in_array($hours, $person->get_availhours())) echo(' CHECKED');
     	  				echo ('></td>');
-       				}
-       				echo ('</tr>');
-    			}
-   		 		echo "</table><p>";
+   		 		    	echo "</tr>";
+   		 		    }  
+   		 		echo "</table>";
+   		 		echo "</td>";
+   		 		echo "<td valign='top'>";	// venues
+   		 		echo "<table><tr><td>Venue</td>";	
+   		 		    echo "</tr>";
+   		 		    foreach ($venues as $venue=>$venuename) {
+   		 		    	echo "<tr><td>".$venuename."</td>";
+   		 		    	echo ('<td><input type="checkbox" name="availvenue[]" value=' . $venue);
+    	  				if (in_array($venue, $person->get_availvenue())) echo(' CHECKED');
+    	  				echo ('></td>');
+   		 		    	echo "</tr>";
+   		 		    }  
+   		 		echo "</table>";
+   		 		echo "</td>";
+   		 		echo "</tr></table>";
     			?>
             </table>
         </span></p>

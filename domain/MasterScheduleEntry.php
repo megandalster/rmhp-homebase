@@ -23,7 +23,7 @@ class MasterScheduleEntry {
 	private $slots;         // the number of slots to be filled for this shift
 	private $persons;       // array of ids, eg ["alex2071234567", "jane1112345567"]
 	private $notes;         // notes to be displayed for this entry
-	private $id;	        // unique string for each entry = venue.day.week."-".$hours
+	private $id;	        // unique string for each entry = week_no:day:hours:venue
 	  
 	/**
 	* constructor for all MasterScheduleEntries

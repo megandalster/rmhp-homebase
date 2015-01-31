@@ -43,8 +43,8 @@ class Person {
     private $maywecontact; // "yes" or "no" for permission to contact references
     private $motivation;   // App: why interested in RMH?
     private $specialties;  // App: special interests and hobbies related to RMH
-    private $availability; // array of venue:day:hours:frequency quads; e.g., house:Mon:9-1:odd
-    private $schedule;     // array of scheduled shifts
+    private $availability; // array of week_no:day:hours:venue quads; e.g., odd:Mon:9-1:house
+    private $schedule;     // array of scheduled shift ids; e.g., 01-05-15:9-1:house
     private $birthday;     // format: 03-12-64
     private $start_date;   // format: 03-12-99
     private $notes;        // notes that only the manager can see and edit
@@ -209,8 +209,49 @@ class Person {
         return $this->specialties;
     }
 
-    function get_availability() {
+    function get_availability() {   // array of week_no:day:hours:venue
         return $this->availability;
+    }
+    
+	function get_availdays() {		// array of week_no:day (extracted from availability)		
+		$availdays = array();
+		$avail = implode($this->availability,',');
+        foreach ($avail as $a) {
+        	$ex = explode(":",$a);
+        	$ad = $ex[0].":".$ex[1];
+        	if (!in_array($ad,$availdays))
+        		$availdays[] = $ad;
+        }
+        return $availdays;
+    }
+    function get_availhours() {     // array of hours (extracted from availability)
+    	$availhours = array();
+    	$avail = implode($this->availability,',');
+    	foreach ($avail as $a) {
+        	$ex = explode(":",$a);
+        	$ad = $ex[2];
+        	if (!in_array($ad,$availhours))
+        		$availhours[] = $ad;
+        }
+        return $availhours;
+    }
+    function get_availvenue() {     // array of venues (extracted from availability)
+    	$availvenue = array();
+    	$avail = implode($this->availability,',');
+    	foreach ($avail as $a) {
+        	$ex = explode(":",$a);
+        	$ad = $ex[3];
+        	if (!in_array($ad,$availvenue))
+        		$availvenue[] = $ad;
+        }
+    	return $availvenue;
+    }
+    function set_availability($days,$hours,$venue) { // reconstruct availability array from parts
+     	$this->availability = array();
+    	foreach($days as $day)
+    		foreach ($hours as $hour)
+    			foreach ($venues as $venue)
+    				$this->availability[] = $day.":".$hours.":".$venue;
     }
 
     function get_schedule() {

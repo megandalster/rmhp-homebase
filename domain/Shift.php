@@ -24,16 +24,16 @@ include_once(dirname(__FILE__).'/../database/dbPersons.php');
 class Shift {
 
     private $mm_dd_yy;      // String: "mm-dd-yy".
-    private $name;          // String: '9-1', '1-5', '5-9' or 'night'
+    private $hours;          // String: '9-1', '1-5', '5-9' or 'night'
     private $start_time;    // Integer: e.g. 10 (meaning 10:00am)     NOTE: NOT SURE WE NEED THESE TWO
     private $end_time;      // Integer: e.g. 13 (meaning 1:00pm)	  DEPENDS ON WHETHER USER CAN MOVE A SHIFT OR NOT
-    private $venue;         // "house" or "fam"
+    private $venue;         // "house", "fam", or "mealprep"
     private $vacancies;     // number of vacancies in this shift
     private $persons;       // array of person ids filling slots, followed by their name, ie "malcom1234567890+Malcom+Jones"
     private $removed_persons; // array of persons who have previously been removed from this shift.
     private $sub_call_list; // SCL if sub call list exists, otherwise null
     private $day;           // string name of day "Monday"...
-    private $id;            // "mm-dd-yy-".$name.":".$venue is a unique key for this shift
+    private $id;            // "mm-dd-yy:hours:venue is a unique key for this shift
     private $notes;         // notes written by the manager
 
     /*
@@ -42,11 +42,11 @@ class Shift {
 
     function __construct($id, $venue, $vacancies, $persons, $removed_persons, $sub_call_list, $notes) {
     	$this->mm_dd_yy = substr($id, 0, 8);
-        $this->name = substr($id, 9);
-        $i = strpos($this->name, "-");
+        $this->hours = substr($id, 9);
+        $i = strpos($this->hours, "-");
         if ($i>0) {
-        	$this->start_time = substr($this->name, 0, $i);
-        	$this->end_time = substr($this->name, $i + 1, 2);
+        	$this->start_time = substr($this->hours, 0, $i);
+        	$this->end_time = substr($this->hours, $i + 1, 2);
         }
         else {  // assuming an overnight shift
         	$this->start_time = 0;
@@ -70,7 +70,7 @@ class Shift {
      * Postcondition: $this->start_time == $st && $this->end_time == $et
      *          && $this->id == $this->mm_dd_yy .  "-"
      *          . $this->start_time . "-" . $this->end_time . $this->venue
-     *          && $this->name == substr($this->id, 9)
+     *          && $this->hours == substr($this->id, 9)
      */
     function set_start_end_time($st, $et) {
         if (0 <= $st && $st < $et && $et < 24 &&
@@ -79,7 +79,7 @@ class Shift {
             $this->end_time = $et;
             $this->id = $this->mm_dd_yy . "-" . $this->start_time
                     . "-" . $this->end_time;
-            $this->name = substr($this->id, 9);
+            $this->hours = substr($this->id, 9);
             return $this;
         }
         else
@@ -130,8 +130,8 @@ class Shift {
     	return $this->mm_dd_yy;
     }
 
-    function get_name() {
-        return $this->name;
+    function get_hours() {
+        return $this->hours;
     }
 
     function get_start_time() {
