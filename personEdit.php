@@ -63,16 +63,22 @@ if ($id == 'new') {
                     if ($errors) {
                         // display the errors and the form to fix
                         show_errors($errors);
-                        if ($_POST['availability'] == null)
-                            $ima = null;
-                        else
-                            $ima = implode(',', $_POST['availability']);
+                        if ($_POST['availdays'] == null)
+                          $availability = null;
+                        else {
+                          $postavail = array();
+                          foreach ($_POST['availdays'] as $postday) 
+                        	foreach($_POST['availhours'] as $posthour)
+                        	  foreach($_POST['availvenues'] as $postvenue)
+                            	$postavail[] = $postday.":".$posthour.":".$postvenue;
+                          $availability = implode(',', $postavail);
+                        }
                         $person = new Person($_POST['first_name'], $_POST['last_name'], $_POST['gender'], $_POST['address'], $_POST['city'], $_POST['state'], $_POST['zip'],
                                         $_POST['county'], $_POST['phone1'], $_POST['phone2'], $_POST['email'], $_POST['contact_preference'],
                                         $_POST['emergency_contact'], $_POST['emergency_phone'], implode(',', $_POST['type']), $_POST['screening_type'], implode(',', $_POST['screening_status']),
                                         $_POST['status'], $_POST['occupation'], $_POST['refs'], "yes",
                                         $_POST['motivation'], $_POST['specialties'],
-                                        $ima, $_POST['schedule'], 
+                                        $availability, $_POST['schedule'], 
                                         $birthday,
                                         $start_date,
                                         $_POST['notes'], $_POST['old_pass']);
@@ -134,10 +140,16 @@ if ($id == 'new') {
 
                     $motivation = trim(str_replace('\\\'', '\'', htmlentities($_POST['motivation'])));
                     $specialties = trim(str_replace('\\\'', '\'', htmlentities($_POST['specialties'])));
-                    if ($_POST['availability'] != null)
-                        $availability = implode(',', $_POST['availability']);
-                    else
-                        $availability = "";
+                    if ($_POST['availdays'] == null)
+                          $availability = null;
+                    else {
+                          $postavail = array();
+                          foreach ($_POST['availdays'] as $postday) 
+                        	foreach($_POST['availhours'] as $posthour)
+                        	  foreach($_POST['availvenues'] as $postvenue)
+                            	$postavail[] = $postday.":".$posthour.":".$postvenue;
+                          $availability = implode(',', $postavail);
+                    }
                     // these two are not visible for editing, so they go in and out unchanged
                     $schedule = $_POST['schedule'];
                     //concatenate birthday and start_date strings

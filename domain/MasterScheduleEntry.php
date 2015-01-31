@@ -39,7 +39,7 @@ class MasterScheduleEntry {
 		else
 			$this->persons = array();
 		$this->notes = $notes;
-		$this->id = $venue.$day.$week_no."-".$hours;
+		$this->id = $week_no.":".$day.":".$hours.":".$venue;
 	}
 	
 	/**

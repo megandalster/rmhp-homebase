@@ -31,6 +31,7 @@ session_cache_expire(30);
                 $venue = $_GET['venue'];
                 $day = $_GET['day'];
                 $shiftname = $_GET['shift'];
+                $shiftid = $group.":".$day.":".$shiftname.":".$venue;
                 $shift = array($group, $day, $shiftname);
                 $shift = get_day_names($shift, $day);
                 include_once('database/dbMasterSchedule.php');
@@ -40,7 +41,7 @@ session_cache_expire(30);
                 if ($group == "" || $day == "" || $shift == "") {
                     echo "<p>Invalid schedule parameters.  Please click on the \"Master Schedule\" link above to edit a master schedule shift.</p>";
                 } // see if there is no master shift for this time slot and try to set times starting there
-                else if (retrieve_dbMasterSchedule($venue . $day . $group . "-" . $shiftname) == false) {
+                else if (retrieve_dbMasterSchedule($shiftid) == false) {
                     $result = process_set_times($_POST, $group, $day, $shiftname, $venue);
                     if ($result) {
                         $returnpoint = "viewSchedule.php?venue=" . $venue;

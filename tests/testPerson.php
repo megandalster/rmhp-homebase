@@ -21,7 +21,7 @@
  $myPerson = new Person("Susan","L","female","928 SU","Providence", "RI",04011, "",
       2074415902,2072654046,"susanl@aol.com", "email", "Mother", 2077758989, "volunteer",
       "","","active", "programmer", "Steve_2071234567,John_1234567890","yes","I like helping out","cooking",
-      "house:Sun:1st:5-9,fam:Sun:3rd:5-9", "", "", "02-19-89", "03-14-08",
+      "1st:Mon:9-1:house,3rd:Sun:5-9:fam", "", "", "02-19-89", "03-14-08",
       "this is a note","Taylor2074415902");
 
  //first assertion - check that a getter is working from the superconstructor's initialized data
@@ -31,7 +31,14 @@
  $this->assertTrue($myPerson->get_status()=="active");
  $this->assertTrue($myPerson->get_city()=="Providence");
  $this->assertTrue($myPerson->get_references()==array("Steve_2071234567","John_1234567890"));
- $this->assertEqual($myPerson->get_availability(),array("house:Sun:1st:5-9","fam:Sun:3rd:5-9"));
+ $this->assertEqual($myPerson->get_availability(),array("1st:Mon:9-1:house","3rd:Sun:5-9:fam"));
+ // var_dump ($myPerson->get_availability());
+ 	$days = $myPerson->get_availdays();
+ 	$hours = $myPerson->get_availhours();
+ 	$venues = $myPerson->get_availvenues();
+ 	$this->assertTrue(in_array("1st:Mon",$days));
+ 	$this->assertTrue(in_array("9-1",$hours));
+ 	$this->assertTrue(in_array("house",$venues));
  $this->assertTrue($myPerson->get_last_name() !== "notMyLastName");
  $this->assertTrue($myPerson->get_contact_preference()=="email");
  $this->assertTrue($myPerson->get_emergency_contact()=="Mother");

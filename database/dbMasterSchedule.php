@@ -104,34 +104,7 @@ function delete_dbMasterSchedule($id) {
     mysql_close();
     return true;
 }
-/*
-function insert_nonoverlapping($shift) {
-    $other_shifts = get_master_shifts($shift->get_venue(), $shift->get_week_no(), $shift->get_day());
 
-    foreach ($other_shifts as $other_shift) {
-        if (masterslots_overlap($shift->get_start_time(), $shift->get_end_time(), $other_shift->get_start_time(), $other_shift->get_end_time()))
-            return false;
-    }
-    insert_dbMasterSchedule($shift);
-    return true;
-}
-
-// @result == true if $s1's timeslot overlaps $s2's timeslot, and false otherwise.
-function masterslots_overlap($s1_start, $s1_end, $s2_start, $s2_end) {
-    if ($s1_start == "night" && $s2_start == "night")
-        return true;
-    else if ($s1_start == "night" || $s2_start == "night")
-        return false;
-    if ($s1_end > $s2_start) {
-        if ($s1_start >= $s2_end)
-            return false;
-        else
-            return true;
-    }
-    else
-        return false;
-}
-*/
 /*
  * @return all master schedule entries for a particular venue and day
  * Each row in the array is a MasterScheduleEntry

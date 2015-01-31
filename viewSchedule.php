@@ -73,17 +73,14 @@ function show_master_schedule($venue) {
       $showgroup = $group;
       foreach ($shifts as $hour) {
       	echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
-        $i = 0;
         foreach ($days as $day => $dayname) {
-        	$master_shift = retrieve_dbMasterSchedule($venue . $day . $group . "-" . $hour);
+        	$master_shift = retrieve_dbMasterSchedule($group .":". $day .":". $hour .":". $venue);
         	if ($master_shift) {
             	echo do_shift($master_shift,1);
             } else {
                 $master_shift = new MasterScheduleEntry($venue, $day, $group, $hour, 0, "", "");
-                insert_dbMasterSchedule($master_shift);
-                echo do_shift($master_shift, 1);
+                echo do_shift($master_shift, 0);
             }
-            $i++;
         }
         echo ("<td class=\"masterhour\">" . $showgroup . " " . $hour . "</td></tr>");
         $showgroup = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -102,19 +99,14 @@ function show_master_schedule($venue) {
       $showgroup = $group;
       foreach ($shifts as $hour) {
         echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
-        $i = 0;
         foreach ($days as $day => $dayname) {
-        	$master_shift = retrieve_dbMasterSchedule($venue . $day . $group . "-" . $hour);
-            /* retrieves a MasterScheduleEntry whose start time is $hour */
+        	$master_shift = retrieve_dbMasterSchedule($group .":". $day .":". $hour .":". $venue);
             if ($master_shift) {
             	echo do_shift($master_shift,1);
             } else {
-                //$t = $hour . "-" . ($hour+1);
                 $master_shift = new MasterScheduleEntry($venue, $day, $group, $hour, 0, "", "");
-                insert_dbMasterSchedule($master_shift);
-                echo do_shift($master_shift, 1);
+                echo do_shift($master_shift, 0);
             }
-            $i++;
         }
         echo ("<td class=\"masterhour\">" . $showgroup . " " . $hour . "</td></tr>");
         $showgroup = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";

@@ -32,7 +32,7 @@ class testMasterScheduleEntry extends UnitTestCase {
 		$this->assertTrue($new_MasterScheduleEntry->get_slots()==2);
 		$this->assertTrue($new_MasterScheduleEntry->get_persons()==array("joe2071234567","sue2079876543"));
 		$this->assertTrue($new_MasterScheduleEntry->get_notes()=="This is a super fun shift.");
-		$this->assertTrue($new_MasterScheduleEntry->get_id()=="houseWed1st-1-5");
+		$this->assertTrue($new_MasterScheduleEntry->get_id()=="1st:Wed:1-5:house");
 		
 		echo("testMasterScheduleEntry complete");
 	}

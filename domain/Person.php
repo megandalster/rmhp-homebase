@@ -215,8 +215,7 @@ class Person {
     
 	function get_availdays() {		// array of week_no:day (extracted from availability)		
 		$availdays = array();
-		$avail = implode($this->availability,',');
-        foreach ($avail as $a) {
+        foreach ($this->availability as $a) {
         	$ex = explode(":",$a);
         	$ad = $ex[0].":".$ex[1];
         	if (!in_array($ad,$availdays))
@@ -226,8 +225,7 @@ class Person {
     }
     function get_availhours() {     // array of hours (extracted from availability)
     	$availhours = array();
-    	$avail = implode($this->availability,',');
-    	foreach ($avail as $a) {
+    	foreach ($this->availability as $a) {
         	$ex = explode(":",$a);
         	$ad = $ex[2];
         	if (!in_array($ad,$availhours))
@@ -235,10 +233,9 @@ class Person {
         }
         return $availhours;
     }
-    function get_availvenue() {     // array of venues (extracted from availability)
+    function get_availvenues() {     // array of venues (extracted from availability)
     	$availvenue = array();
-    	$avail = implode($this->availability,',');
-    	foreach ($avail as $a) {
+    	foreach ($this->availability as $a) {
         	$ex = explode(":",$a);
         	$ad = $ex[3];
         	if (!in_array($ad,$availvenue))

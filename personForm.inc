@@ -195,7 +195,7 @@ foreach ($types as $key => $value) {
    		 		    	echo "<tr><td align='center'>".$week_no."</td>";
    		 		    	if ($week_no !="Week of year")
    		 		    	  foreach ($days as $day) {
-   		 		    		echo ('<td><input type="checkbox" name="availweek[]" value=' . $week_no . ":". $day);
+   		 		    		echo ('<td><input type="checkbox" name="availdays[]" value=' . $week_no . ":". $day);
     	  				    if (in_array($week_no.":".$day, $person->get_availdays())) echo(' CHECKED');
     	  				    echo ('></td>');	
    		 		    	}	
@@ -208,7 +208,7 @@ foreach ($types as $key => $value) {
    		 		    echo "</tr>";
    		 		    foreach ($shifts as $hours=>$shiftname) {
    		 		    	echo "<tr><td>".$shiftname."</td>";
-   		 		    	echo ('<td><input type="checkbox" name="availshift[]" value=' . $hours);
+   		 		    	echo ('<td><input type="checkbox" name="availhours[]" value=' . $hours);
     	  				if (in_array($hours, $person->get_availhours())) echo(' CHECKED');
     	  				echo ('></td>');
    		 		    	echo "</tr>";
@@ -220,8 +220,8 @@ foreach ($types as $key => $value) {
    		 		    echo "</tr>";
    		 		    foreach ($venues as $venue=>$venuename) {
    		 		    	echo "<tr><td>".$venuename."</td>";
-   		 		    	echo ('<td><input type="checkbox" name="availvenue[]" value=' . $venue);
-    	  				if (in_array($venue, $person->get_availvenue())) echo(' CHECKED');
+   		 		    	echo ('<td><input type="checkbox" name="availvenues[]" value=' . $venue);
+    	  				if (in_array($venue, $person->get_availvenues())) echo(' CHECKED');
     	  				echo ('></td>');
    		 		    	echo "</tr>";
    		 		    }  
