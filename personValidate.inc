@@ -78,7 +78,7 @@ function valid_phone(&$phone) {
 //Function from <http://www.phpit.net/code/valid-email/>
 function valid_email($email) {
     // First, we check that there's one @ symbol, and that the lengths are right
-    if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
+    if (!preg_match("/^[^@]{1,64}@[^@]{1,255}$/", $email)) {
         // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
         return false;
     }

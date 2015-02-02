@@ -63,7 +63,7 @@ if ($id == 'new') {
                     if ($errors) {
                         // display the errors and the form to fix
                         show_errors($errors);
-                        if ($_POST['availdays'] == null)
+                        if (!$_POST['availdays'] || !$_POST['availhours'] || !$_POST['availvenues'])
                           $availability = null;
                         else {
                           $postavail = array();
@@ -109,14 +109,14 @@ if ($id == 'new') {
                     $zip = trim(htmlentities($_POST['zip']));
                     $county = trim(htmlentities($_POST['county']));
                     $phone1 = trim(str_replace(' ', '', htmlentities($_POST['phone1'])));
-                    $clean_phone1 = ereg_replace("[^0-9]", "", $phone1);
+                    $clean_phone1 = preg_replace("/[^0-9]/", "", $phone1);
                     $phone2 = trim(str_replace(' ', '', htmlentities($_POST['phone2'])));
-                    $clean_phone2 = ereg_replace("[^0-9]", "", $phone2);
+                    $clean_phone2 = preg_replace("/[^0-9]/", "", $phone2);
                     $email = $_POST['email'];
                     $contact_preference = $_POST['contact_preference'];
                     $emergency_contact = $_POST['emergency_contact'];
                     $emergency_phone = trim(str_replace(' ', '', htmlentities($_POST['emergency_phone'])));
-                    $clean_emergency_phone = ereg_replace("[^0-9]", "", $emergency_phone);
+                    $clean_emergency_phone = preg_replace("/[^0-9]/", "", $emergency_phone);
                     $type = implode(',', $_POST['type']);
                     $screening_type = $_POST['screening_type'];
                     if ($screening_type!="") {
@@ -140,7 +140,7 @@ if ($id == 'new') {
 
                     $motivation = trim(str_replace('\\\'', '\'', htmlentities($_POST['motivation'])));
                     $specialties = trim(str_replace('\\\'', '\'', htmlentities($_POST['specialties'])));
-                    if ($_POST['availdays'] == null)
+                    if (!$_POST['availdays'] || !$_POST['availhours'] || !$_POST['availvenues'])
                           $availability = null;
                     else {
                           $postavail = array();
