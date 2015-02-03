@@ -32,7 +32,6 @@
  $this->assertTrue($myPerson->get_city()=="Providence");
  $this->assertTrue($myPerson->get_references()==array("Steve_2071234567","John_1234567890"));
  $this->assertEqual($myPerson->get_availability(),array("1st:Mon:9-1:house","3rd:Sun:5-9:fam"));
- // var_dump ($myPerson->get_availability());
  	$days = $myPerson->get_availdays();
  	$hours = $myPerson->get_availhours();
  	$venues = $myPerson->get_availvenues();

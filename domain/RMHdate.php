@@ -23,10 +23,12 @@ class RMHdate {
     private $id;    // "mm-dd-yy" form of this date: used as a key
     private $month;       // Textual month of the year  (e.g., Jan)
     private $day;         // Textual day of the week (Mon - Sun)
-    private $dom;    // Numerical day of month
+    private $dom;         // Numerical day of month
     private $month_num;   // Numberical month
     private $day_of_week; // Numerical day of the week (1-7, Mon = 1)
     private $day_of_year; // Numerical day of the year (1-366)
+    private $week_of_month; // String "1st", "2nd", "3rd", "4th", or "5th"
+    private $week_of_year; // String "odd" or "even" (as week of year = 1, 3, 5 ... or 2, 4, 6 ...)
     private $year;        // Numerical year (e.g., 2008)
     private $shifts;      // array of Shifts
     private $mgr_notes;   // notes on night/weekend manager
@@ -53,6 +55,10 @@ class RMHdate {
         $this->year = date("Y", $my_date);
         $this->day_of_week = date("N", $my_date);
         $this->day_of_year = date("z", $my_date) + 1;
+// add code here to compute $week_of_month and $week_of_year
+// using the PHP date() function.  see http://php.net/manual/en/function.date.php
+// Also add getters for these two new instance variables.
+// Also add unit tests for the getters     
         $this->dom = date("d", $my_date);
         $this->month_num = date("m", $my_date);
         if (sizeof($shifts) !== 0)
