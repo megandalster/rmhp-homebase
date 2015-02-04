@@ -42,8 +42,23 @@ session_cache_expire(30);
                 }
                 else
                     echo "<p>Welcome to Homebase!";
-                $today = time();
+                $woms = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
+                $today = mktime();
+                $dow = date("N");
+                $todaymm = date("m");
+                $todayyyyy = date("Y");
+                $dow1st = date("N",mktime(0,0,0,$todaymm,1,$todayyyyy));
+                $wom = $dom/7 + 1;
+                if ($dow1st <= $dow)
+                	$wom = $wom+1;
+               	$weekno = date("W");
+               	if ($weekno%2==0)
+               	    $oddeven = "even";
+               	else 
+               		$oddeven = "odd";
                 echo "   Today is " . date('l F j, Y', $today) . ".<p>";
+                echo "   This is week ". $weekno . " (".$oddeven.") of the year, and the ";            
+                echo $woms[$wom] . " ". date ("l", $today) . " of the month<p>";
                 ?>
 
                 <!-- your main page data goes here. This is the place to enter content -->
