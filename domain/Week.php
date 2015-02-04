@@ -1,15 +1,16 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Yonah Biers-Ariel, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
-
+/**
+ * Person class for RMHP-Hmebase.
+ * @author Connor Hargus, Oliver Radwan, Judy Yang and Allen Tucker
+ * @version May 1, 2008, modified January 21, 2015
+ */
 include_once('RMHdate.php');
 /*
  * Week is an array of dates
@@ -24,9 +25,8 @@ class Week {
 
     private $id;    // the first day of the week, mm-dd-yy, e.g., "02-06-12"
     private $dates;    // array of 7 RMHdates, beginning Monday
+    private $venue; // venue of the calendar
     private $name;     // the name of the week (ie March 7, 2008 - March 14, 2008)
-    private $weekday_group; // which weekday group
-    private $weekend_group; // which weekend group
     private $status; // status of the week, "unpublished", "published" or "archived"
     private $end_of_week_timestamp; // the mktime timestamp of the end of the week
 
@@ -36,8 +36,7 @@ class Week {
 
     function __construct($dates, $venue, $weekday_group, $weekend_group, $status) {
         $this->dates = $dates;
-        $this->weekday_group = $weekday_group;
-        $this->weekend_group = $weekend_group;
+        $this->venue = $venue;
         $this->status = $status;
         $this->id = $this->dates[0]->get_id();
         $this->name = $this->dates[0]->get_name() . " to " . $this->dates[6]->get_name();
@@ -64,12 +63,8 @@ class Week {
         return $this->end_of_week_timestamp;
     }
 
-    function get_weekday_group() {
-        return $this->weekday_group;
-    }
-
-    function get_weekend_group() {
-        return $this->weekend_group;
+    function get_venue() {
+        return $this->venue;
     }
 
     function set_status($s) {
