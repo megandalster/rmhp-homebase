@@ -24,6 +24,8 @@ class testRMHdate extends UnitTestCase {
  		$this->assertTrue($my_date->get_day_of_week() == 7);
  		$this->assertTrue($my_date->get_day_of_year() == 59);
  		$this->assertTrue($my_date->get_year() == 2010);
+ 		$this->assertTrue($my_date->get_week_of_month()==4);
+ 		$this->assertTrue($my_date->get_week_of_year()=="even");
 
  		echo("testRMHdate complete");
       }

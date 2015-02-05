@@ -24,7 +24,7 @@ class RMHdate {
     private $month;       // Textual month of the year  (e.g., Jan)
     private $day;         // Textual day of the week (Mon - Sun)
     private $dom;         // Numerical day of month
-    private $month_num;   // Numberical month
+    private $month_num;   // Numerical month
     private $day_of_week; // Numerical day of the week (1-7, Mon = 1)
     private $day_of_year; // Numerical day of the year (1-366)
     private $week_of_month; // String "1st", "2nd", "3rd", "4th", or "5th"
@@ -48,6 +48,7 @@ class RMHdate {
             echo "Error: invalid date for RMHdate constructor " . $mm . $dd . $yy;
             return;
         }
+    
         $my_date = mktime(0, 0, 0, $mm, $dd, $yy);
         $this->id = date("m-d-y", $my_date);
         $this->month = date("M", $my_date);
@@ -55,11 +56,19 @@ class RMHdate {
         $this->year = date("Y", $my_date);
         $this->day_of_week = date("N", $my_date);
         $this->day_of_year = date("z", $my_date) + 1;
+  
+        
 // add code here to compute $week_of_month and $week_of_year
+        $this->dom = date("d", $my_date);
+        
+ 		$this->week_of_month= floor(($this->dom -1)/7)+1;
+        if (date("W", $my_date)%2==1)
+            $this->week_of_year= "odd";
+        else 
+        	$this->week_of_year= "even";	
 // using the PHP date() function.  see http://php.net/manual/en/function.date.php
 // Also add getters for these two new instance variables.
 // Also add unit tests for the getters     
-        $this->dom = date("d", $my_date);
         $this->month_num = date("m", $my_date);
         if (sizeof($shifts) !== 0)
             $this->shifts = $shifts;
@@ -74,21 +83,16 @@ class RMHdate {
      */
 
     function generate_shifts($day) {
-    	$venues = array("weekly");
+    	$venues = array("house","fam");
         $days = array(1 => "Mon", 2 => "Tue", 3 => "Wed", 4 => "Thu", 5 => "Fri", 6 => "Sat", 7 => "Sun");
-        $weekdaygroups = array("odd", "even");
-        $weekendgroups = array("1st", "2nd", "3rd", "4th", "5th");
+        $weeks = array("1st", "2nd", "3rd", "4th", "5th","odd","even");
         $this->shifts = array();
         /* $master[$i] is an array of 
          * (venue, my_group, day, time, start, end, slots, persons, notes)
          */
         foreach ($venues as $venue) {
-            if ($days[$day] == "Sat" || $days[$day] == "Sun")
-                $groups = $weekendgroups;
-            else
-                $groups = $weekdaygroups;
-        	foreach ($groups as $group) {
-        	  $master = get_master_shifts($venue, $group, $days[$day]);
+            foreach ($weeks as $week) {
+        	  $master = get_master_shifts($venue, $week, $days[$day]);
         	  for ($i = 0; $i < sizeof($master); $i++) {
                 $t = $master[$i]->get_time();
                 $this->shifts[$t] = new Shift(
@@ -137,7 +141,12 @@ class RMHdate {
     /*
      * @return the year
      */
-
+	function get_week_of_month () {
+		return $this->week_of_month;
+	}
+	function get_week_of_year () {
+		return $this->week_of_year;
+	}
     function get_year() {
         return $this->year;
     }

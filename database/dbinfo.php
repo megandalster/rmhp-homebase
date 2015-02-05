@@ -23,7 +23,7 @@ function connect() {
 
     $connected = mysql_connect($host, $user, $pass);
     if (!$connected)
-        return mysql_error();
+        return "cant connect to the database".mysql_error();
     $selected = mysql_select_db($database, $connected);
     if (!$selected)
         return mysql_error();

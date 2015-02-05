@@ -47,10 +47,8 @@ session_cache_expire(30);
                 $dow = date("N");
                 $todaymm = date("m");
                 $todayyyyy = date("Y");
-                $dow1st = date("N",mktime(0,0,0,$todaymm,1,$todayyyyy));
-                $wom = $dom/7 + 1;
-                if ($dow1st <= $dow)
-                	$wom = $wom+1;
+                $dom = date("d");
+                $wom = floor(($dom-1)/7) + 1;
                	$weekno = date("W");
                	if ($weekno%2==0)
                	    $oddeven = "even";
