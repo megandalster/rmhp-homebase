@@ -8,7 +8,7 @@
  */
 /**
  * Person class for RMHP-Hmebase.
- * @author Connor Hargus, Oliver Radwan, Judy Yang and Allen Tucker
+ * @author Connor Hargus, Oliver Radwan, Judy Yang, Maxwell Palmer, and Allen Tucker
  * @version May 1, 2008, modified January 21, 2015
  */
 include_once('RMHdate.php');
@@ -17,8 +17,6 @@ include_once('RMHdate.php');
  * Weeks start on Mondays
  * For any date given to either constructor function,
  * the script will find the Monday of that week, and generate dates from there
- * @author Maxwell Palmer
- * @version 4/30/08, modified 9/12/08
  */
 
 class Week {

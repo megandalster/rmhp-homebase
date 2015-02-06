@@ -1,21 +1,16 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Yonah Biers-Ariel, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
-
-
 include_once("Shift.php");
 include_once("database/dbMasterSchedule.php");
 /* A class to manage an RMHDate
- * @version May 1, 2008
- * @author Taylor and Maxwell Palmer
+ * @version May 1, 2008, revised February 5, 2015
+ * @author Yonah Biers-Ariel and Maxwell Palmer
  */
 
 class RMHdate {
@@ -56,9 +51,6 @@ class RMHdate {
         $this->year = date("Y", $my_date);
         $this->day_of_week = date("N", $my_date);
         $this->day_of_year = date("z", $my_date) + 1;
-  
-        
-// add code here to compute $week_of_month and $week_of_year
         $this->dom = date("d", $my_date);
         
  		$this->week_of_month= floor(($this->dom -1)/7)+1;
@@ -66,9 +58,7 @@ class RMHdate {
             $this->week_of_year= "odd";
         else 
         	$this->week_of_year= "even";	
-// using the PHP date() function.  see http://php.net/manual/en/function.date.php
-// Also add getters for these two new instance variables.
-// Also add unit tests for the getters     
+  
         $this->month_num = date("m", $my_date);
         if (sizeof($shifts) !== 0)
             $this->shifts = $shifts;
@@ -85,18 +75,16 @@ class RMHdate {
     function generate_shifts($day) {
     	$venues = array("house","fam");
         $days = array(1 => "Mon", 2 => "Tue", 3 => "Wed", 4 => "Thu", 5 => "Fri", 6 => "Sat", 7 => "Sun");
-        $weeks = array("1st", "2nd", "3rd", "4th", "5th","odd","even");
+        $weeks = array("1st", "2nd", "3rd", "4th", "5th","odd", "even");
         $this->shifts = array();
-        /* $master[$i] is an array of 
-         * (venue, my_group, day, time, start, end, slots, persons, notes)
-         */
+        
         foreach ($venues as $venue) {
-            foreach ($weeks as $week) {
+        	foreach ($weeks as $week) {
         	  $master = get_master_shifts($venue, $week, $days[$day]);
-        	  for ($i = 0; $i < sizeof($master); $i++) {
-                $t = $master[$i]->get_time();
+        	  for ($i = 0; $i < sizeof($master); $i++) {     // $master[$i] is a MasterScheduleEntry
+                $t = $master[$i]->get_hours();
                 $this->shifts[$t] = new Shift(
-                    $this->id . "-" . $t, $venue, $master[$i]->get_slots(), null, null, "", "");
+                    $this->id.":".$t.":".$venue, $venue, $master[$i]->get_slots(), null, null, "", "");
               }
         	}
         }
@@ -122,47 +110,29 @@ class RMHdate {
         return $this->day;
     }
 
-    /*
-     * @return the numerical day of the week
-     */
-
+    // @return the numerical day of the week, Monday = 1
     function get_day_of_week() {
         return $this->day_of_week;
     }
 
-    /*
-     * @return the numerical day of the year (starting at 1)
-     */
-
+    // @return the numerical day of the year (starting at 1)
     function get_day_of_year() {
         return $this->day_of_year;
     }
-
-    /*
-     * @return the year
-     */
 	function get_week_of_month () {
 		return $this->week_of_month;
 	}
-	function get_week_of_year () {
+	function get_week_of_year () {  
 		return $this->week_of_year;
 	}
     function get_year() {
         return $this->year;
     }
-
-    /*
-     * @return the shifts
-     */
-
     function get_shifts() {
         return $this->shifts;
     }
-
-    /*
-     * @return the number of shifts for this day
-     */
-
+    
+    // @return the number of shifts for this day
     function get_num_shifts() {
         return count($this->shifts);
     }

@@ -1,20 +1,19 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Yonah Biers-Ariel, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
-
-// updated by max, 2/25/08
+/*
+ * @author Max Palmer, Yonah Biers-Ariel
+ * @version June 2008, modified February 5, 2015 
+ */
 include_once(dirname(__FILE__).'/../domain/RMHdate.php');
 class testRMHdate extends UnitTestCase {
       function testRMHdateModule() {
-        $my_shifts[] = new Shift("02-28-10-9-13", "Rec", 1, array(), array(), null ,"");
+        $my_shifts[] = new Shift("02-28-10:9-1:house", "house", 1, array(), array(), null ,"");
  		$my_date = new RMHdate("02-28-10",$my_shifts,"");
 		$my_shifts = $my_date->get_shifts();
         foreach ($my_shifts as $value)
