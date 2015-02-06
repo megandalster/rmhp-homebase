@@ -44,9 +44,15 @@ class Shift {
     	$this->mm_dd_yy = substr($id, 0, 8);
         $this->hours = substr($id, 9);
         $i = strpos($this->hours, "-");
+        $f = strpos($this->hours, ":");
         if ($i>0) {
-        	$this->start_time = substr($this->hours, 0, $i);
-        	$this->end_time = substr($this->hours, $i + 1, 2);
+        	$this->start_time = substr($this->hours, 0, $i);   
+        	//XW: Code added here:	
+        	$this->end_time = substr($this->hours, $i + 1, ($f-$i-1));
+        	//XW: When the starttime is greater than the endtime (eg."9-2"), it will convert the endtime into 24-hour format.
+        	if ($this->end_time <= $this->start_time) {
+        		$this->end_time = $this->end_time + 12;
+        	}
         }
         else {  // assuming an overnight shift
         	$this->start_time = 0;
