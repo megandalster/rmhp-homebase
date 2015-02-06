@@ -14,8 +14,8 @@
 /*
  * class Shift characterizes a time interval in a day new Shift
  * for scheduling volunteers
- * @version May 1, 2008, modified 9/15/08, 2/14/10
- * @author Allen Tucker and Maxwell Palmer
+ * @version May 1, 2008, modified 9/15/08, 2/14/10, 2/5/15
+ * @author Allen Tucker and Xun Wang
  */
 
 include_once(dirname(__FILE__).'/../database/dbShifts.php');
@@ -47,11 +47,11 @@ class Shift {
         $f = strpos($this->hours, ":");
         if ($i>0) {
         	$this->start_time = substr($this->hours, 0, $i);   
-        	//XW: Code added here:	
-        	$this->end_time = substr($this->hours, $i + 1, ($f-$i-1));
-        	//XW: When the starttime is greater than the endtime (eg."9-2"), it will convert the endtime into 24-hour format.
-        	if ($this->end_time <= $this->start_time) {
-        		$this->end_time = $this->end_time + 12;
+        	//XW: Code added here:	(02/05/15)
+        	$this->end_time = (substr($this->hours, $i + 1, ($f-$i-1)) + 12);
+        	//XW: Assume the only start_time is 9
+        	if ($this->start_time != "9") {
+        		$this->start_time += 12;
         	}
         }
         else {  // assuming an overnight shift
@@ -83,8 +83,12 @@ class Shift {
                 strpos(substr($this->id, 9), "-") !== false) {
             $this->start_time = $st;
             $this->end_time = $et;
-            $this->id = $this->mm_dd_yy . "-" . $this->start_time
-                    . "-" . $this->end_time;
+            if ($st>12)
+            	$st -= 12;
+            if ($et>12)
+            	$et -=12;
+            $this->id = $this->mm_dd_yy . ":" . $st
+                    . "-" . $et;
             $this->hours = substr($this->id, 9);
             return $this;
         }
