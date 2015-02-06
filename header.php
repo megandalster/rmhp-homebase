@@ -60,7 +60,7 @@
 
         //Check if they're at a valid page for their access level.
         $current_page = substr($_SERVER['PHP_SELF'], 1);
-      //  echo "current page = ".$current_page;
+      /*  echo "current page = ".$current_page;
         if ($permission_array[$current_page] > $_SESSION['access_level']) {
             //in this case, the user doesn't have permission to view this page.
             //we redirect them to the index page.
@@ -69,7 +69,7 @@
             //so we die().
             die();
         }
-
+*/
         //This line gives us the path to the html pages in question, useful if the server isn't installed @ root.
         $path = strrev(substr(strrev($_SERVER['SCRIPT_NAME']), strpos(strrev($_SERVER['SCRIPT_NAME']), '/')));
 
