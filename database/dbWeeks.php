@@ -27,17 +27,16 @@ include_once('dbDates.php');
  * Table fields:
  * [0] id: mm-dd-yy
  * [1] dates: array of RMHDate ids
- * [2] weekday_group: which weekday group is working this week
- * [3] weekend_group: which weekend group is working this week
- * [4] status: "unpublished", "published" or "archived"
- * [5] name: name of the week
- * [6] end: timestamp of the end of the week
+ * [2] veenue: "house" or "fam"
+ * [3] status: "unpublished", "published" or "archived"
+ * [4] name: name of the week
+ * [5] end: timestamp of the end of the week
  */
 function create_dbWeeks() {
     connect();
     mysql_query("DROP TABLE IF EXISTS dbWeeks");
     $result = mysql_query("CREATE TABLE dbWeeks (id CHAR(8) NOT NULL, dates TEXT,
-								weekday_group TEXT, weekend_group TEXT, status TEXT,
+								venue TEXT, status TEXT,
 								name TEXT, end INT, PRIMARY KEY (id))");
     if (!$result)
         echo mysql_error();

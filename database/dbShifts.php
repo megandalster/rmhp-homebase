@@ -1,15 +1,11 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Yonah Biers-Ariel, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
-
 /**
  * Functions to create, update, and retrieve information from the
  * dbShifts table in the database.  This table is used with the Shift
@@ -27,14 +23,15 @@ include_once('dbinfo.php');
 /**
  * Drops the dbShifts table if it exists, and creates a new one
  * Table fields:
- * 0 id: "mm-dd-yy-ss-ee" is a unique key for this shift
+ * 0 id: "mm-dd-yy:hours:venue" is a unique key for this shift
  * 1 start_time: Integer: e.g. 10 (meaning 10:00am)
  * 2 end_time: Integer: e.g. 13 (meaning 1:00pm)
- * 3 venue = "weekly"
+ * 3 venue = "house" or "fam"
  * 4 vacancies: # of vacancies for this shift
  * 5 persons: list of people ids, followed by their name, ie "max1234567890+Max+Palmer"
- * 6 sub_call_list: yes/no if shift has SCL
- * 7 notes: shift notes
+ * 6 removed_persons: for sub call lists -- persons removed from this shift
+ * 7 sub_call_list: yes/no if shift has SCL
+ * 8 notes: shift notes
  */
 function create_dbShifts() {
     connect();

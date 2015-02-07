@@ -23,7 +23,7 @@ class Week {
 
     private $id;    // the first day of the week, mm-dd-yy, e.g., "02-06-12"
     private $dates;    // array of 7 RMHdates, beginning Monday
-    private $venue; // venue of the calendar
+    private $venue; // venue "house" or "fam"
     private $name;     // the name of the week (ie March 7, 2008 - March 14, 2008)
     private $status; // status of the week, "unpublished", "published" or "archived"
     private $end_of_week_timestamp; // the mktime timestamp of the end of the week

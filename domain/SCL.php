@@ -1,16 +1,11 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Yonah Biers-Ariel, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
-
-
 /*
  * A class to manage a sub call list for a particular shift
  * @version May 1, 2008
@@ -19,7 +14,7 @@
 
 class SCL {
 
-    private $id;   // mm-dd-yy-ss-ss, the same id as the shift it belongs to
+    private $id;   // mm-dd-yy:hours:venue, the same id as the shift it belongs to
     private $persons;  // array of person information arrays
     // person[i]=array(personid, first_name, last_name, phone1, phone2,
     // date_called, result, accepted);
