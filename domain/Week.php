@@ -32,7 +32,7 @@ class Week {
      * Creates a new calendar week.
      */
 
-    function __construct($dates, $venue, $weekday_group, $weekend_group, $status) {
+    function __construct($dates, $venue, $status) {
         $this->dates = $dates;
         $this->venue = $venue;
         $this->status = $status;

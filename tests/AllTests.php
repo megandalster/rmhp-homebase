@@ -21,7 +21,6 @@ class AllTests extends GroupTest {
       			$this->addTestFile(dirname(__FILE__).'/testSCL.php');
       		 	$this->addTestFile(dirname(__FILE__).'/testRMHdate.php');
        			$this->addTestFile(dirname(__FILE__).'/testWeek.php');
-       			$this->addTestFile(dirname(__FILE__).'/testMonth.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbSCL.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbPersons.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbSchedules.php');
@@ -31,7 +30,6 @@ class AllTests extends GroupTest {
        			$this->addTestFile(dirname(__FILE__).'/testApplicantScreening.php');
     		    $this->addTestFile(dirname(__FILE__).'/testMasterScheduleEntry.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbMasterSchedule.php');
-       			$this->addTestFile(dirname(__FILE__).'/testdbMonths.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbApplicantScreenings.php'); 
         		echo ("\nAll tests complete\n");
           }
