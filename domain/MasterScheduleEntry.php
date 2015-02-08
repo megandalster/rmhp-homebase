@@ -71,8 +71,16 @@ class MasterScheduleEntry {
 	function set_notes($notes){
 		$this->notes = $notes; 
 	}
-	
-	
+	function get_name() {
+		$daynames = array("Mon"=>"Monday","Tue"=>"Tuesday","Wed"=>"Wednesday","Thu"=>"Thursday",
+					"Fri"=>"Friday", "Sat"=>"Saturday", "Sun"=>"Sunday");
+		$venues = array("house"=>"House", "fam"=>"Family Room");
+		$hours = array("9-1"=>"9am to 1pm", "1-5"=>"1pm to 5pm", "5-9"=>"5pm to 9pm", "night"=>"Overnight");
+		return $venues[$this->venue]." Master Schedule, ".$this->week_no." ".$daynames[$this->day].
+					"s, ".$hours[$this->hours];
+		
+		
+	}	
 }
 
 ?>

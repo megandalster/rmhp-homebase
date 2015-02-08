@@ -22,7 +22,7 @@ function create_dbMasterSchedule() {
     mysql_query("DROP TABLE IF EXISTS dbMasterSchedule");
     $result = mysql_query("CREATE TABLE dbMasterSchedule (venue TEXT NOT NULL, day TEXT NOT NULL, week_no TEXT NOT NULL,
 							hours TEXT, slots INT, persons TEXT, notes TEXT, id TEXT)");
-    // id is a unique string for each entry: id = venue.day.week_no.start_time."-".end_time and week_no == odd, even, 1st, 2nd, ... 5th
+    // id is a unique string for each entry: id = week_no:day:time:venue and week_no == odd, even, 1st, 2nd, ... 5th
     if (!$result) {
         echo mysql_error() . " - Error creating dbMasterSchedule table.\n";
         return false;
@@ -116,7 +116,6 @@ function delete_dbMasterSchedule($id) {
 
 function get_master_shifts($type, $week_no, $day) {
     connect();
-    //$outcome = array();
     $query = "SELECT * FROM dbMasterSchedule WHERE week_no = '" . $week_no . "' AND day = '" . $day .
             "' AND venue = '" . $type . "'";
     $result = mysql_query($query);
@@ -137,15 +136,15 @@ function get_master_shifts($type, $week_no, $day) {
     return $outcome;
 }
 
-/* schedule a person for a given day and time and venue in group One or Two
+/* schedule a person for a given week_no, day, time, and venue
  * update that persons schedule in the dbPersons table
  *
  */
 
-function schedule_person($venue, $group, $day, $time, $person_id) {
-    connect();
+function schedule_person($msentry, /*$venue, $group, $day, $time,*/ $person_id) {
+	connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $venue . $day . $group . "-" . $time . "'";
+            $msentry->get_id() . "'";
     $query2 = "SELECT * FROM dbPersons WHERE id = '" . $person_id . "'";
     $result = mysql_query($query1);
     $resultp = mysql_query($query2);
@@ -161,15 +160,14 @@ function schedule_person($venue, $group, $day, $time, $person_id) {
     $persons = explode(',', $result_row['persons']);    // get an array of scheduled person id's
     $schedule = explode(',', $resultp_row['schedule']); // get an array of person's scheduled times
     $availability = explode(',', $resultp_row['availability']);     // and their availabiltiy
-    if (// in_array(substr($day,0,3).$chrtime, $availability) &&
-            !in_array($person_id, $persons) &&
-            !in_array($group . $day . $time, $schedule)) {
+    if (    !in_array($person_id, $persons) &&
+            !in_array($msentry->get_id(), $schedule)) {
         $persons[] = $person_id;             // add the person to the array, and
-        $schedule[] = $venue . $day . $group . "-" . $time; // add the time to the person's schedule
+        $schedule[] = $msentry->get_id();    // add the time to the person's schedule
         $result_row['persons'] = implode(',', $persons);     // and update one row in each table
         $resultp_row['schedule'] = implode(',', $schedule);  // in the database
         mysql_query("UPDATE dbMasterSchedule SET persons = '" . $result_row['persons'] .
-                "' WHERE id = '" . $venue . $day . $group . "-" . $time . "'");
+                "' WHERE id = '" . $msentry->get_id() . "'");
         mysql_query("UPDATE dbPersons SET schedule = '" . $resultp_row['schedule'] .
                 "' WHERE id = '" . $person_id . "'");
         mysql_close();
@@ -179,22 +177,22 @@ function schedule_person($venue, $group, $day, $time, $person_id) {
     return "Error: can't schedule a person not available or already scheduled";
 }
 
-/* unschedule a volunteer from a venue and group at a given day and time
+/* unschedule a volunteer from a week_no, day, time, and venue
  * update that person's schedule in the dbPersons table
  *
  */
 
-function unschedule_person($venue, $group, $day, $time, $person_id) {
+function unschedule_person($msentry, $person_id) {
     connect();
     $query = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $venue . $day . $group . "-" . $time . "'";
+            $msentry->get_id() . "'";
     $queryp = "SELECT * FROM dbPersons WHERE id = '" . $person_id . "'";
     $result = mysql_query($query);
     $resultp = mysql_query($queryp);
     // be sure the person exists and is scheduled
     if (!$result || mysql_num_rows($result) !== 1) {
         mysql_close();
-        die("Error: group-day-time not valid");
+        die("Error: week_no:day:time:venue not valid");
     } else if (!$resultp || mysql_num_rows($resultp) !== 1) {
         $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
         $persons = explode(',', $result_row['persons']);    // get an array of scheduled person id's
@@ -203,7 +201,7 @@ function unschedule_person($venue, $group, $day, $time, $person_id) {
             array_splice($persons, $index, 1);               // remove the person from the array, and
             $result_row['persons'] = implode(',', $persons); // and update one row in the schedule
             mysql_query("UPDATE dbMasterSchedule SET persons = '" . $result_row['persons'] .
-                    "' WHERE id = '" . $venue . $day . $group . "-" . $time . "'");
+                    "' WHERE id = '" . $msentry->get_id() . "'");
         }
         mysql_close();
         die("Error: person not in database" . $person_id);
@@ -214,14 +212,14 @@ function unschedule_person($venue, $group, $day, $time, $person_id) {
     $schedule = explode(',', $resultp_row['schedule']); // get an array of person's scheduled times
     if (in_array($person_id, $persons) /* && in_array($venue . $day . $group . "-" . $time, $schedule)*/) {
         $index = array_search($person_id, $persons);
-        $indexp = array_search($venue . $day . $group . "-" . $time, $schedule);
+        $indexp = array_search($msentry->get_id(), $schedule);
         array_splice($persons, $index, 1);   // remove the person from the array, and
-        if (in_array($venue . $day . $group . "-" . $time, $schedule))       	
+        if (in_array($msentry->get_id(), $schedule))       	
         	array_splice($schedule, $indexp, 1); // remove the time from the person's schedule
         $result_row['persons'] = implode(',', $persons);     // and update one row in each table
         $resultp_row['schedule'] = implode(',', $schedule);  // in the database
         mysql_query("UPDATE dbMasterSchedule SET persons = '" . $result_row['persons'] .
-                "' WHERE id = '" . $venue . $day . $group . "-" . $time . "'");
+                "' WHERE id = '" . $msentry->get_id() . "'");
         mysql_query("UPDATE dbPersons SET schedule = '" . $resultp_row['schedule'] .
                 "' WHERE id = '" . $person_id . "'");
         mysql_close();
@@ -291,17 +289,16 @@ function is_scheduled($venue, $group, $day, $time, $person_id) {
  * entries indexed by the field names of a person in dbPersons.
  */
 
-function get_persons($venue, $week_no, $day, $time) {
+function get_persons($id) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $venue . $day . $week_no . "-" . $time . "'";
+            $id . "'";
     $result = mysql_query($query1);
     if (!$result)
         die("get_persons could not query the database");
     $out = array();
     if (mysql_num_rows($result) !== 1) {
         mysql_close();
-        $out[] = "Error: group-day-time not valid";
         return $out;
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
@@ -349,10 +346,10 @@ function get_person_ids($venue, $week_no, $day, $time) {
  * this is fixed with a kluge.
  */
 
-function get_total_slots($venue, $week_no, $day, $time) {
+function get_total_slots($id) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $venue . $day . $week_no . "-" . $time . "'";
+            $id . "'";
     $result = mysql_query($query1);
     if (!$result)
         die("get_total_slots could not query the database");
@@ -362,16 +359,6 @@ function get_total_slots($venue, $week_no, $day, $time) {
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     return $result_row['slots'];
-}
-
-/*
- * @return number of vacancies for a particular venue, week_no, day, and time
- */
-
-function get_total_vacancies($venue, $week_no, $day, $time) {
-    $slots = get_total_slots($venue, $week_no, $day, $time);
-    $persons = count(get_persons($venue, $week_no, $day, $time));
-    return $slots - $persons;
 }
 
 /*
@@ -393,25 +380,25 @@ function check_valid_schedule($venue, $week_no, $day, $time) {
 }
 
 /*
- * @return number of vacancies for a particular venue, group, day, and time
+ * update the number of vacancies for a particular venue, group, day, and time
  */
 
-function edit_schedule_vacancy($venue, $week_no, $day, $time, $change) {
+function edit_schedule_vacancy($msentry, $change) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $venue . $day . $week_no . "-" . $time . "'";
+            $msentry->get_id() . "'";
     $result = mysql_query($query1);
     if (!$result)
         die("edit_schedule_vacancy could not query the database");
     if (mysql_num_rows($result) !== 1) {
-        mysql_close();
+    	mysql_close();
         return false;
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $result_row['slots'] = $result_row['slots'] + $change;
     // id = venue.day.week_no.start_time."-".end_time
     mysql_query("UPDATE dbMasterSchedule SET slots = '" . $result_row['slots'] .
-            "' WHERE id = '" . $venue . $day . $week_no . "-" . $time . "'");
+            "' WHERE id = '" . $msentry->get_id() . "'");
     mysql_close();
     return true;
 }

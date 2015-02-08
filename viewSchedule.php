@@ -147,8 +147,8 @@ function get_people_for_shift($master_shift, $master_shift_length) {
     /* $master_shift is a MasterScheduleEntry object
      * an associative array of (venue, my_group, day, time, 
      * start, end, slots, persons, notes) */
-    $people = get_persons($master_shift->get_venue(), $master_shift->get_week_no(), $master_shift->get_day(), $master_shift->get_hours());
-    $slots = get_total_slots($master_shift->get_venue(), $master_shift->get_week_no(), $master_shift->get_day(), $master_shift->get_hours());
+    $people = get_persons($master_shift->get_id());
+    $slots = get_total_slots($master_shift->get_id());
     if (!$people[0])
         array_shift($people);
     $p = "<br>";
