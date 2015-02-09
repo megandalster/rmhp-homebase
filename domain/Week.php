@@ -36,7 +36,7 @@ class Week {
         $this->dates = $dates;
         $this->venue = $venue;
         $this->status = $status;
-        $this->id = $this->dates[0]->get_id();
+        $this->id = $this->dates[0]->get_id() . ":" . $venue;
         $this->name = $this->dates[0]->get_name() . " to " . $this->dates[6]->get_name();
         $this->end_of_week_timestamp = $this->dates[6]->get_end_time();
     }

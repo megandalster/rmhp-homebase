@@ -16,7 +16,7 @@ class testWeek extends UnitTestCase {
       	 }
          $aweek = new Week($days,"house","archived");
          $this->assertEqual($aweek->get_name(), "February 6, 2012 to February 12, 2012");
-		 $this->assertEqual($aweek->get_id(), "02-06-12");
+		 $this->assertEqual($aweek->get_id(), "02-06-12:house");
 		 $this->assertTrue(sizeof($aweek->get_dates()) == 7);
 		 $this->assertEqual($aweek->get_venue(), "house");
 		 $this->assertEqual($aweek->get_status(), "archived");
