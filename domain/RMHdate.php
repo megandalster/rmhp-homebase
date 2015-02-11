@@ -9,13 +9,13 @@
 include_once("Shift.php");
 include_once("database/dbMasterSchedule.php");
 /* A class to manage an RMHDate
- * @version May 1, 2008, revised February 5, 2015
- * @author Yonah Biers-Ariel and Maxwell Palmer
+ * @version May 1, 2008, revised February 10, 2015
+ * @author Yonah Biers-Ariel, Phuong Le and Maxwell Palmer
  */
 
 class RMHdate {
 
-    private $id;    // "mm-dd-yy" form of this date: used as a key
+    private $id;    // "mm-dd-yy:venue" form of this date: used as a key
     private $month;       // Textual month of the year  (e.g., Jan)
     private $day;         // Textual day of the week (Mon - Sun)
     private $dom;         // Numerical day of month
@@ -25,6 +25,7 @@ class RMHdate {
     private $week_of_month; // String "1st", "2nd", "3rd", "4th", or "5th"
     private $week_of_year; // String "odd" or "even" (as week of year = 1, 3, 5 ... or 2, 4, 6 ...)
     private $year;        // Numerical year (e.g., 2008)
+    private $venue; 		// venue "house" or "fam"
     private $shifts;      // array of Shifts
     private $mgr_notes;   // notes on night/weekend manager
 
@@ -45,7 +46,7 @@ class RMHdate {
         }
     
         $my_date = mktime(0, 0, 0, $mm, $dd, $yy);
-        $this->id = date("m-d-y", $my_date);
+        $this->id = date("m-d-y", $my_date)->get_id() . ":" . $venue;
         $this->month = date("M", $my_date);
         $this->day = date("D", $my_date);
         $this->year = date("Y", $my_date);
@@ -91,7 +92,7 @@ class RMHdate {
     }
 
     /*
-     * @return "mm-dd-yy"
+     * @return "mm-dd-yy:venue"
      */
 
     function get_id() {

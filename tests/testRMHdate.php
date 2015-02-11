@@ -18,7 +18,7 @@ class testRMHdate extends UnitTestCase {
 		$my_shifts = $my_date->get_shifts();
         foreach ($my_shifts as $value)
 	        $this->assertTrue($value instanceof Shift);
- 		$this->assertTrue($my_date->get_id() == "02-28-10");
+ 		$this->assertTrue($my_date->get_id() == "02-28-10:house");
  		$this->assertTrue($my_date->get_day() == "Sun");
  		$this->assertTrue($my_date->get_day_of_week() == 7);
  		$this->assertTrue($my_date->get_day_of_year() == 59);

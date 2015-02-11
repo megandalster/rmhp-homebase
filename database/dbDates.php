@@ -1,8 +1,6 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, Xun Wang, and Allen Tucker. 
  * This program is part of RMH Homebase, which is free software.  It comes with 
  * absolutely no warranty. You can redistribute and/or modify it under the terms 
  * of the GNU General Public License as published by the Free Software Foundation
@@ -15,8 +13,8 @@
  * dbDates table in the database.  This table is used with the RMHDate
  * class.  Dates are generated using the master schedule (through the
  * addWeek.php form), and retrieved by the calendar forms.
- * @version May 1, 2008
- * @author Maxwell Palmer
+ * @version February 10, 2015
+ * @author Phuong Le andMaxwell Palmer
  */
 include_once('domain/RMHdate.php');
 include_once('dbShifts.php');
@@ -26,7 +24,7 @@ include_once('dbinfo.php');
 /**
  * Drops dbDates table and creates a new one.
  * Elements of dbDates:
- *  id: mm-dd-yy
+ *  id: mm-dd-yy:venue
  *  shifts - * delimited list of shift ids
  *  manager notes
  */
