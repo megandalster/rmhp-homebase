@@ -11,8 +11,8 @@
  * dbShifts table in the database.  This table is used with the Shift
  * class.  Shifts are generated using the master schedule (through the
  * addWeek.php form), and retrieved by the calendar form and editShift.
- * @version May 1, 2008
- * @author Maxwell Palmer
+ * @version Feb 12, 2015
+ * @author Xun Wang
  */
 include_once('domain/Shift.php');
 include_once('dbPersons.php');
@@ -184,7 +184,7 @@ function get_shift_year($id) {
 }
 
 function get_shift_start($id) {
-	if (substr($id,9)=="overnight")
+	if (substr($id,9)=="overnight") 
 		return 0;
 	else if (substr($id, 11, 1) == "-")
         return substr($id, 9, 2);
@@ -200,6 +200,13 @@ function get_shift_end($id) {
     else
         return substr($id, 11, 2);
 }
+
+//Add class get_shift_venue, using the "strrchr" function to return the part after the last ":"
+function get_shift_venue($id) {
+	return substr(strrchr($id,":"),1);
+}
+
+
 
 /*
  * Creates the $shift_name of a shift, e.g. "Sunday, February 14, 2010 2pm to 5pm"

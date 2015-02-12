@@ -42,7 +42,7 @@ class Shift {
         $f = strpos($this->hours, ":");
         if ($i>0) {
         	$this->start_time = substr($this->hours, 0, $i);   
-        	//XW: Code added here:	(02/05/15)
+        	//XW: Code added here:	( on 02/05/15)
         	$this->end_time = (substr($this->hours, $i + 1, ($f-$i-1)) + 12);
         	//XW: Assume the only start_time is 9
         	if ($this->start_time != "9") {
