@@ -12,7 +12,7 @@ class testWeek extends UnitTestCase {
       function testWeekModule() {
       	 $days = array();
       	 for($i=6;$i<13;$i++) {
-      	 	$days[] = new RMHDate(date('m-d-y',mktime(0,0,0,2,$i,2012)),array(),"");
+      	 	$days[] = new RMHDate(date('m-d-y',mktime(0,0,0,2,$i,2012)),"house",array(),"");
       	 }
          $aweek = new Week($days,"house","archived");
          $this->assertEqual($aweek->get_name(), "February 6, 2012 to February 12, 2012");

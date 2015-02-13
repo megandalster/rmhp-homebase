@@ -35,7 +35,7 @@ class RMHdate {
      * function checkdate
      */
 
-    function __construct($id, $shifts, $mgr_notes) {
+    function __construct($id, $venue, $shifts, $mgr_notes) {
         $mm = substr($id, 0, 2);
         $dd = substr($id, 3, 2);
         $yy = substr($id, 6, 2);
@@ -46,7 +46,7 @@ class RMHdate {
         }
     
         $my_date = mktime(0, 0, 0, $mm, $dd, $yy);
-        $this->id = date("m-d-y", $my_date)->get_id() . ":" . $venue;
+        $this->id = $id . ":" . $venue;
         $this->month = date("M", $my_date);
         $this->day = date("D", $my_date);
         $this->year = date("Y", $my_date);

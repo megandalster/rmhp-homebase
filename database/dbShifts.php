@@ -47,8 +47,6 @@ function create_dbShifts() {
     return true;
 }
 
-
-
 /**
  * Inserts a shift into the db
  * @param $s the shift to insert
@@ -205,8 +203,6 @@ function get_shift_end($id) {
 function get_shift_venue($id) {
 	return substr(strrchr($id,":"),1);
 }
-
-
 
 /*
  * Creates the $shift_name of a shift, e.g. "Sunday, February 14, 2010 2pm to 5pm"

@@ -18,12 +18,12 @@ include_once(dirname(__FILE__).'/../database/dbShifts.php');
 include_once(dirname(__FILE__).'/../database/dbDates.php');
 class testdbShifts extends UnitTestCase {
   function testdbShiftsModule() {
-	$s1=new Shift("02-25-08-15-18","Rec", 3, array(), array(), "", "");
+	$s1=new Shift("02-25-08:1-5","house", 3, array(), array(), "", "");
 	$this->assertTrue(insert_dbShifts($s1));
 	$this->assertTrue(delete_dbShifts($s1));
-	$s2=new Shift("02-25-08-15-18","Rec",3, array(), array(), "", "");
+	$s2=new Shift("02-25-08:9-1","house",3, array(), array(), "", "");
 	$this->assertTrue(insert_dbShifts($s2));
-	$s2=new Shift("02-25-08-15-18","Rec",2, array(), array(), "", "");
+	$s2=new Shift("02-25-08:5-9","house",2, array(), array(), "", "");
 	$this->assertTrue(update_dbShifts($s2));
 	$shifts[] = $s2;
 	$this->assertTrue(delete_dbShifts($s2));
