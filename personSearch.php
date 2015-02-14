@@ -71,11 +71,11 @@ session_cache_expire(30);
                 echo "</tr>";
                 echo '</table></fieldset>';
 
-                echo('<p><input type="hidden" name="s_submitted" value="1"><input type="submit" name="Search" value="Search">');
+                echo('<p><input type="submit" name="Search" value="Search">');
                 echo('</form></p>');
 
                 // if user hit "Search"  button, query the database and display the results
-                if ($_POST['s_submitted']) {
+                if ($_POST['Search']) {
                     $type = $_POST['s_type'];
                     $status = $_POST['s_status'];
                     $name = trim(str_replace('\'', '&#39;', htmlentities($_POST['s_name'])));
