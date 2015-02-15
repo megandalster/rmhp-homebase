@@ -21,7 +21,7 @@ session_cache_expire(30);
             Calendar viewing
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
-        <link rel="stylesheet" href="calendarhouse.css" type="text/css" />
+        <link rel="stylesheet" href="calendar.css" type="text/css" />
     </head>
     <body>
         <div id="container">
@@ -29,11 +29,11 @@ session_cache_expire(30);
             <div id="content">
                 <?PHP
                 if (in_array('manager', $_SESSION['type']) || in_array('volunteer', $_SESSION['type'])) {
-                	if ($_GET['venue'] == 'house') {
+                	if ($_GET['venue'] == 'house' || $_GET['venue']=="fam") {
                         include_once('database/dbWeeks.php');
                         include_once('database/dbPersons.php');
                         include_once('database/dbLog.php');
-                        include_once 'calendarhouse.inc';
+                        include_once 'calendar.inc';
                         
                         // checks to see if in edit mode
                         $edit = $_GET['edit'];
@@ -75,20 +75,19 @@ session_cache_expire(30);
                             echo '</form>';
                         }
                     }
-                    if ($_GET['venue'] == 'parking')
+                    if ($_GET['venue'] == 'mealprep')
                         echo('<iframe src="https://www.google.com/calendar/embed?src=fdcm5k97is5cag3j76697eg4g4%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>');
                     if ($_GET['venue'] == 'activities')
                         echo('<iframe src="https://www.google.com/calendar/embed?src=s9ot8kn5qmevkqqn596jqqgkig%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>');
-                    if ($_GET['venue'] == 'guestchef')
+                    if ($_GET['venue'] == 'group')
                         echo('<iframe src="https://www.google.com/calendar/embed?src=loveserveddaily%40gmail.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>');
-                    //echo('<iframe src="https://www.google.com/calendar/embed?src=c49jhj56uk5kmr08hqk98d7e60%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>');
                 }
                 else {
-                    if (in_array('guestchef', $_SESSION['type']))
+                    if (in_array('mealprep', $_SESSION['type']))
                         echo('<iframe src="https://www.google.com/calendar/embed?src=loveserveddaily%40gmail.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>');
                     if (in_array('activities', $_SESSION['type']))
                         echo('<iframe src="https://www.google.com/calendar/embed?src=s9ot8kn5qmevkqqn596jqqgkig%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>');
-                    if (in_array('parking', $_SESSION['type']))
+                    if (in_array('group', $_SESSION['type']))
                         echo('<iframe src="https://www.google.com/calendar/embed?src=fdcm5k97is5cag3j76697eg4g4%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>');
                 }
                 echo " </div>";

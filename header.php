@@ -85,7 +85,7 @@
         if ($_SESSION['access_level'] >= 1) {
             echo(' | <strong>calendars:</strong> <a href="' . $path . 'calendar.php?venue=house">house, </a>');
             echo('<a href="' . $path . 'calendar.php?venue=fam">family room, </a>');
-            echo('<a href="' . $path . 'calendar.php?venue=guestchef">meal prep, </a>');
+            echo('<a href="' . $path . 'calendar.php?venue=mealprep">meal prep, </a>');
             echo('<a href="' . $path . 'calendar.php?venue=activities">activity, </a>');
             echo('<a href="' . $path . 'calendar.php?venue=group">group </a>');
         }
