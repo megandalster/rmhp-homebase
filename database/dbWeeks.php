@@ -1,12 +1,10 @@
  <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  * 
  */
 
@@ -15,19 +13,22 @@
  * dbWeeks table in the database.  This table is used with the week
  * class.  Weeks are generated using the master schedule (through the
  * addWeek.php form), and retrieved by the calendar form and addWeek.php.
- * @version May 1, 2008, modified September 15, 2008
- * @author Maxwell Palmer and Allen Tucker
+ * @version May 1, 2008, modifications September 15, 2008, February 10, 2015
+ * @author Adrienne Beebe, Maxwell Palmer and Allen Tucker
  */
 include_once('domain/Week.php');
 include_once('dbinfo.php');
 include_once('dbDates.php');
+include_once('dbShifts.php');
+include_once('domain/Shift.php');
+
 
 /**
  * Drops the dbWeeks table if it exists, and creates a new one slots =
  * Table fields:
- * [0] id: mm-dd-yy
+ * [0] id: mm-dd-yy:venue
  * [1] dates: array of RMHDate ids
- * [2] veenue: "house" or "fam"
+ * [2] venue: "house" or "fam"
  * [3] status: "unpublished", "published" or "archived"
  * [4] name: name of the week
  * [5] end: timestamp of the end of the week
@@ -59,8 +60,7 @@ function insert_dbWeeks($w) {
         connect();
     }
     $query = "INSERT INTO dbWeeks VALUES (\"" . $w->get_id() . "\"," . get_dates_text($w->get_dates()) . ",\"" .
-            $w->get_weekday_group() . "\",\"" .
-            $w->get_weekend_group() . "\",\"" .
+            $w->get_venue() . "\",\"" .
             $w->get_status() . "\",\"" .
             $w->get_name() . "\",\"" .
             $w->get_end() . "\")";
@@ -68,7 +68,7 @@ function insert_dbWeeks($w) {
     mysql_close();
     if (!$result) {
         echo ("<br>unable to insert into dbWeeks: " . $w->get_id() . get_dates_text($w->get_dates()) .
-        $w->get_weekday_group() . $w->get_weekend_group() . $w->get_status() . $w->get_name() . $w->get_end() );
+        $w->get_venue() . $w->get_status() . $w->get_name() . $w->get_end() );
         return false;
     }
     else
@@ -158,8 +158,8 @@ function get_dbWeeks($id) {
         	$d[] = select_dbDates($date);
         }
         
-        $w = new Week($d, "weekly", $result_row['weekday_group'],
-                        $result_row['weekend_group'], $result_row['status']);
+        $w = new Week($d, "weekly", $result_row['venue'],
+                        $result_row['status']);
         error_log("3");
         return $w;
     }
