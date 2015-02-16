@@ -35,10 +35,10 @@ class RMHdate {
      * function checkdate
      */
 
-    function __construct($id, $venue, $shifts, $mgr_notes) {
-        $mm = substr($id, 0, 2);
-        $dd = substr($id, 3, 2);
-        $yy = substr($id, 6, 2);
+    function __construct($mm_dd_yy, $venue, $shifts, $mgr_notes) {
+        $mm = substr($mm_dd_yy, 0, 2);
+        $dd = substr($mm_dd_yy, 3, 2);
+        $yy = substr($mm_dd_yy, 6, 2);
         if (!checkdate($mm, $dd, $yy)) {
             $this->id = null;
             echo "Error: invalid date for RMHdate constructor " . $mm . $dd . $yy;
@@ -46,7 +46,7 @@ class RMHdate {
         }
     
         $my_date = mktime(0, 0, 0, $mm, $dd, $yy);
-        $this->id = $id . ":" . $venue;
+        $this->id = $mm_dd_yy . ":" . $venue;
         $this->month = date("M", $my_date);
         $this->day = date("D", $my_date);
         $this->year = date("Y", $my_date);
@@ -64,30 +64,26 @@ class RMHdate {
         if (sizeof($shifts) !== 0)
             $this->shifts = $shifts;
         else
-            $this->generate_shifts($this->day_of_week);
+            $this->generate_shifts($this->day_of_week,$this->venue);
         $this->mgr_notes = $mgr_notes;
     }
 
     /*
-     * Generate all shifts for all venues and groups on a given date, 
+     * Generate all shifts for the given venue on a given date, 
      * using the master schedule as a template
      */
 
-    function generate_shifts($day) {
-    	$venues = array("house","fam");
+    function generate_shifts($day,$venue) {
         $days = array(1 => "Mon", 2 => "Tue", 3 => "Wed", 4 => "Thu", 5 => "Fri", 6 => "Sat", 7 => "Sun");
-        $weeks = array("1st", "2nd", "3rd", "4th", "5th","odd", "even");
         $this->shifts = array();
         
-        foreach ($venues as $venue) {
-        	foreach ($weeks as $week) {
-        	  $master = get_master_shifts($venue, $week, $days[$day]);
-        	  for ($i = 0; $i < sizeof($master); $i++) {     // $master[$i] is a MasterScheduleEntry
-                $t = $master[$i]->get_hours();
-                $this->shifts[$t] = new Shift(
-                    $this->id.":".$t.":".$venue, $venue, $master[$i]->get_slots(), null, null, "", "");
-              }
-        	}
+        $master1 = get_master_shifts($venue, $this->week_of_month, $days[$day]);
+        $master2 = get_master_shifts($venue, $this->week_of_year, $days[$day]);
+        $master = array_merge($master1,$master2);
+        for ($i = 0; $i < sizeof($master); $i++) {     // $master[$i] is a MasterScheduleEntry
+            $t = $master[$i]->get_hours();
+            $this->shifts[$t] = new Shift(
+                substr($this->id,0,8).":".$t, $venue, $master[$i]->get_slots(), null, null, "", "");
         }
     }
 

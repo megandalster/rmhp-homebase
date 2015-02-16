@@ -23,7 +23,7 @@ class testdbShifts extends UnitTestCase {
 	$this->assertTrue(delete_dbShifts($s1));
 	$s2=new Shift("02-25-08:9-1","house",3, array(), array(), "", "");
 	$this->assertTrue(insert_dbShifts($s2));
-	$s2=new Shift("02-25-08:5-9","house",2, array(), array(), "", "");
+	$s2=new Shift("02-25-08:9-1","house",2, array(), array(), "", "");
 	$this->assertTrue(update_dbShifts($s2));
 	$shifts[] = $s2;
 	$this->assertTrue(delete_dbShifts($s2));

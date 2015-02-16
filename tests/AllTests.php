@@ -23,7 +23,6 @@ class AllTests extends GroupTest {
        			$this->addTestFile(dirname(__FILE__).'/testWeek.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbSCL.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbPersons.php');
-       			$this->addTestFile(dirname(__FILE__).'/testdbSchedules.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbShifts.php');
       	 		$this->addTestFile(dirname(__FILE__).'/testdbDates.php');
        			$this->addTestFile(dirname(__FILE__).'/testdbWeeks.php');

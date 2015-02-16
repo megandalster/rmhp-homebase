@@ -43,7 +43,7 @@ function create_dbDates() {
  * If the date already exists, the date is deleted and replaced.
  */
 function insert_dbDates($d) {
-    if (!$d instanceof RMHdate) {
+	if (!$d instanceof RMHdate) {
         die("Invalid argument for dbDates->insert_dbdates function call");
     }
     connect();
@@ -75,7 +75,7 @@ function insert_dbDates($d) {
  */
 function delete_dbDates($d) {
     if (!$d instanceof RMHdate)
-        die("Invalid argument for dbShifts->remove_date function call");
+        die("Invalid argument for dbShifts->delete_dbDates function call");
     connect();
     $query = "DELETE FROM dbDates WHERE id=\"" . $d->get_id() . "\"";
     $result = mysql_query($query);
@@ -122,7 +122,7 @@ function replace_dbDates($old_s, $new_s) {
  * @return RMHDate
  */
 function select_dbDates($id) {
-    if (strlen($id) != 8)
+    if (strlen($id) < 14)
         die("Invalid argument for dbDates->select_dbDates call =" . $id);
     connect();
     $query = "SELECT * FROM dbDates WHERE id =\"" . $id . "\"";
@@ -145,7 +145,8 @@ function select_dbDates($id) {
                 	$s[$temp->get_name()] = $temp;
                 }
             }
-            $d = new RMHdate($result_row[0], $s, $result_row[2]);
+            $parts = explode(":",$result_row[0]);
+            $d = new RMHdate($parts[0],$parts[1], $s, $result_row[2]);
             return $d;
         }
         else {
@@ -161,9 +162,10 @@ function select_dbDates($id) {
 function get_shifts_text($d) {
     $shifts = $d->get_shifts();
     $shift_text = "";
-    foreach ($shifts as $key => $value)
-        $shift_text = $shift_text . "*" . $d->get_shift($key)->get_id();
+    foreach ($shifts as $s)
+        $shift_text = $shift_text . "*" . $s->get_id();
     $shift_text = substr($shift_text, 1);
+    echo $shift_text;
     return $shift_text;
 }
 

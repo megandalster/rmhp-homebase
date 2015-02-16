@@ -114,10 +114,10 @@ function delete_dbMasterSchedule($id) {
  * If there are no entries, return an empty array
  */
 
-function get_master_shifts($type, $week_no, $day) {
+function get_master_shifts($venue, $week_no, $day) {
     connect();
     $query = "SELECT * FROM dbMasterSchedule WHERE week_no = '" . $week_no . "' AND day = '" . $day .
-            "' AND venue = '" . $type . "'";
+            "' AND venue = '" . $venue . "'";
     $result = mysql_query($query);
     mysql_close();
     $outcome = array();

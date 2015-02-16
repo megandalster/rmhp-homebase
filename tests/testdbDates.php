@@ -15,9 +15,17 @@
  * @author max
  */
 include_once(dirname(__FILE__).'/../database/dbDates.php');
+include_once(dirname(__FILE__).'/../domain/Shift.php');
+include_once(dirname(__FILE__).'/../domain/RMHDate.php');
 class testdbDates extends UnitTestCase {
       function testdbDatesModule() {
-
+          $my_shifts = array();
+          $my_shifts[] = new Shift("02-28-10:9-1", "house", 1, array(), array(), null ,"");
+ 		  $my_shifts[] = new Shift("02-28-10:1-5", "house", 1, array(), array(), null ,"");
+ 		  $my_date = new RMHdate("02-28-10","house",$my_shifts,"");
+		  $this->assertTrue(insert_dbDates($my_date));
+	      $this->assertTrue(delete_dbDates($my_date));
+	
           echo("testdbDates complete");
       }
 }

@@ -50,7 +50,7 @@ function create_dbWeeks() {
  */
 function insert_dbWeeks($w) {
     if (!$w instanceof Week) {
-        die("Invalid argument for dbWeeks->add_week function call");
+        die("Invalid argument for dbWeeks->insert_dbWeeks function call");
     }
     connect();
     $query = "SELECT * FROM dbWeeks WHERE id =\"" . $w->get_id() . "\"";
@@ -118,7 +118,7 @@ function update_dbWeeks($w) {
  */
 function select_dbWeeks($id) {
 
-    if (strlen($id) != 8) {
+    if (strlen($id) < 14) {
         die("Invalid week id." . $id);
     } else {
         $timestamp = mktime(0, 0, 0, substr($id, 0, 2), substr($id, 3, 2), substr($id, 6, 2));
@@ -158,7 +158,7 @@ function get_dbWeeks($id) {
         	$d[] = select_dbDates($date);
         }
         
-        $w = new Week($d, "weekly", $result_row['venue'],
+        $w = new Week($d, $result_row['venue'],
                         $result_row['status']);
         error_log("3");
         return $w;

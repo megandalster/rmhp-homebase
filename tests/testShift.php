@@ -16,15 +16,16 @@ class testShift extends UnitTestCase {
       function testShiftModule() {
          $noonshift = new Shift("03-28-08:1-5", "house", 3, array(), array(), "", "");
          $this->assertEqual($noonshift->get_hours(), "1-5");
-         $this->assertTrue($noonshift->get_id() == "03-28-08:1-5");
+         $this->assertTrue($noonshift->get_id() == "03-28-08:1-5:house");
+         $this->assertEqual($noonshift->get_mm_dd_yy(), "03-28-08");
          
 // Test new function for resetting shift's start/end time
 		 $this->assertTrue($noonshift->get_start_time()==13);
-		 //$this->assertEqual($noonshift->get_end_time()==17);
+		 $this->assertEqual($noonshift->get_end_time(),17);
 		 
 // Be sure that invalid times are caught.
 		 $this->assertFalse($noonshift->set_start_end_time(13,12));
-		 $this->assertTrue($noonshift->get_id() == "03-28-08:1-5");
+		 $this->assertTrue($noonshift->get_id() == "03-28-08:1-5:house");
 		 $this->assertTrue($noonshift->get_hours() == "1-5");
 
          $this->assertTrue($noonshift->num_vacancies() == 3);

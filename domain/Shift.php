@@ -35,16 +35,13 @@ class Shift {
      * construct an empty shift with a certain number of vacancies
      */
 
-    function __construct($id, $venue, $vacancies, $persons, $removed_persons, $sub_call_list, $notes) {
-    	$this->mm_dd_yy = substr($id, 0, 8);
-        $this->hours = substr($id, 9);
+    function __construct($mm_dd_yyhours, $venue, $vacancies, $persons, $removed_persons, $sub_call_list, $notes) {
+    	$this->mm_dd_yy = substr($mm_dd_yyhours, 0, 8);
+        $this->hours = substr($mm_dd_yyhours, 9);
         $i = strpos($this->hours, "-");
-        $f = strpos($this->hours, ":");
         if ($i>0) {
         	$this->start_time = substr($this->hours, 0, $i);   
-        	//XW: Code added here:	( on 02/05/15)
-        	$this->end_time = (substr($this->hours, $i + 1, ($f-$i-1)) + 12);
-        	//XW: Assume the only start_time is 9
+        	$this->end_time = substr($this->hours, $i + 1) + 12;
         	if ($this->start_time != "9") {
         		$this->start_time += 12;
         	}
@@ -59,7 +56,7 @@ class Shift {
         $this->removed_persons = $removed_persons;
         $this->sub_call_list = $sub_call_list;
         $this->day = date("D", mktime(0, 0, 0, substr($this->mm_dd_yy, 0, 2), substr($this->mm_dd_yy, 3, 2), "20" . substr($this->mm_dd_yy, 6, 2)));
-        $this->id = $id;
+        $this->id = $mm_dd_yyhours.":".$venue;
         $this->notes = $notes;	
     }
 
