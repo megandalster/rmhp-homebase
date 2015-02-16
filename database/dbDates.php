@@ -165,7 +165,7 @@ function get_shifts_text($d) {
     foreach ($shifts as $s)
         $shift_text = $shift_text . "*" . $s->get_id();
     $shift_text = substr($shift_text, 1);
-    echo $shift_text;
+    
     return $shift_text;
 }
 

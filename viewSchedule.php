@@ -25,7 +25,7 @@ include_once("domain/MasterScheduleEntry.php");
         <title>Master Schedule</title>
         <!--  Choose a style sheet -->
         <link rel="stylesheet" href="styles.css" type="text/css"/>
-        <link rel="stylesheet" href="calendarhouse.css" type="text/css"/>
+        <link rel="stylesheet" href="calendar.css" type="text/css"/>
         <!-- 	<link rel="stylesheet" href="calendar_newGUI.css" type="text/css"/> -->
     </head>
     <!--  Body portion starts here -->
@@ -126,7 +126,7 @@ function do_shift($master_shift, $master_shift_length) {
                 "<br>" .
                 "</td>";
     } else if ($master_shift->get_slots() == 0) {  // shift with no slots
-        $s = "<td rowspan='" . $master_shift_length . "'>" .
+    	$s = "<td rowspan='" . $master_shift_length . "'>" .
                 "<a id=\"shiftlink\" href=\"editMasterSchedule.php?group=" .
                 $master_shift->get_week_no() . "&day=" . $master_shift->get_day() . "&shift=" .
                 $master_shift->get_hours() . "&venue=" . $master_shift->get_venue() . "\">" .
