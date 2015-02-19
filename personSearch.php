@@ -50,6 +50,7 @@ session_cache_expire(30);
 							<table><tr>
 								<td>Day (of week)</td>
 								<td>Shift</td>
+								<td>Venue</td>
 								</tr>';
                 echo "<tr>";
                 echo "<td>";
@@ -67,6 +68,11 @@ session_cache_expire(30);
                     echo '<option value="' . $shiftno . '">' . $shiftname . '</option>';
                 }
                 echo '</select>';
+                $venues = array('house' => "House", 'fam' => "Family Room");
+                echo '<td><select name="s_venue">' . '<option value=""></option>';
+                foreach ($venues as $venue => $venuename) {
+                    echo '<option value="' . $venue . '">' . $venuename . '</option>';
+                }
                 echo "</td>";
                 echo "</tr>";
                 echo '</table></fieldset>';

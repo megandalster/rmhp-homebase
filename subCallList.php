@@ -34,7 +34,7 @@
 					include_once('database/dbLog.php');
 					include_once('database/dbPersons.php');
 					$id=$_GET['shift'];
-					generate_scl($id);
+					generate_scl($id); 
 					if(array_key_exists('_submit_generate_scl',$_POST)) {
 						$id=$_POST['_shiftid'];
 					}

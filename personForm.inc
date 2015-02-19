@@ -181,7 +181,7 @@ foreach ($types as $key => $value) {
                     'night' => "Overnight");
                 $venues = array('house'=>"House", 'fam'=>"Family Room");
                 $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
-                $weeks = array('1st', '2nd', '3rd', '4th', '5th', 'Week of year', '1,3,5,...', '2,4,6,...');
+                $weeks = array('1st', '2nd', '3rd', '4th', '5th', 'Week of year', 'odd', 'even');
                 $person_availability = implode(',', $person->get_availability());
     		
    		 		echo "<table>";  
