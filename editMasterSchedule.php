@@ -233,7 +233,7 @@ session_cache_expire(30);
                     if (!$persons[0])
                         array_shift($persons);
                     connect();
-                    $chrtime = $msentry->get_hours();
+                    $chrtime = $msentry->get_hours().":".$msentry->get_venue();
 
                     $query = "SELECT * FROM dbPersons WHERE status = 'active' " .
                             "AND availability LIKE '%" . $chrtime . "%' ORDER BY last_name,first_name";
