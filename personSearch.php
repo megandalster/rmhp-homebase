@@ -33,8 +33,8 @@ session_cache_expire(30);
                 echo('<p>Type:<select name="s_type">' .
                 '<option value="" SELECTED></option>' .
                 '<option value="volunteer">Volunteer</option>' . '<option value="sub">Sub</option>' .
-                '<option value="mealprep">Guest Chef</option>' .
-              	'<option value="activities">Activity</option>' .
+                '<option value="mealprep">Meal Prep</option>' .
+              	'<option value="activities">Activities</option>' .
                 '<option value="other">Other</option>' . '<option value="manager">Manager</option>' .
                 '</select>');
                 echo('&nbsp;&nbsp;Status:<select name="s_status">' .
