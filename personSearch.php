@@ -87,7 +87,7 @@ session_cache_expire(30);
                     // now go after the volunteers that fit the search criteria
                     include_once('database/dbPersons.php');
                     include_once('domain/Person.php');
-                    $result = getonlythose_dbPersons($type, $status, $name, $_POST['s_day'], $_POST['s_shift']);
+                    $result = getonlythose_dbPersons($type, $status, $name, $_POST['s_day'], $_POST['s_shift'],$_POST['s_venue']);
                     //$result = getall_dbPersons();
                     echo '<p><strong>Search Results:</strong> <p>Found ' . sizeof($result) . ' ' . $status . ' ';
                     if ($type != "")
@@ -100,21 +100,24 @@ session_cache_expire(30);
                     if ($availability != " ") {
                         echo " with availability " . $availability;
                     }
-                    if (sizeof($result) > 0) {
-                        echo ' (select one for more info).';
-                        echo '<p><table> <tr><td>Name</td><td>Phone</td><td>E-mail</td><td>Availability</td></tr>';
-                        foreach ($result as $vol) {
-                            echo "<tr><td><a href=personEdit.php?id=" . str_replace(" ","_",$vol->get_id()) . ">" .
-                            $vol->get_first_name() . " " . $vol->get_last_name() . "</td><td>" .
-                            phone_edit($vol->get_phone1()) . "</td><td>" .
-                            $vol->get_email() . "</td><td>";
-                            foreach ($vol->get_availability() as $availableon) {
-                                echo ($availableon . ", ");
-                            }
-                            echo "</td></a></tr>";
-                        }
-                    }
-                    echo '</table>';
+				    if (sizeof($result) > 0) {
+				       echo ' (select one for more info).';
+				       echo '<p><table> <tr><td>Name</td><td>Phone</td>
+				                            <td>E-mail</td><td>Availability</td></tr>';
+				       foreach ($result as $vol) {
+				          echo "<tr><td><a href=personEdit.php?id=" . 
+				               str_replace(" ","_",$vol->get_id()) . ">" .
+				               $vol->get_first_name() . " " . $vol->get_last_name() . "</td><td>" .
+				               phone_edit($vol->get_phone1()) . "</td><td>" .
+				               $vol->get_email() . "</td><td>";
+				          foreach ($vol->get_availability() as $availableon) {
+				               echo ($availableon . ", ");
+				          }
+				          echo "</td></a></tr>";
+				       }
+				       echo '</table>';
+				    }
+				               
                 }
                 ?>
                 <!-- below is the footer that we're using currently-->
