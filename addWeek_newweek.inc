@@ -34,8 +34,7 @@
                     $remove = false;
                 if(($week->get_status()=="archived" && $_GET['archive']=="true") || $week->get_status()=="published" || 
                     ($week->get_status()=="unpublished" && $_SESSION['access_level']>=2))
-                echo ("<tr><td>" . $week->get_name() . "</td><td>" . $week->get_weekday_group() . "</td>" .
-                "<td>" . $week->get_weekend_group() . "</td>" .
+                echo ("<tr><td>" . $week->get_name() . "</td>" .
                 "<td>" . show_week_options($week, $remove) . "</td></tr>");
             }
             // finds the parameters for "generate next week" button

@@ -142,7 +142,7 @@ function select_dbDates($id) {
             foreach ($shifts as $i) {
             	$temp = select_dbShifts($i);
                 if ($temp instanceof Shift) {
-                	$s[$temp->get_name()] = $temp;
+                	$s[$temp->get_hours()] = $temp;
                 }
             }
             $parts = explode(":",$result_row[0]);

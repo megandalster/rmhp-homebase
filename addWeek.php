@@ -81,12 +81,12 @@ session_cache_expire(30);
                 else if (!array_key_exists('_submit_check_newweek', $_POST)) {
                     include('addWeek_newweek.inc');
                 } else {
-                    process_form($firstweek);
+                    process_form($firstweek, $venue);
                     include('addWeek_newweek.inc');
                 }
                 
                 // must be a manager
-                function process_form($firstweek) {
+                function process_form($firstweek, $venue) {
                 	
                 	if ($_SESSION['access_level'] < 2)
                         return null;
@@ -135,7 +135,7 @@ session_cache_expire(30);
                         $shifts = array();
                         if (sizeof($venue_shifts)>0) {
                         	foreach ($venue_shifts as $venue_shift) 
-                                $shifts[] = generate_and_populate_shift($day_id, $venue, $week_of_month, $week_of_year, $day, $venue_shift->get_time(), "");
+                                $shifts[] = generate_and_populate_shift($day_id, $venue, $week_of_month, $week_of_year, $day, $venue_shift->get_hours(), "");
                         }
                     
                         // makes a new date with these shifts
