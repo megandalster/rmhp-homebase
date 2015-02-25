@@ -30,13 +30,11 @@ session_cache_expire(30);
                 $area = $_GET['area'];
                 echo('<form method="post">');
                 echo('<p><strong>Search for volunteers:</strong>');
-
                 echo('<p>Type:<select name="s_type">' .
                 '<option value="" SELECTED></option>' .
-                '<option value="volunteer">House Volunteer</option>' . '<option value="sub">Sub</option>' .
-                '<option value="weekendmanager">Weekend Manager</option>' .
-                '<option value="guestchef">Guest Chef</option>' .
-                '<option value="parking">Event Parking</option>' . '<option value="cleaning">House cleaning</option>' .
+                '<option value="volunteer">Volunteer</option>' . '<option value="sub">Sub</option>' .
+                '<option value="mealprep">Guest Chef</option>' .
+              	'<option value="activities">Activity</option>' .
                 '<option value="other">Other</option>' . '<option value="manager">Manager</option>' .
                 '</select>');
                 echo('&nbsp;&nbsp;Status:<select name="s_status">' .
