@@ -327,7 +327,7 @@ function get_persons($id) {
 function get_person_ids($venue, $week_no, $day, $time) {
     connect();
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
-            $venue . $day . $week_no . "-" . $time . "'";
+            $week_no . ":" . $day . ":" . $time . ":" . $venue. "'";
     $result = mysql_query($query1);
     if (!$result)
         die("get_person_ids could not query the database");

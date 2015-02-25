@@ -30,6 +30,7 @@ session_cache_expire(30);
             <?PHP include('header.php'); ?>
             <div id="content">
                 <?PHP
+                $venue = $_GET['venue'];
                 include_once('database/dbWeeks.php');
                 include_once('database/dbMasterSchedule.php');
                 include_once('database/dbPersons.php');
@@ -40,13 +41,14 @@ session_cache_expire(30);
                 include_once('domain/Person.php');
                 // Check to see if there are already weeks in the db
                 // connects to the database to see if there are any weeks in the dbWeeks table
-                $result = get_all_dbWeeks();
+                $result = get_all_dbWeeks($venue);
                 // If no weeks for either the house or the family room, show first week form
                 if (sizeof($result) == 0)
                     $firstweek = true;
                 else
                     $firstweek = false;
                 // publishes a week if the user is a manager
+                var_dump($_SESSION);
                 if ($_GET['publish'] && $_SESSION['access_level'] >= 2) {
                     $id = $_GET['publish'];
                     $week = get_dbWeeks($id);
@@ -95,7 +97,7 @@ session_cache_expire(30);
                         $m = date("m", mktime(0, 0, 0, $_POST['month'], $_POST['day'] - $dow + 1, $_POST['year']));
                         $d = date("d", mktime(0, 0, 0, $_POST['month'], $_POST['day'] - $dow + 1, $_POST['year']));
                         $y = date("y", mktime(0, 0, 0, $_POST['month'], $_POST['day'] - $dow + 1, $_POST['year']));
-                        generate_populate_and_save_new_week($m, $d, $y, $_POST['weekday_group'],$_POST['weekend_group']);
+                        generate_populate_and_save_new_week($m, $d, $y, $venue);
                     } else {
                         $timestamp = $_POST['_new_week_timestamp'];
                         $m = date("m", $timestamp);
@@ -103,27 +105,29 @@ session_cache_expire(30);
                         $y = date("y", $timestamp);
                         // finds the last week, and calculates next week's groups
                         //$week = get_dbWeeks($m.'-'.$d.'-'.$y);
-                        $weekday_group = $_POST['weekday_group'];
-                		$weekend_group = $_POST['weekend_group'];
-                        generate_populate_and_save_new_week($m, $d, $y, $weekday_group, $weekend_group);
+                        generate_populate_and_save_new_week($m, $d, $y, $venue);
                     }
                 }
 
                 // uses the master schedule to create a new week in dbWeeks and 
                 // 7 new dates in dbDates and new shifts in dbShifts
                 // 
-                function generate_populate_and_save_new_week($m, $d, $y, $weekdaygroup, $weekendgroup) {
+                function generate_populate_and_save_new_week($m, $d, $y, $venue) {
                     // set the group names the format used by master schedule
                     $weekdays = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
                     $day_id = $m . "-" . $d . "-" . $y;
                     $dates = array();
                     foreach ($weekdays as $day) {
-                        if ($day == "Sat" || $day == "Sun")
-                            $my_group = $weekendgroup;
-                        else
-                            $my_group = $weekdaygroup;
-                        
-                        $venue_shifts = get_master_shifts("weekly", $my_group, $day);
+                    	$my_date = mktime(0, 0, 0, $m, $d, $y);
+                        $week_of_month= floor(($d -1)/7)+1;
+        				if (date("W", $my_date)%2==1)
+            				$week_of_year= "odd";
+        				else 
+        					$week_of_year= "even";	
+        				$month_num = date("m", $my_date);
+                        $venue_shifts1 = get_master_shifts($venue, $week_of_month, $day);
+                        $venue_shifts2 = get_master_shifts($venue, $week_of_year, $day);
+                        $venue_shifts = array_merge($venue_shifts1, $venue_shifts2);
                             /* Each row in the array is an associative array
                              *  of (venue, my_group, day, time, start, end, slots, persons, notes)
                              *  and persons is a comma-separated string of ids, like "alex2077291234"
@@ -131,26 +135,28 @@ session_cache_expire(30);
                         $shifts = array();
                         if (sizeof($venue_shifts)>0) {
                         	foreach ($venue_shifts as $venue_shift) 
-                                $shifts[] = generate_and_populate_shift($day_id, "weekly", $my_group, $day, $venue_shift->get_time(), "");
+                                $shifts[] = generate_and_populate_shift($day_id, $venue, $week_of_month, $week_of_year, $day, $venue_shift->get_time(), "");
                         }
                     
                         // makes a new date with these shifts
-                        $new_date = new RMHdate($day_id, $shifts, "");
+                        $new_date = new RMHdate($day_id, $venue, $shifts, "");
                         $dates[] = $new_date;
                         $d++;
                         $day_id = date("m-d-y", mktime(0, 0, 0, $m, $d, $y));
                     }
                      // creates a new week from the dates
-                    $newweek = new Week($dates, "weekly", $weekdaygroup, $weekendgroup, "unpublished");
+                    $newweek = new Week($dates, $venue, "unpublished");
                     insert_dbWeeks($newweek);
                     add_log_entry('<a href=\"personEdit.php?id=' . $_SESSION['_id'] . '\">' . $_SESSION['f_name'] . ' ' . $_SESSION['l_name'] . '</a> generated a new week: <a href=\"calendar.php?id=' . $newweek->get_id() . '&edit=true\">' . $newweek->get_name() . '</a>.');        
                 }
 
                 // makes new shifts, fills from master schedule
                 //!
-                function generate_and_populate_shift($day_id, $venue, $group, $day, $time, $note) {
+                function generate_and_populate_shift($day_id, $venue, $week_of_month, $week_of_year, $day, $time, $note) {
                     // gets the people from the master schedule
-                    $people = get_person_ids($venue, $group, $day, $time);
+                    $people1 = get_person_ids($venue, $week_of_month, $day, $time);
+                    $people2 = get_person_ids($venue, $week_of_year, $day, $time);
+                    $people = array_merge($people1, $people2);
                     if (!$people[0])
                         array_shift($people);
                     // changes the people array to the format used by Shift (id, fname lname)
@@ -161,7 +167,7 @@ session_cache_expire(30);
                         }
                     }
                     // calculates vacancies
-                    $vacancies = get_total_slots($venue, $group, $day, $time) - count($people);
+                    $vacancies = get_total_slots($venue, $week_no, $day, $time) - count($people);
                     // makes a new shift filled with people found above
                     $newShift = new Shift($day_id . "-" . $time, $venue, $vacancies, $people, array(), "", $note);
                     return $newShift;

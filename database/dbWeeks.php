@@ -171,9 +171,9 @@ function get_dbWeeks($id) {
  * the full contents of dbWeeks, used by addWeek to list all scheduld weeks
  * @return mysql result array of weeks
  */
-function get_all_dbWeeks() {
+function get_all_dbWeeks($venue) {
 	connect();
-	$query = "SELECT * FROM dbWeeks ORDER BY end";
+	$query = "SELECT * FROM dbWeeks WHERE venue =\"" . $venue . "\" ORDER BY end";
 	$result = mysql_query($query);
 	mysql_close();
     $weeks = array();
