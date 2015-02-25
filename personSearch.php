@@ -8,6 +8,7 @@
  * of the GNU General Public License as published by the Free Software Foundation
  * (see <http://www.gnu.org/licenses/ for more information).
  * 
+ * Modified by Xun Wang on Feb 23, 2015
  */
 
 session_start();
@@ -61,8 +62,8 @@ session_cache_expire(30);
                 }
                 echo '</select>';
                 echo "</td><td>";
-                $shifts = array('morning' => 'Morning (9-12)', 'earlypm' => 'Early Afternoon (12-3)', 'latepm' => 'Late Afternoon (3-6)',
-                    'evening' => 'Evening (6-9)', 'overnight' => 'Overnight');
+                $shifts = array('morning' => 'Morning (9-1)', 'earlypm' => 'Early Afternoon (1-5)', 'latepm' => 'Late Afternoon (3-6)',
+                    'evening' => 'Evening (5-9)', 'overnight' => 'Overnight');
                 echo '<select name="s_shift">' . '<option value=""></option>';
                 foreach ($shifts as $shiftno => $shiftname) {
                     echo '<option value="' . $shiftno . '">' . $shiftname . '</option>';

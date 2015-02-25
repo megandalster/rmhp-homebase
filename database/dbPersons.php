@@ -266,22 +266,25 @@ function getall_available($type, $day, $shift) {
     return $result;
 }
 
+
 // retrieve only those persons that match the criteria given in the arguments
-function getonlythose_dbPersons($type, $status, $name, $day, $shift) {
-    connect();
-    $string1 = " LIKE '%"; $string2 = "%'";
-    $query = "SELECT * FROM dbPersons WHERE type ".$string1. $type . $string2 .
-            " AND status LIKE '%" . $status . "%'" .
-            " AND (first_name LIKE '%" . $name . "%' OR last_name LIKE'%" . $name . "%')" .
-            " ORDER BY last_name,first_name";
-    $result = mysql_query($query);
-    $thePersons = array();
-    while ($result_row = mysql_fetch_assoc($result)) {
-        $thePerson = make_a_person($result_row);
-        $thePersons[] = $thePerson;
-    }
-//    mysql_close();
-    return $thePersons;
+function getonlythose_dbPersons($type, $status, $name, $day, $shift, $venue) {
+   Connect();
+   $query = "SELECT * FROM dbPersons WHERE type LIKE '%" . $type . "%'" .
+           " AND status LIKE '%" . $status . "%'" .
+           " AND (first_name LIKE '%" . $name . "%' OR last_name LIKE'%" . $name . "%')" .
+           " AND availability LIKE '%" . $day . "%')" . 
+           " AND availability LIKE '%" . $shift . "%')" . 
+           " AND availability LIKE '%" . $venue . "%')" . 
+           " ORDER BY last_name,first_name";
+   $result = mysql_query($query);
+   $thePersons = array();
+   while ($result_row = mysql_fetch_assoc($result)) {
+       $thePerson = make_a_person($result_row);
+       $thePersons[] = $thePerson;
+   }
+   mysql_close();
+   return $thePersons;
 }
 
 function phone_edit($phone) {
