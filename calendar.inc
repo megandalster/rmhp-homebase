@@ -27,8 +27,8 @@ session_cache_expire(30);
 function do_week_nav($week, $edit, $venue) {
     $cur_id = $week->get_id();
 //		echo ("We are doing a nav for week ".$cur_id."<br>");
-    $prev_id = date("m-d-y", mktime(0, 0, 0, substr($cur_id, 0, 2), substr($cur_id, 3, 2) - 7, substr($cur_id, 6, 2)));
-    $next_id = date("m-d-y", mktime(0, 0, 0, substr($cur_id, 0, 2), substr($cur_id, 3, 2) + 7, substr($cur_id, 6, 2)));
+    $prev_id = date("m-d-y", mktime(0, 0, 0, substr($cur_id, 0, 2), substr($cur_id, 3, 2) - 7, substr($cur_id, 6, 2))) . ":" .$venue;
+    $next_id = date("m-d-y", mktime(0, 0, 0, substr($cur_id, 0, 2), substr($cur_id, 3, 2) + 7, substr($cur_id, 6, 2))). ":" .$venue;
     $s = "<p><table id=\"weeknav\" align=\"left\"><tr><td align=\"left\" >";
     // determines if there is a previous week
     $prev_week = get_dbWeeks($prev_id);
