@@ -122,7 +122,7 @@ function replace_dbDates($old_s, $new_s) {
  * @return RMHDate
  */
 function select_dbDates($id) {
-    if (strlen($id) < 14)
+    if (strlen($id) < 12)
         die("Invalid argument for dbDates->select_dbDates call =" . $id);
     connect();
     $query = "SELECT * FROM dbDates WHERE id =\"" . $id . "\"";

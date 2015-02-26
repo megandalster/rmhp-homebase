@@ -355,9 +355,10 @@ function get_total_slots($id) {
         die("get_total_slots could not query the database");
     if (mysql_num_rows($result) !== 1) {
         mysql_close();
-        return "Error: group-day-time not valid";
+        echo "Error: group-day-time not valid".$id;
+        return false;
     }
-    $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
+    $result_row = mysql_fetch_assoc($result, MYSQL_ASSOC);
     return $result_row['slots'];
 }
 

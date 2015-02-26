@@ -184,21 +184,21 @@ function get_shift_year($id) {
 }
 
 function get_shift_start($id) {
-	if (substr($id,9)=="overnight") 
+	if (substr($id,9,5)=="night") 
 		return 0;
-	else if (substr($id, 11, 1) == "-")
-        return substr($id, 9, 2);
-    else
-        return substr($id, 9, 1);
+	else {
+		$st = substr($id, 9, 1);
+	    if ($st!=9)
+	    	$st = $st+12;
+	    return $st;
+	}
 }
 
 function get_shift_end($id) {
-	if (substr($id,9)=="overnight")
+	if (substr($id,9,5)=="night")
 		return 1;
-    else if (substr($id, 11, 1) == "-")
-        return substr($id, 12, 2);
-    else
-        return substr($id, 11, 2);
+    else 
+        return substr($id, 11, 1)+12;
 }
 
 //Add class get_shift_venue, using the "strrchr" function to return the part after the last ":"

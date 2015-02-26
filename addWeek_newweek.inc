@@ -21,7 +21,7 @@
     Here you can add new weeks to the calendar and you can edit weeks that are already there. <br>Click the "Add new week" button for adding a new week, or select an option at the right of an existing week.</p>
 <span class="nextWeekTable">
     <form method="POST">
-        <p><table border="1">
+        <table border="1">
             <tr><td>Weeks</td><td>Status (options)</td></tr>
             <?php
             $result = get_all_dbWeeks($venue);
@@ -35,14 +35,14 @@
                 if(($week->get_status()=="archived" && $_GET['archive']=="true") || $week->get_status()=="published" || 
                     ($week->get_status()=="unpublished" && $_SESSION['access_level']>=2))
                 echo ("<tr><td>" . $week->get_name() . "</td>" .
-                "<td>" . show_week_options($week, $remove) . "</td></tr>");
+                "<td>" . show_week_options($week, $remove, $venue) . "</td></tr>");
             }
             // finds the parameters for "generate next week" button
-            if ($_SESSION['access_level'] >= 2) {
-                if ($week){
+            if ($_SESSION['access_level'] >= 2) { 
+                if ($week) 
                     $last = $week -> get_id();
-                    
-                }
+                else 
+                    $last = date('m-d-y',strtotime("last Monday"));   
                 $new_week_timestamp = mktime(0, 0, 0, substr($last, 0, 2), substr($last, 3, 2) + 7, substr($last, 6, 2));
                 echo ('<tr><td>');
             	echo "<input type=\"hidden\" name=\"_new_week_timestamp\" value=\"" . $new_week_timestamp . "\">
@@ -50,47 +50,17 @@
 								<input type=\"submit\" value=\"Add new week\" name=\"Add new week\">";
                 echo "</td>";
                 
-                echo('<td align="center"><a href="addWeek.php?archive=');
+                echo('<td align="center"><a href="addWeek.php?venue='.$venue.'&archive=');
             	if ($_GET['archive'] == "true")
                 	echo 'false">Hide Archive</a></td></tr><tr>';
             	else
                 	echo 'true">View Archive</a></td></tr><tr>';
-                if ($firstweek) {
-                    echo ('<td colspan="4"><select name="month">');
-                    $months = array('', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-                    $today = date("M");
-                    for ($i = 0; $i <= 12; ++$i) {
-                        echo ("<option value=\"" . $i . "\"");
-                        if ($_POST['month'] == $i || $today == $months[$i])
-                            echo (" SELECTED");
-                        echo (">" . $months[$i] . "</option>");
-                    }
-                    echo ('</select> <select name="day"> <option value="0"></option>');
-                    $today = date("j");
-                    for ($i = 1; $i <= 31; ++$i) {
-                        echo ("<option ");
-                        if ($_POST['day'] == $i || $today == $i)
-                            echo (" SELECTED");
-                        echo (">" . $i . "</option>");
-                    }
-                    echo ('</select><select name="year"> <option value="0"></option>');
-                    $i = date("Y");
-                    echo ("<option ");
-                    if ($_POST['year'] == $i || $_POST['year'] != $i + 1)
-                        echo (" SELECTED");
-                    echo (">" . $i . "</option>");
-                    echo ("<option ");
-                    if ($_POST['year'] == $i + 1)
-                        echo (" SELECTED");
-                    echo (">" . ($i + 1) . "</option>");
-                    echo ("</select></td>");
-                }
-                else echo "<td colspan = '4'>";    
+                echo "</td><td colspan = '2'>";    
             }
             echo "</td></tr></table>";    
 
             // determines what options apply to each week
-            function show_week_options($week, $remove) {
+            function show_week_options($week, $remove, $venue) {
                 $id = $week->get_id();
                 $status = $week->get_status();
                 $end = $week->get_end();
@@ -98,13 +68,13 @@
                 $rightnow = time();
                 $oneweek = 60 * 60 * 24 * 7;
                 if ($status == "archived") {
-                    $options = "archived (<a href=\"calendar.php?id=" . $id . "&venue=house\">view</a>)";
+                    $options = "archived (<a href=\"calendar.php?id=" . $id . "&venue=".$venue."\">view</a>)";
                 }
                 // see if right now is part of a new week.  If so, archive the previous week.
                 // here was a BIG BUG -- today might not have an immediate predecessor week in the database,
                 // in which case "week2" below will be null!  So this now accommodates gaps (missing weeks) in the dbWeeks table.
                 else if ($rightnow > $end) {
-                    $options = "archived (<a href=\"calendar.php?id=" . $id . "&venue=house\">view</a>)";
+                    $options = "archived (<a href=\"calendar.php?id=" . $id . "&venue=".$venue."\">view</a>)";
                     $week2 = get_dbWeeks($id);
                     if ($week2 != null) {
                         $week2->set_status("archived");
@@ -112,16 +82,16 @@
                     }
                 } else if ($status == "unpublished") {
                     $options = "unpublished 
-							(<a href=\"calendar.php?id=" . $id. "&venue=house&edit=true\">edit</a>)
-							(<a href=\"addWeek.php?publish=" . $id . "\">publish</a>)
-							(<a href=\"calendar.php?id=" . $id . "&venue=house\">view</a>)";
+							(<a href=\"calendar.php?id=" . $id. "&venue=".$venue."&edit=true\">edit</a>)
+							(<a href=\"addWeek.php?venue='.$venue.'&publish=" . $id . "\">publish</a>)
+							(<a href=\"calendar.php?id=" . $id . "&venue=".$venue."\">view</a>)";
                 } else { // status must be "published"
-                    $options = "published (<a href=\"calendar.php?id=" . $id . "&venue=house&edit=true\">edit</a>)
-							(<a href=\"addWeek.php?publish=" . $id . "\">unpublish</a>)
-							(<a href=\"calendar.php?id=" . $id . "&venue=house\">view</a>)";
+                    $options = "published (<a href=\"calendar.php?id=" . $id . "&venue=".$venue."&edit=true\">edit</a>)
+							(<a href=\"addWeek.php?venue=".$venue."&publish=" . $id . "\">unpublish</a>)
+							(<a href=\"calendar.php?id=" . $id . "&venue=".$venue."\">view</a>)";
                 }
                 if ($remove)
-                    $options = $options . " (<a href=\"addWeek.php?remove=" . $id . "&archive=".$_GET['archive']."\">remove</a>)";
+                    $options = $options . " (<a href=\"addWeek.php?venue=".$venue."&remove=" . $id . "&archive=".$_GET['archive']."\">remove</a>)";
                 return $options;
             }
             ?>

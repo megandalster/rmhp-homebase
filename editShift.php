@@ -26,8 +26,8 @@
 			<?PHP include('header.php');?>
 			<div id="content">
 				<?php
-					$shiftid=$_GET['shift'];
 					$venue = $_GET['venue'];
+					$shiftid=$_GET['shift'].":".$venue;
 					include_once('editShift.inc');
 					if($shiftid=="") {
 						echo "<p>No Shift ID Supplied.  Click on \"Calendar\" above to edit shifts.</p>";
@@ -97,7 +97,7 @@
 							    echo display_filled_slots($persons);
 								echo display_vacant_slots($shift->num_vacancies());
 								echo "</td></tr></table>";
-								echo "<p align=\"center\"><a href=\"calendar.php?id=".substr($shiftid,0,8)."&edit=true&venue=".$venue."\">
+								echo "<p align=\"center\"><a href=\"calendar.php?id=".substr($shiftid,0,8).":".$venue."&edit=true&venue=".$venue."\">
 									Back to Calendar</a>";
 							}
 						}

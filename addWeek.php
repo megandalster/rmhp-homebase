@@ -48,8 +48,7 @@ session_cache_expire(30);
                 else
                     $firstweek = false;
                 // publishes a week if the user is a manager
-                var_dump($_SESSION);
-                if ($_GET['publish'] && $_SESSION['access_level'] >= 2) {
+                if (!$firstweek && $_GET['publish'] && $_SESSION['access_level'] >= 2) {
                     $id = $_GET['publish'];
                     $week = get_dbWeeks($id);
                     if ($week->get_status() == "unpublished")
@@ -64,7 +63,7 @@ session_cache_expire(30);
 					include('addWeek_newweek.inc');
                 }
                 // removes a week if user is a manager
-                else if ($_GET['remove'] && $_SESSION['access_level'] >= 2) {
+                else if (!$firstweek && $_GET['remove'] && $_SESSION['access_level'] >= 2) {
                     $id = $_GET['remove'];
                     $week = get_dbWeeks($id);
                     if ($week) {
@@ -91,20 +90,17 @@ session_cache_expire(30);
                 	if ($_SESSION['access_level'] < 2)
                         return null;
                     if ($firstweek == true) {
-                        //find the beginning of the week
-                        $timestamp = mktime(0, 0, 0, $_POST['month'], $_POST['day'], $_POST['year']);
-                        $dow = date("N", $timestamp);
-                        $m = date("m", mktime(0, 0, 0, $_POST['month'], $_POST['day'] - $dow + 1, $_POST['year']));
-                        $d = date("d", mktime(0, 0, 0, $_POST['month'], $_POST['day'] - $dow + 1, $_POST['year']));
-                        $y = date("y", mktime(0, 0, 0, $_POST['month'], $_POST['day'] - $dow + 1, $_POST['year']));
+                        //find the beginning of the current week
+                        $dow = strtotime("last Monday");
+                        $m = date("m",$dow);
+                        $d = date("d",$dow);
+                        $y = date("y",$dow);
                         generate_populate_and_save_new_week($m, $d, $y, $venue);
                     } else {
                         $timestamp = $_POST['_new_week_timestamp'];
                         $m = date("m", $timestamp);
                         $d = date("d", $timestamp);  
                         $y = date("y", $timestamp);
-                        // finds the last week, and calculates next week's groups
-                        //$week = get_dbWeeks($m.'-'.$d.'-'.$y);
                         generate_populate_and_save_new_week($m, $d, $y, $venue);
                     }
                 }
@@ -115,11 +111,12 @@ session_cache_expire(30);
                 function generate_populate_and_save_new_week($m, $d, $y, $venue) {
                     // set the group names the format used by master schedule
                     $weekdays = array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
+                    $weeksofmonth = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
                     $day_id = $m . "-" . $d . "-" . $y;
                     $dates = array();
                     foreach ($weekdays as $day) {
                     	$my_date = mktime(0, 0, 0, $m, $d, $y);
-                        $week_of_month= floor(($d -1)/7)+1;
+                        $week_of_month= $weeksofmonth[floor(($d - 1)/7)+1];
         				if (date("W", $my_date)%2==1)
             				$week_of_year= "odd";
         				else 
@@ -155,10 +152,17 @@ session_cache_expire(30);
                 function generate_and_populate_shift($day_id, $venue, $week_of_month, $week_of_year, $day, $time, $note) {
                     // gets the people from the master schedule
                     $people1 = get_person_ids($venue, $week_of_month, $day, $time);
+                    if (!$people1[0])
+                        array_shift($people1);
+                    $vacancies1 = get_total_slots($week_of_month.":".$day.":".$time.":".$venue) - count($people1);
                     $people2 = get_person_ids($venue, $week_of_year, $day, $time);
+                    if (!$people2[0])
+                        array_shift($people2);
+                    $vacancies2 = get_total_slots($week_of_year.":".$day.":".$time.":".$venue) - count($people2);
                     $people = array_merge($people1, $people2);
                     if (!$people[0])
                         array_shift($people);
+                    $vacancies = $vacancies1 + $vacancies2;
                     // changes the people array to the format used by Shift (id, fname lname)
                     for ($i = 0; $i < count($people); ++$i) {
                         $person = retrieve_person($people[$i]);
@@ -167,9 +171,8 @@ session_cache_expire(30);
                         }
                     }
                     // calculates vacancies
-                    $vacancies = get_total_slots($venue, $week_no, $day, $time) - count($people);
                     // makes a new shift filled with people found above
-                    $newShift = new Shift($day_id . "-" . $time, $venue, $vacancies, $people, array(), "", $note);
+                    $newShift = new Shift($day_id . ":" . $time, $venue, $vacancies, $people, array(), "", $note);
                     return $newShift;
                     
                 }

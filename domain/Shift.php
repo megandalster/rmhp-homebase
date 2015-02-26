@@ -20,8 +20,8 @@ class Shift {
 
     private $mm_dd_yy;      // String: "mm-dd-yy".
     private $hours;          // String: '9-1', '1-5', '5-9' or 'night'
-    private $start_time;    // Integer: e.g. 10 (meaning 10:00am)     NOTE: NOT SURE WE NEED THESE TWO
-    private $end_time;      // Integer: e.g. 13 (meaning 1:00pm)	  DEPENDS ON WHETHER USER CAN MOVE A SHIFT OR NOT
+    private $start_time;    // Integer: e.g. 10 (meaning 10:00am)     
+    private $end_time;      // Integer: e.g. 13 (meaning 1:00pm)	  
     private $venue;         // "house", "fam", or "mealprep"
     private $vacancies;     // number of vacancies in this shift
     private $persons;       // array of person ids filling slots, followed by their name, ie "malcom1234567890+Malcom+Jones"

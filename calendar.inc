@@ -45,7 +45,7 @@ function do_week_nav($week, $edit, $venue) {
         else
             $s = $s . '<td align="left"> <a href="calendar.php?id=' . $cur_id . '&venue=' . $venue . '&edit=false">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(view this week)</a></td>';
     if ($_SESSION['access_level'] >= 2)
-        $s = $s . '<td align="right"> <a href="addWeek.php?archive=false">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(manage weeks)</a></td>';
+        $s = $s . '<td align="right"> <a href="addWeek.php?archive=false&venue='.$venue.'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(manage weeks)</a></td>';
     $s = $s . "</td><td align=\"right\">";
     // determines if there is a next week
     $next_week = get_dbWeeks($next_id);
@@ -66,13 +66,14 @@ function do_week_nav($week, $edit, $venue) {
 function show_week($days, $week, $edit, $year, $doy, $venue) {
     // gets all of the dates for this week
     // sets up the table, with title, and then day of month
-    $free_hour = array();
+    $venues = array("house" => "House", "fam" => "Family Room");
+	$free_hour = array();
     for ($i = 0; $i < 91; $i++)
         $free_hour[] = true;
 //		echo ("Showing week ". $week->get_id(). " for venue " . $venue . " and first day " . $days[0]->get_id() . "<br>");
     $daynames = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
     echo ('<table id="calendar" align="center" ><tr class="weekname"><td colspan="16" ' .
-    'align="center" >' . 'House calendar: ' . $week->get_name() . '</td></tr>
+    'align="center" >' .$venues[$venue]. ' Calendar: ' . $week->get_name() . '</td></tr>
 				<tr><td bgcolor=lightblue></td>');
     for ($i = 0; $i < 7; $i++)
         echo ('<td class="dom">' . get_dom($days[$i]) . '</td><td class="dow">&nbsp; ' . $daynames[$i] . '</td>');
@@ -81,10 +82,13 @@ function show_week($days, $week, $edit, $year, $doy, $venue) {
     for ($hour = 9; $hour < $limit; $hour++) {
         echo ("<tr><td class=\"hour\">" . show_hours($venue, $hour) . "</td>");
         for ($i = 0; $i < 7; $i++) {
-            $shiftid = $days[$i]->get_shift_id($hour, $venue);
+            $shiftid = $days[$i]->get_shift_id($hour);
             if ($shiftid) {
             	$shift_length = get_shift_end($shiftid) - get_shift_start($shiftid);
-            	echo do_shift($days[$i], substr($shiftid, 9), $shift_length, $edit, $venue);
+            	if (substr($shiftid,9,5)=="night")
+            	    $t="night";
+            	else $t = substr($shiftid,9,3);
+            	echo do_shift($days[$i], $t, $shift_length, $edit, $venue);
                 for ($j = $hour; $j < $hour + $shift_length; $j++)
                     $free_hour[7 * ($j - 9) + $i] = false;
             } 
@@ -107,7 +111,7 @@ function show_hours($venue, $hour) {
     $d = 1;
     $last_shift = 8;
     if ($hour==21) {
-    	return "overnight";
+    	return "night";
     }
     else {
     $clock = $hour < 12 ? $hour . "am" : $hour - 12 . "pm";
@@ -139,7 +143,7 @@ function do_shift($day, $shift, $length, $edit, $venue) {
         $s = $s . "e";
     $s = $s . "\"><table id=\"shiftbox\"><tr><td class=\"persons\">";
     if ($edit) // && ($year < $day->get_year() || $year == $day->get_year() && $doy <= $day->get_day_of_year() ))
-        $s = $s . "<a id=\"shiftlink\" href=\"editShift.php?shift=" . $day->get_id() . "-" . $shift . "&venue=" . $venue . "\">";
+        $s = $s . "<a id=\"shiftlink\" href=\"editShift.php?shift=" . substr($day->get_id(),0,8) . ":" . $shift . "&venue=" . $venue . "\">";
     $s = $s . get_people_for_shift($day, $shift);
     if ($edit) { //&& ($year < $day->get_year() || $year == $day->get_year() && $doy <= $day->get_day_of_year() )) {
         $s = $s . "</a>";

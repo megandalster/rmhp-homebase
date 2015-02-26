@@ -147,17 +147,16 @@ class RMHdate {
      * if there's a shift starting at $shift_start for the given venue, return its id.
      * Otherwise, return false
      */
-    function get_shift_id($shift_start, $venue) {
+    function get_shift_id($shift_start) {
     	if ($shift_start==21) {
-        	$candidate = $this->get_id() . "-overnight";
         	foreach ($this->shifts as $shift) 
-                if ($shift->get_id() == $candidate)
+                if ($shift->get_hours() == "night")
                     return $shift->get_id();
     	}
-        else for ($i = $shift_start + 1; $i < 22; $i++) {
+        else {
         	$candidate = $this->get_id() . "-" . $shift_start . "-" . $i;
             foreach ($this->shifts as $shift) 
-                if ($shift->get_id() == $candidate)
+                if ($shift->get_start_time() == $shift_start)
                     return $shift->get_id();
         }
         return false;
