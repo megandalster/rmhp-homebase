@@ -8,7 +8,7 @@
  * of the GNU General Public License as published by the Free Software Foundation
  * (see <http://www.gnu.org/licenses/ for more information).
  * 
- * Modified by Xun Wang on Feb 23, 2015
+ * Modified by Xun Wang on Feb 25, 2015
  */
 
 session_start();
@@ -60,8 +60,8 @@ session_cache_expire(30);
                 }
                 echo '</select>';
                 echo "</td><td>";
-                $shifts = array('morning' => 'Morning (9-1)', 'earlypm' => 'Early Afternoon (1-5)', 'latepm' => 'Late Afternoon (3-6)',
-                    'evening' => 'Evening (5-9)', 'overnight' => 'Overnight');
+                $shifts = array('9-1' => 'Morning (9-1)', '1-5' => 'Early Afternoon (1-5)',
+                    '5-9' => 'Evening (5-9)', 'night' => 'Overnight');
                 echo '<select name="s_shift">' . '<option value=""></option>';
                 foreach ($shifts as $shiftno => $shiftname) {
                     echo '<option value="' . $shiftno . '">' . $shiftname . '</option>';
@@ -87,7 +87,7 @@ session_cache_expire(30);
                     // now go after the volunteers that fit the search criteria
                     include_once('database/dbPersons.php');
                     include_once('domain/Person.php');
-                    $result = getonlythose_dbPersons($type, $status, $name, $_POST['s_day'], $_POST['s_shift'],$_POST['s_venue']);
+                    $result = getonlythose_dbPersons($type, $status, $name, $_POST['s_day'], $_POST['s_shift'], $_POST['s_venue']); //added s_venue
                     //$result = getall_dbPersons();
                     echo '<p><strong>Search Results:</strong> <p>Found ' . sizeof($result) . ' ' . $status . ' ';
                     if ($type != "")
@@ -96,7 +96,7 @@ session_cache_expire(30);
                         echo "persons";
                     if ($name != "")
                         echo ' with name like "' . $name . '"';
-                    $availability = $_POST['s_day'] ." ". $_POST['s_shift'];
+                    $availability = $_POST['s_day'] ." ". $_POST['s_shift'] .""."at" ." ". $_POST['s_venue']; //added s_venue 
                     if ($availability != " ") {
                         echo " with availability " . $availability;
                     }
