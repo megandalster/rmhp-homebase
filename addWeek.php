@@ -154,6 +154,7 @@ session_cache_expire(30);
                     $people1 = get_person_ids($venue, $week_of_month, $day, $time);
                     if (!$people1[0])
                         array_shift($people1);
+                    //echo($week_of_month."-".$day."-".$time.":".$venue);
                     $vacancies1 = get_total_slots($week_of_month.":".$day.":".$time.":".$venue) - count($people1);
                     $people2 = get_person_ids($venue, $week_of_year, $day, $time);
                     if (!$people2[0])

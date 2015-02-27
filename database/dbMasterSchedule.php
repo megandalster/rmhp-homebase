@@ -245,7 +245,7 @@ function make_notes($venue, $group, $day, $time, $notes) {
     // be sure the person exists and is scheduled
     if (mysql_num_rows($result) !== 1) {
         mysql_close();
-        return "Error: group-day-time not valid";
+        return "Error: group-day-time not valid:see make_notes";
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $result_row['notes'] = $notes;
@@ -272,7 +272,7 @@ function is_scheduled($venue, $group, $day, $time, $person_id) {
         die("is_scheduled could not query the database");
     if (mysql_num_rows($result) !== 1) {
         mysql_close();
-        return "Error: group-day-time not valid";
+        return "Error: group-day-time not valid:see is_scheduled";
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $persons = explode(',', $result_row['persons']);    // get array of scheduled person id's
@@ -333,7 +333,7 @@ function get_person_ids($venue, $week_no, $day, $time) {
         die("get_person_ids could not query the database");
     if (mysql_num_rows($result) !== 1) {
         mysql_close();
-        return array("Error: group-day-time not valid");
+        return array("Error: group-day-time not valid:see get_person_ids");
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $person_ids = explode(',', $result_row['persons']);
@@ -355,7 +355,7 @@ function get_total_slots($id) {
         die("get_total_slots could not query the database");
     if (mysql_num_rows($result) !== 1) {
         mysql_close();
-        echo "Error: group-day-time not valid".$id;
+        echo "Error: group-day-time not valid:see get_total_slots".$id;
         return false;
     }
     $result_row = mysql_fetch_assoc($result, MYSQL_ASSOC);
