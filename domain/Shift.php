@@ -143,18 +143,10 @@ class Shift {
     function get_end_time() {
         return $this->end_time;
     }
-    function get_time_of_day() {
-        if ($this->start_time == 0)
-            return "overnight";
-        else if ($this->start_time <= 10)
-            return "morning";
-        else if ($this->start_time <= 13)
-            return "earlypm";
-        else if ($this->start_time <= 16)
-            return "latepm";
-        else 
-            return "evening";
+    function get_time_of_day() { //Redundant function, same as get_hours()
+        return $this->hours;
     }
+    
     function get_date() {
         return $this->mm_dd_yy;
     }

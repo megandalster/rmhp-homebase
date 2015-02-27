@@ -33,8 +33,9 @@
 					include_once('database/dbShifts.php');
 					include_once('database/dbLog.php');
 					include_once('database/dbPersons.php');
-					$id=$_GET['shift'];
-					generate_scl($id); 
+					$id=$_GET['shift'];  
+					$venue=$_GET['venue'];	//probably not needed here
+					generate_scl($id); 		//creates a sub call list based on the id of the shift
 					if(array_key_exists('_submit_generate_scl',$_POST)) {
 						$id=$_POST['_shiftid'];
 					}
@@ -68,22 +69,21 @@
  */
 	function generate_scl($id) {
 	//	echo "<br>we are here";
-		$shift=select_dbShifts($id);
-		$vacancies=$shift->num_vacancies();
-		$day=$shift->get_day();
-		$time=$shift->get_time_of_day();
-		$time = substr($time,0,strlen($time)-3);
-		$venue = $shift->get_venue();
-		$shift_persons=$shift->get_persons();
+		$shift=select_dbShifts($id);  				
+		$vacancies=$shift->num_vacancies();  		
+		$day=$shift->get_day();  					
+		$time=$shift->get_time_of_day();  			 
+		$venue = $shift->get_venue(); 				 
+		$shift_persons=$shift->get_persons();  		
 		if(!$shift_persons[0])
 			array_shift($shift_persons);
 		connect();
-		$query="SELECT * FROM dbPersons WHERE (status = 'active' AND type LIKE '%sub%' AND availability LIKE '%".$day.":".$time."%') ORDER BY last_name,first_name";
-		$persons_result=mysql_query($query);
+		$query="SELECT * FROM dbPersons WHERE (status = 'active' AND type LIKE '%sub%' AND availability LIKE '%".$day.":".$time.":".$venue."%') ORDER BY last_name,first_name";
+		$persons_result=mysql_query($query);		
 		mysql_close(); 
 		for($i=0;$i<mysql_num_rows($persons_result);++$i) {
 			$row=mysql_fetch_row($persons_result);
-			$id_and_name=$row[0]."+".$row[1]."+".$row[2];
+			$id_and_name=$row[0]."+".$row[1]."+".$row[2];	
 			$match=false;
 //			for($j=0;$j<count($shift_persons);++$j) {
 //				if($id_and_name==$shift_persons[$j] || in_array($id_and_name, )) {
@@ -92,9 +92,9 @@
 //			}
 			if (!in_array($id_and_name, $shift_persons) && !in_array($id_and_name, $shift->get_removed_persons())) {
 				$persons[]=array($row[0], $row[1], $row[2], $row[9], $row[10], "", "", "?");
-			}
+			}	
 		}
-		$new_scl=new SCL($id, $persons, "open", $vacancies, get_sub_call_list_timestamp($id));
+		$new_scl=new SCL($id, $persons, "open", $vacancies, get_sub_call_list_timestamp($id));   
 		if (!select_dbSCL($id)){
 		   insert_dbSCL($new_scl);
 		   $shift->open_sub_call_list();
@@ -110,8 +110,7 @@
 	}
 
 	function do_scl_index($id) {
-		$venue = substr($id,9);
-		$venue = substr($venue,strlen($venue)-3);
+		$venue = substr(strrchr($id,":"),1);
 		connect();
 		$query="SELECT * FROM dbSCL ORDER BY time";
 		$result=mysql_query($query);
@@ -154,8 +153,7 @@
 		}
 		$persons=$scl->get_persons();
 		$status=$scl->get_status();
-		$venue = substr($id,9);
-	//	$venue = substr($venue,strlen($venue)-3);
+		$venue = substr(strrchr($id,":"),1);
 			if(array_key_exists('_shiftid',$_POST))
 			  show_back_navigation($_POST['_shiftid'],692,$venue); // show_back_navigation($id,692);
 			echo "<table width=\"700\" align=\"center\" border=\"1px\">
@@ -215,8 +213,7 @@
 	function process_edit_scl($post) {
 		$id=$post['_shiftid'];
 		$shift=select_dbShifts($id);
-		$venue = substr($id,9);
-		$venue = substr($venue,strlen($venue)-3);
+		$venue = substr(strrchr($id,":"),1);
 		$scl=select_dbSCL($id);
 		$persons_old=$scl->get_persons();
 		$vacancies=$shift->num_vacancies();
@@ -309,26 +306,8 @@
 		$m=substr($id,0,2);
 		$d=substr($id,3,2);
 		$y="20".substr($id,6,2);
-		$s=substr($id,9);
-		if (strpos($s,"-")>0)    // if not overnight, keep only start time
-		    $s = substr($s,0,strlen($s)-3);
-	/*	if($s=="9-12")
-			$s="1";
-		else if($s=="12-15")
-			$s="2";
-		else if($s=="15-18")
-			$s="3";
-		else if($s=="18-21")
-			$s="4";
-		else if($s=="12-14")
-			$s="5";
-		else if($s=="14-16")
-			$s="6";
-		else if($s=="16-18")
-			$s="7";
-		else if($s=="18-20")
-			$s="8";
-	*/	return $y.$m.$d.$s;
+		$s=substr($id,9,1);
+		return $y.$m.$d.$s;
 	}
 
 	function show_back_navigation($id,$width,$venue) {

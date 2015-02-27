@@ -18,7 +18,7 @@ class testSCL extends UnitTestCase {
          $p[] = array("oliver345","oliver","radwan","123","456","1/1/08","LM","false");
 	     $s=new SCL("01-01-08-9-12",$p,"open",1,"11223344");
 //	     print_r($s);
-		 $this->assertTrue($s->get_id() == "01-01-08-9-12");
+		 $this->assertTrue($s->get_id() == "01-01-08-9-12"); 
 	     $p2=$s->get_persons();
 	     $p2[]=array("max123","max","palmer","123","456","1/1/08","LM","true");
 	     $s->set_persons($p2);
