@@ -27,7 +27,7 @@
 			<div id="content">
 				<?php
 					$venue = $_GET['venue'];
-					$shiftid=$_GET['shift'].":".$venue;
+					$shiftid=$_GET['shift'] . ":" . $venue;
 					include_once('editShift.inc');
 					if($shiftid=="") {
 						echo "<p>No Shift ID Supplied.  Click on \"Calendar\" above to edit shifts.</p>";

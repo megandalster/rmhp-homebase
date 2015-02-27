@@ -312,7 +312,7 @@
 
 	function show_back_navigation($id,$width,$venue) {
 		echo "<br><table align=\"center\"><tr><td align=\"center\" width=\"".$width."\">
-		<a href=\"editShift.php?shift=".$id."&venue=".$venue."\">Back to Shift</a><br>" ;
+		<a href=\"editShift.php?shift=".substr($id, 0, strrpos($id, ":")) ."&venue=".$venue."\">Back to Shift</a><br>" ;
 		return true;
 	}
 	
