@@ -96,7 +96,7 @@ session_cache_expire(30);
                         echo "persons";
                     if ($name != "")
                         echo ' with name like "' . $name . '"';
-                    $availability = $_POST['s_day'] ." ". $_POST['s_shift'] .""."at" ." ". $_POST['s_venue']; //added s_venue 
+                    $availability = $_POST['s_day'] ." ". $_POST['s_shift'] ." ". $_POST['s_venue']; //added s_venue 
                     if ($availability != " ") {
                         echo " with availability " . $availability;
                     }
