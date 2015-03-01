@@ -49,7 +49,7 @@
 				From this site, its source code can be freely downloaded and adapted
 				 to fit the volunteer scheduling needs of other non-profits.  
 				 For more information about the capabilities or adaptability of <i>Homebase</i></i> to other settings, please 
-				 contact either <a href="mailto:allen@npfi.org">Allen Tucker</a> or visit the website 
+				 contact either <a href="mailto:allen@bowdoin.edu">Allen Tucker</a> or visit the website 
 				 <a href="http://npfi.org" target="_blank">http://npfi.org</a>.
 				</p> 
 				

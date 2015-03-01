@@ -82,7 +82,8 @@ include_once('database/dbLog.php');
 			</form></td></tr>";
 		echo "</table>";
 		echo "<table align=\"center\"><tr><td align=\"center\" width=\"400\">
-		&nbsp;<a href=\"editShift.php?shift=".$shiftid."&venue=".$venue."\">Back to Shift</a><br></td></tr></table>";
+		&nbsp;<a href=\"editShift.php?shift=".$shift->get_mm_dd_yy().":".$shift->get_hours().
+		              "&venue=".$venue."\">Back to Shift</a><br></td></tr></table>";
 		return true;
 
 		// check that person is not already working that shift
@@ -205,7 +206,8 @@ include_once('database/dbLog.php');
 			</form></td></tr>";
 		echo "</table>";
 		echo "<table align=\"center\"><tr><td align=\"center\" width=\"400\">
-		<br><a href=\"editShift.php?shift=".$shift->get_id()."\">Back to Shift</a><br></td></tr></table>";
+		<br><a href=\"editShift.php?shift=".$shift->get_mm_dd_yy().":".$shift->get_hours().
+		           "\">Back to Shift</a><br></td></tr></table>";
 		return true;
     }
     function process_delete_shift($post,$shift) {

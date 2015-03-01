@@ -34,7 +34,7 @@
 					include_once('database/dbLog.php');
 					include_once('database/dbPersons.php');
 					$id=$_GET['shift'];  
-					$venue=$_GET['venue'];	//probably not needed here
+					$venue=$_GET['venue'];	
 					generate_scl($id); 		//creates a sub call list based on the id of the shift
 					if(array_key_exists('_submit_generate_scl',$_POST)) {
 						$id=$_POST['_shiftid'];
@@ -46,15 +46,15 @@
 						$id=process_edit_scl($_POST);
 					}
 					if($id) {
-						$id=view_scl($id);
+						$id=view_scl($id,$venue);
 					}
 					if(!$id) {
 						// The first 8 characters of the shift id shows the dates for the week. 
 						$mm_dd_yy = substr($_GET['shift'], 0, 8);
-						// Displays the option of going back to the House Calendar.
-						back_to_calendar($mm_dd_yy, 700, 'house');
+						// Displays the option of going back to the Calendar.
+						back_to_calendar($mm_dd_yy, 700, $venue);
 						
-						do_scl_index($id);
+						do_scl_index($id,$venue);
 					}
 				?>
 			</div>
@@ -109,10 +109,10 @@
 		//echo "<p>SCL ".$id." added successfully.</p>";
 	}
 
-	function do_scl_index($id) {
-		$venue = substr(strrchr($id,":"),1);
+	function do_scl_index($id,$venue) {
+		//$venue = substr(strrchr($id,":"),1);
 		connect();
-		$query="SELECT * FROM dbSCL ORDER BY time";
+		$query="SELECT * FROM dbSCL  ORDER BY time";
 		$result=mysql_query($query);
 		mysql_close();
 		$cur_date=date("Ymd",time());
@@ -130,22 +130,16 @@
 				update_dbSCL($scl);
 				$row[2]="closed";
 			}
-			if(($row[2]=="closed" && $_GET['archive']=="true") || $row[2]=="open") {
-				echo "<tr><td>&nbsp;<a href=\"subCallList.php?shift=".$row[0]."\">"
+		    echo "<tr><td>&nbsp;<a href=\"subCallList.php?shift=".$row[0]."\">"
 				.get_shift_name_from_id($row[0]).
 				"</a></td>
 					<td>&nbsp;".$row[3]."</td></tr>";
-			}
 		}
 		echo "<tr><td colspan=\"2\" align=\"center\">";
-	//	if($_GET['archive']=="true")
-	//		echo "<br><a href=\"subCallList.php?archive=false\">Hide \"Closed\" Sub Call Lists</a>";
-	//	else
-	//		echo "<br><a href=\"subCallList.php?shift=".$id."&archive=true\">Show \"Closed\" Sub Call Lists</a>";
-		echo "</td></tr></table></p>";
+	    echo "</td></tr></table></p>";
 	} 
 
-	function view_scl($id) {
+	function view_scl($id,$venue) {
 	    $scl=select_dbSCL($id);
 		$shift=select_dbShifts($id);
 		if(!$scl instanceof SCL) {
@@ -166,18 +160,8 @@
 					echo "&nbsp;".$v." subs";
 				echo " needed for this shift.<br><br></td></tr>
 				<br><br><tr><td>&nbsp;Name</td><td>Phone</td><td>Date Called</td><td>Notes</td><td>Accepted</td></tr>";
-			/*	if($status=="closed") {
-					for($i=0;$i<count($persons);++$i) {
-						echo "<tr><td>&nbsp;<a href=\"personEdit.php?id=".$persons[$i][0]."\">".$persons[$i][1]." ".$persons[$i][2]."</a></td>
-						<td>".format_phone_number($persons[$i][3])."<br>".format_phone_number($persons[$i][4])."</td>
-						<td>".$persons[$i][5]."</td>
-						<td>".$persons[$i][6]."</td>
-						<td>".$persons[$i][7]."</td></tr>";
-					}
-				}
-				else {
-			*/		echo "<form method=\"POST\" style=\"margin-bottom:0;\">";
-					for($i=0;$i<count($persons);++$i) {
+			    echo "<form method=\"POST\" style=\"margin-bottom:0;\">";
+			    for($i=0;$i<count($persons);++$i) {
 					    if ($_SESSION['access_level']>=2)
 						    echo "<tr><td>&nbsp;<a href=\"personEdit.php?id=".$persons[$i][0]."\">".$persons[$i][1]." ".$persons[$i][2]."</a></td><td>";
 						else echo "<tr><td>&nbsp;".$persons[$i][1]." ".$persons[$i][2]."</td><td>";
@@ -185,27 +169,24 @@
 							<td><textarea rows=\"2\" cols=\"20\" name=\"datecalled_".$i."\">".$persons[$i][5]."</textarea></td>
 							<td><textarea rows=\"2\" cols=\"20\" name=\"notes_".$i."\">".$persons[$i][6]."</textarea></td>
 							<td valign=\"top\">";
-							if($persons[$i][7]=="Yes") {
-								echo "<br>Yes<input type=\"hidden\" name=\"accepted_".$i."\" value=\"Yes\">";
-							}
-							else if($persons[$i][7]=="No") {
-								echo "<br>No<input type=\"hidden\" name=\"accepted_".$i."\" value=\"No\">";
-							}
-							else {
-								echo "<select name=\"accepted_".$i."\">
-										<option value=\"-\" selected=\"selected\">-</option>
-										<option value=\"Yes\">Yes</option>
-										<option value=\"No\">No</option></select>";
-							}
-							echo "</td></tr>";
-					}
-					echo "<tr><td align=\"right\" colspan=\"5\"><br>
+						if($persons[$i][7]=="Yes") {
+							echo "<br>Yes<input type=\"hidden\" name=\"accepted_".$i."\" value=\"Yes\">";
+						}
+						else if($persons[$i][7]=="No") 
+							echo "<br>No<input type=\"hidden\" name=\"accepted_".$i."\" value=\"No\">";
+						else {
+							echo "<select name=\"accepted_".$i."\">
+								<option value=\"-\" selected=\"selected\">-</option>
+								<option value=\"Yes\">Yes</option>
+								<option value=\"No\">No</option></select>";
+						}
+						echo "</td></tr>";
+			    }
+				echo "<tr><td align=\"right\" colspan=\"5\"><br>
 						<input type=\"hidden\" name=\"_submit_save_scl_changes\" value=\"1\">
 						<input type=\"hidden\" name=\"_shiftid\" value=\"".$id."\">
 						<input type=\"submit\" value=\"Assign Subs / Save Changes\" name=\"submit\" style=\"width: 200px\">&nbsp;
 						</td></tr>";
-
-			//	}
 				echo "</table>";
 		return $id;
 	}
@@ -318,7 +299,7 @@
 	
  	function back_to_calendar($date,$width,$venue) {
 		echo "<br><table align=\"center\"><tr><td align=\"center\" width=\"".$width."\">
-		<a href=\"calendar.php?id=".$date."&venue=".$venue."\">Back to House Calendar</a><br>" ;
+		<a href=\"calendar.php?id=".$date.":".$venue."&venue=".$venue."\">Back to Calendar</a><br>" ;
 		return true;
 	}
 

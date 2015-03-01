@@ -160,7 +160,7 @@ session_cache_expire(30);
                     if (!$people2[0])
                         array_shift($people2);
                     $vacancies2 = get_total_slots($week_of_year.":".$day.":".$time.":".$venue) - count($people2);
-                    $people = array_merge($people1, $people2);
+                    $people = array_unique(array_merge($people1, $people2));
                     if (!$people[0])
                         array_shift($people);
                     $vacancies = $vacancies1 + $vacancies2;

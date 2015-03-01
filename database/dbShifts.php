@@ -207,17 +207,19 @@ function get_shift_venue($id) {
 }
 
 /*
- * Creates the $shift_name of a shift, e.g. "Sunday, February 14, 2010 2pm to 5pm"
- *         from its $id, e.g. "02-14-10-14-17"
+ * Creates the $shift_name of a shift, e.g. "Family Room Shift for Sunday, February 14, 2010 2pm to 5pm"
+ *         from its $id, e.g. "02-14-10:9-1:fam"
  */
 
 function get_shift_name_from_id($id) {
-    $shift_name = date("l F j, Y", mktime(0, 0, 0, get_shift_month($id), get_shift_day($id), get_shift_year($id)));
+	if (strpos($id,"house")>0) $shift_name = "House Shift: ";
+	else $shift_name = "Family Room Shift: <br>";
+    $shift_name .= date("l F j, Y", mktime(0, 0, 0, get_shift_month($id), get_shift_day($id), get_shift_year($id)));
     $shift_name = $shift_name . " ";
     $st = get_shift_start($id);
     $et = get_shift_end($id);
     if ($st==0)
-    	$shift_name = $shift_name . "overnight";
+    	$shift_name = $shift_name . "night";
     else {   
     	$st = $st < 12 ? $st . "am" : $st - 12 . "pm";
     	if ($st == "0pm")
