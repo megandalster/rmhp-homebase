@@ -6,8 +6,8 @@
 <script src="lib/jquery-ui.js"></script>
 <script>
 $(function() {
-	$( "#from" ).datepicker({dateFormat: 'yy-mm-dd',changeMonth:true,changeYear:true});
-	$( "#to" ).datepicker({dateFormat: 'yy-mm-dd',changeMonth:true,changeYear:true});
+	$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+	$( "#to" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
 });
 </script>
 </head>
