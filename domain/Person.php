@@ -54,7 +54,7 @@ class Person {
 
     function __construct($f, $l, $g, $a, $c, $s, $z, $co, $p1, $p2, $p3, $e, $t, 
     		$screening_type, $screening_status, $st, $re, $mwc, $mot, $spe, 
-    		$av, $sch, $bd, $sd, $ed, $notes, $pass) {
+    		$av, $sch, $bd, $sd, $ed, $rl, $notes, $pass) {
         $this->id = $f . $p1;
         $this->first_name = $f;
         $this->last_name = $l;
@@ -98,6 +98,7 @@ class Person {
         $this->birthday = $bd;
         $this->start_date = $sd;
         $this->end_date = $ed;
+        $this->reason_left = $rl;
         $this->notes = $notes;
         if ($pass == "")
             $this->password = md5($this->id);
@@ -243,8 +244,12 @@ class Person {
         return $this->start_date;
     }
 
- function get_end_date() {
+ 	function get_end_date() {
         return $this->end_date;
+    }
+    
+ 	function get_reason_left() {
+        return $this->reason_left;
     }
     
     function get_notes() {

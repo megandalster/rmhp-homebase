@@ -21,7 +21,7 @@
  $myPerson = new Person("Susan","L","female","928 SU","Providence", "RI",04011, "",
       2074415902,2072654046,2072654333, "susanl@aol.com", "volunteer",
       "","","active", "Steve_2071234567,John_1234567890","yes","I like helping out","cooking",
-      "1st:Mon:9-1:house,3rd:Sun:5-9:fam", "", "", "02-19-89", "03-14-08", "03-14-12",
+      "1st:Mon:9-1:house,3rd:Sun:5-9:fam", "", "02-19-89", "03-14-08", "03-14-12", "New Employment",
       "this is a note","Taylor2074415902");
 
  //first assertion - check that a getter is working from the superconstructor's initialized data
@@ -40,6 +40,8 @@
  	$this->assertTrue(in_array("house",$venues));
  $this->assertTrue($myPerson->get_last_name() !== "notMyLastName");
  $this->assertTrue($myPerson->get_gender()=="female");
+ $this->assertTrue($myPerson->get_reason_left()=="New Employment");
+ $this->assertTrue($myPerson->get_birthday()=="02-19-89");
  echo("testPerson complete");
       }
  }
