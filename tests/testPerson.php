@@ -9,8 +9,8 @@
 
 /**
  * Test suite for Person
- * Created on Feb 27, 2008, modified January 30, 2015
- * @author Taylor Talmage, Allen Tucker
+ * @author Taylor Talmage, Phuong Le, and Allen Tucker
+ * @version on Feb 27, 2008 (v1), Jan 30, 2015 (v2), and Mar 3, 2015 (v3, last modified)
  */
 
   //first I include the php file I'm testing
@@ -19,17 +19,17 @@
       function testPersonModule() {
 
  $myPerson = new Person("Susan","L","female","928 SU","Providence", "RI",04011, "",
-      2074415902,2072654046,"susanl@aol.com", "email", "Mother", 2077758989, "volunteer",
-      "","","active", "programmer", "Steve_2071234567,John_1234567890","yes","I like helping out","cooking",
-      "1st:Mon:9-1:house,3rd:Sun:5-9:fam", "", "", "02-19-89", "03-14-08",
+      2074415902,2072654046,2072654333, "susanl@aol.com", "volunteer",
+      "","","active", "Steve_2071234567,John_1234567890","yes","I like helping out","cooking",
+      "1st:Mon:9-1:house,3rd:Sun:5-9:fam", "", "", "02-19-89", "03-14-08", "03-14-12",
       "this is a note","Taylor2074415902");
 
  //first assertion - check that a getter is working from the superconstructor's initialized data
  $this->assertTrue($myPerson->get_first_name()=="Susan");
-
  $this->assertTrue($myPerson->get_type()==array("volunteer"));
  $this->assertTrue($myPerson->get_status()=="active");
  $this->assertTrue($myPerson->get_city()=="Providence");
+ $this->assertTrue($myPerson->get_phone_cell()==2074415902);
  $this->assertTrue($myPerson->get_references()==array("Steve_2071234567","John_1234567890"));
  $this->assertEqual($myPerson->get_availability(),array("1st:Mon:9-1:house","3rd:Sun:5-9:fam"));
  	$days = $myPerson->get_availdays();
@@ -39,9 +39,6 @@
  	$this->assertTrue(in_array("9-1",$hours));
  	$this->assertTrue(in_array("house",$venues));
  $this->assertTrue($myPerson->get_last_name() !== "notMyLastName");
- $this->assertTrue($myPerson->get_contact_preference()=="email");
- $this->assertTrue($myPerson->get_emergency_contact()=="Mother");
- $this->assertTrue($myPerson->get_emergency_phone()==2077758989);
  $this->assertTrue($myPerson->get_gender()=="female");
  echo("testPerson complete");
       }

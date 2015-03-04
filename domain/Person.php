@@ -7,10 +7,10 @@
  * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 /**
- * Person class for RMHP-Hmebase.
- * @author Oliver Radwan, Judy Yang and Allen Tucker
- * @version May 1, 2008, modified January 21, 2015
- */
+ * Person class for RMHP-Homebase.
+ * @author Oliver Radwan, Judy Yang, Phuong Le and Allen Tucker
+ * @version May 1, 2008 (v1), Jan 21, 2015 (v2), and Mar 3, 2015 (v3, last modified)
+ **/
 include_once(dirname(__FILE__).'/../database/dbZipCodes.php');
 include_once(dirname(__FILE__).'/../database/dbShifts.php');
 include_once(dirname(__FILE__).'/../database/dbPersons.php');
@@ -26,19 +26,15 @@ class Person {
     private $city;    // city - string
     private $state;   // state - string
     private $zip;    // zip code - integer
-    private $county; // county of residence
-    private $phone1;   // main phone
-    private $phone2;   // alternate phone
+    private $phone_cell;   // cell phone
+    private $phone_home;   // home phone
+    private $phone_office; // office phone
     private $email;   // email address as a string
-    private $contact_preference; // prefer being contacted by phone or email
-    private $emergency_contact; // contact in case of emergencies
-    private $emergency_phone; // phone number of emergency caontact
     private $type;       // array of "volunteer", "sub", "mealprep", "activities", "other", "manager"
     private $screening_type; // if status is "applicant", type of screening used for this applicant
     private $screening_status; // array of dates showing completion of 
     // screening steps for this applicant 
     private $status;     // a person may be an "applicant", "active", "LOA", or "former"
-    private $occupation; // current occupation
     private $references;   // array of name:phone of up to 2 references 
     private $maywecontact; // "yes" or "no" for permission to contact references
     private $motivation;   // App: why interested in RMH?
@@ -47,6 +43,7 @@ class Person {
     private $schedule;     // array of scheduled shift ids; e.g., 01-05-15:9-1:house
     private $birthday;     // format: 03-12-64
     private $start_date;   // format: 03-12-99
+    private $end_date;     // format: 03-12-10
     private $notes;        // notes that only the manager can see and edit
     private $password;     // password for calendar and database access: default = $id
 
@@ -54,9 +51,9 @@ class Person {
      * constructor for all persons
      */
 
-    function __construct($f, $l, $g, $a, $c, $s, $z, $co, $p1, $p2, $e, $cp, $ec, $ep, $t, 
-    		$screening_type, $screening_status, $st, $oc, $re, $mwc, $mot, $spe, 
-    		$av, $sch, $bd, $sd, $notes, $pass) {
+    function __construct($f, $l, $g, $a, $c, $s, $z, $co, $p1, $p2, $p3, $e, $t, 
+    		$screening_type, $screening_status, $st, $re, $mwc, $mot, $spe, 
+    		$av, $sch, $bd, $sd, $ed, $notes, $pass) {
         $this->id = $f . $p1;
         $this->first_name = $f;
         $this->last_name = $l;
@@ -65,13 +62,10 @@ class Person {
         $this->city = $c;
         $this->state = $s;
         $this->zip = $z;
-        $this->county = $this->compute_county();
-        $this->phone1 = $p1;
-        $this->phone2 = $p2;
+        $this->phone_cell = $p1;
+        $this->phone_home = $p2;
+        $this->phone_office = $p3;
         $this->email = $e;
-        $this->contact_preference = $cp;
-        $this->emergency_contact = $ec;
-        $this->emergency_phone = $ep;
         if ($t !== "")
             $this->type = explode(',', $t);
         else
@@ -82,7 +76,6 @@ class Person {
         else
             $this->screening_status = array();
         $this->status = $st;
-        $this->occupation = $oc;
         if ($re != null) {
             $this->references = explode(',', $re);
             $this->maywecontact = "yes";
@@ -103,6 +96,7 @@ class Person {
 
         $this->birthday = $bd;
         $this->start_date = $sd;
+        $this->end_date = $ed;
         $this->notes = $notes;
         if ($pass == "")
             $this->password = md5($this->id);
@@ -142,33 +136,22 @@ class Person {
         return $this->zip;
     }
 
-    function get_county() {
-        return $this->county;
+    function get_phone_cell() {
+        return $this->phone_cell;
     }
 
-    function get_phone1() {
-        return $this->phone1;
+    function get_phone_home() {
+        return $this->phone_home;
     }
-
-    function get_phone2() {
-        return $this->phone2;
+    
+ function get_phone_office() {
+        return $this->phone_office;
     }
 
     function get_email() {
         return $this->email;
     }
 
-    function get_contact_preference() {
-        return $this->contact_preference;
-    }
-
-    function get_emergency_contact() {
-        return $this->emergency_contact;
-    }
-
-    function get_emergency_phone() {
-        return $this->emergency_phone;
-    }
 
     /**
      * @return type of person, an array of: "volunteer", "guestchef", "sub", etc.
@@ -187,10 +170,6 @@ class Person {
 
     function get_status() {
         return $this->status;
-    }
-
-    function get_occupation() {
-        return $this->occupation;
     }
 
     function get_references() {
@@ -263,31 +242,16 @@ class Person {
         return $this->start_date;
     }
 
+ function get_end_date() {
+        return $this->end_date;
+    }
+    
     function get_notes() {
         return $this->notes;
     }
 
     function get_password() {
         return $this->password;
-    }
-    function set_county ($county){
-        $this->county = $county;
-    }
-    
-    function compute_county () {
-        if ($this->state=="ME") {
-            $countydata = false;
-            if ($this->get_zip()!="")
-	            $countydata = retrieve_dbZipCodes($this->get_zip(),"");    
-	        else if (!$countydata) 
-	            $countydata = retrieve_dbZipCodes("",$this->get_city());
-	        if ($countydata) {
-	            if ($this->zip == "")
-	            	$this->zip = $countydata[0];
-	            return $countydata[3];
-	        }
-        }
-        return "";
     }
     
     // return a dictionary reporting total number hours worked by days of the week with
