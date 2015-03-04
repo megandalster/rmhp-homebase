@@ -29,7 +29,7 @@
  $this->assertTrue($myPerson->get_type()==array("volunteer"));
  $this->assertTrue($myPerson->get_status()=="active");
  $this->assertTrue($myPerson->get_city()=="Providence");
- $this->assertTrue($myPerson->get_phone_cell()==2074415902);
+ $this->assertTrue($myPerson->get_phone1()==2074415902);
  $this->assertTrue($myPerson->get_references()==array("Steve_2071234567","John_1234567890"));
  $this->assertEqual($myPerson->get_availability(),array("1st:Mon:9-1:house","3rd:Sun:5-9:fam"));
  	$days = $myPerson->get_availdays();

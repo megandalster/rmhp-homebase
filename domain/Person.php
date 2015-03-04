@@ -26,9 +26,9 @@ class Person {
     private $city;    // city - string
     private $state;   // state - string
     private $zip;    // zip code - integer
-    private $phone_cell;   // cell phone
-    private $phone_home;   // home phone
-    private $phone_office; // office phone
+    private $phone1;   // primary phone -- cell or home
+    private $phone2;   // secondary phone -- cell or home
+    private $work_phone; // office phone phone_office
     private $email;   // email address as a string
     private $type;       // array of "volunteer", "sub", "mealprep", "activities", "other", "manager"
     private $screening_type; // if status is "applicant", type of screening used for this applicant
@@ -44,6 +44,7 @@ class Person {
     private $birthday;     // format: 03-12-64
     private $start_date;   // format: 03-12-99
     private $end_date;     // format: 03-12-10
+    private $reason_left;  // reason for leaving
     private $notes;        // notes that only the manager can see and edit
     private $password;     // password for calendar and database access: default = $id
 
@@ -62,8 +63,8 @@ class Person {
         $this->city = $c;
         $this->state = $s;
         $this->zip = $z;
-        $this->phone_cell = $p1;
-        $this->phone_home = $p2;
+        $this->phone1 = $p1;
+        $this->phone2 = $p2;
         $this->phone_office = $p3;
         $this->email = $e;
         if ($t !== "")
@@ -136,16 +137,16 @@ class Person {
         return $this->zip;
     }
 
-    function get_phone_cell() {
-        return $this->phone_cell;
+    function get_phone1() {
+        return $this->phone1;
     }
 
-    function get_phone_home() {
-        return $this->phone_home;
+    function get_phone2() {
+        return $this->phone2;
     }
     
- function get_phone_office() {
-        return $this->phone_office;
+ function get_work_phone() {
+        return $this->work_phone;
     }
 
     function get_email() {
