@@ -21,12 +21,12 @@ function create_dbPersons() {
     connect();
     mysql_query("DROP TABLE IF EXISTS dbPersons");
     $result = mysql_query("CREATE TABLE dbPersons(id TEXT NOT NULL, first_name TEXT NOT NULL, last_name TEXT, gender TEXT, " .
-            "    address TEXT, city TEXT, state VARCHAR(2), zip TEXT, county TEXT, phone1 VARCHAR(12) NOT NULL, phone2 VARCHAR(12), " .
-            "    email TEXT, contact_preference TEXT, emergency_contact TEXT, emergency_phone TEXT, " .
-            "    type TEXT, screening_type TEXT, screening_status TEXT, status TEXT, occupation TEXT, refs TEXT, maywecontact TEXT," .
+            "    address TEXT, city TEXT, state VARCHAR(2), zip TEXT, phone1 VARCHAR(12) NOT NULL, phone2 VARCHAR(12), " .
+            "    work_phone VARCHAR(12), email TEXT, " .
+            "    type TEXT, screening_type TEXT, screening_status TEXT, status TEXT, refs TEXT, maywecontact TEXT," .
             "    motivation TEXT, specialties TEXT, " .
             "    availability TEXT, schedule TEXT, " .
-            "    birthday TEXT, start_date TEXT, notes TEXT, password TEXT)");
+            "    birthday TEXT, start_date TEXT, end_date TEXT, reason_left TEXT, notes TEXT, password TEXT)"); 
     if (!$result)
         echo mysql_error() . "Error creating dbPersons table<br>";
 }
@@ -52,29 +52,27 @@ function add_person($person) {
                 $person->get_city() . '","' .
                 $person->get_state() . '","' .
                 $person->get_zip() . '","' .
-                $person->get_county() . '","' .
                 $person->get_phone1() . '","' .
                 $person->get_phone2() . '","' .
+                $person->get_work_phone() . '","' . 
                 $person->get_email() . '","' .
-                $person->get_contact_preference() . '","' .
-                $person->get_emergency_contact() . '","' .
-                $person->get_emergency_phone() . '","' .
                 implode(',', $person->get_type()) . '","' .
                 $person->get_screening_type() . '","' .
                 implode(',', $person->get_screening_status()) . '","' .
                 $person->get_status() . '","' .
-                $person->get_occupation() . '","' .
                 implode(',', $person->get_references()) . '","' .
-                $person->get_maywecontact() . '","' .
-                $person->get_motivation() . '","' .
-                $person->get_specialties() . '","' .
+                $person->get_maywecontact() . '","' . 
+                $person->get_motivation() . '","' . 
+                $person->get_specialties() . '","' . 
                 implode(',', $person->get_availability()) . '","' .
                 implode(',', $person->get_schedule()) . '","' .
                 $person->get_birthday() . '","' .
                 $person->get_start_date() . '","' .
+                $person->get_end_date() . '","' . 
+                $person->get_reason_left() . '","' .
                 $person->get_notes() . '","' .
                 $person->get_password() .
-                '");');
+                '");');							
         mysql_close();
         return true;
     }
@@ -145,13 +143,6 @@ function change_password($id, $newPass) {
     return $result;
 }
 
-function set_county($id, $county) {
-    connect();
-    $query = 'UPDATE dbPersons SET county = "' . $county . '" WHERE id = "' . $id . '"';
-    $result = mysql_query($query);
-    mysql_close();
-    return $result;
-}
 
 /*
  * @return all rows from dbPersons table ordered by last name
@@ -202,19 +193,15 @@ function make_a_person($result_row) {
                     $result_row['city'],
                     $result_row['state'],
                     $result_row['zip'],
-                    $result_row['county'],
                     $result_row['phone1'],
                     $result_row['phone2'],
+                    $result_row['work_phone'],
                     $result_row['email'],
-                    $result_row['contact_preference'],
-                    $result_row['emergency_contact'],
-                    $result_row['emergency_phone'],
                     $result_row['type'],
                     $result_row['screening_type'],
                     $result_row['screening_status'],
                     $result_row['status'],
-                    $result_row['occupation'],
-                    $result_row['refs'],
+                    $result_row['refs'],  
                     $result_row['maywecontact'],
                     $result_row['motivation'],
                     $result_row['specialties'],
@@ -222,12 +209,13 @@ function make_a_person($result_row) {
                     $result_row['schedule'],
                     $result_row['birthday'],
                     $result_row['start_date'],
+                    $result_row['end_date'],
+                    $result_row['reason_left'],
                     $result_row['notes'],
-                    $result_row['password']);
+                    $result_row['password']);   
     return $thePerson;
 }
 
-// what??
 function getall_names($status, $type) {
     connect();
     $result = mysql_query("SELECT id,first_name,last_name,type FROM dbPersons " .

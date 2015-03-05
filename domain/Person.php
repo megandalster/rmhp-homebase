@@ -52,7 +52,7 @@ class Person {
      * constructor for all persons
      */
 
-    function __construct($f, $l, $g, $a, $c, $s, $z, $co, $p1, $p2, $p3, $e, $t, 
+    function __construct($f, $l, $g, $a, $c, $s, $z, $p1, $p2, $p3, $e, $t, 
     		$screening_type, $screening_status, $st, $re, $mwc, $mot, $spe, 
     		$av, $sch, $bd, $sd, $ed, $rl, $notes, $pass) {
         $this->id = $f . $p1;
