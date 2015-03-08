@@ -25,7 +25,17 @@ $(function() {
 	</tr></table>
 	</form>
 </div>
-
+<div id="target" style="overflow: scroll; width: 600px; height: 200px;">
+<p> <b>Example Scrollbar Element -- see http://api.jquery.com/scroll/ for details</b>
+<p>
+<?php for ($i=0;$i<100;$i++) {
+         echo "<br>"; 
+         for ($j=0;$j<100;$j++)
+             echo $i*$j."&nbsp;&nbsp;";
+}  
+?>
+</p>
+</div>
 </body>
 </html>
 
