@@ -8,6 +8,7 @@
 $(function() {
 	$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
 	$( "#to" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+	$( "#target" ).scroll();
 });
 </script>
 </head>

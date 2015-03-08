@@ -20,6 +20,8 @@ session_cache_expire(30);
             Search for People
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
+		<link rel="stylesheet" href="lib/jquery-ui.css" />
+		
     </head>
     <body>
         <div id="container">
@@ -102,6 +104,7 @@ session_cache_expire(30);
                     }
 				    if (sizeof($result) > 0) {
 				       echo ' (select one for more info).';
+				       echo '<div id="target" style="overflow: scroll; width: 600px; height: 200px;">';
 				       echo '<p><table> <tr><td>Name</td><td>Phone</td>
 				                            <td>E-mail</td><td>Availability</td></tr>';
 				       foreach ($result as $vol) {
@@ -116,6 +119,7 @@ session_cache_expire(30);
 				          echo "</td></a></tr>";
 				       }
 				       echo '</table>';
+				       echo '</div>';   
 				    }
 				               
                 }
