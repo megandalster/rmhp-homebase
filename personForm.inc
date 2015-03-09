@@ -1,13 +1,10 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 
 /*
@@ -67,56 +64,20 @@ foreach ($states as $st) {
     echo "<option value='" . $st . "' ";
     if ($person->get_state() == $st)
         echo("SELECTED");
-    else if ($id == "new" && $st == "ME")
+    else if ($id == "new" && $st == "RI")
         echo("SELECTED");
     echo ">" . $st . "</option>";
 }
 ?>
             </select>,
             <input type="text" name="zip" size="5" tabindex="6" value="<?PHP echo($person->get_zip()) ?>">
-            &nbsp;&nbsp;County: <input type="text" name="county" value="<?PHP echo($person->get_county()) ?>">
-        <p>Phone<span style="font-size:x-small;color:FF0000">*</span>: <input type="text" name="phone1" MAXLENGTH=12 tabindex="7" value="<?PHP echo(phone_edit($person->get_phone1())) ?>">
-            &nbsp;&nbsp;Alternate Phone:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_phone2())) ?>">
+            
+        <p>Cell Phone<span style="font-size:x-small;color:FF0000">*</span>: <input type="text" name="phone1" MAXLENGTH=12 tabindex="7" value="<?PHP echo(phone_edit($person->get_phone1())) ?>">
+            &nbsp;&nbsp;Home Phone<span style="font-size:x-small;color:FF0000">*</span>:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_phone2())) ?>">
+        	&nbsp;&nbsp;Work Phone:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_work_phone())) ?>">
         <p>Email:<input type="text" name="email" tabindex="9" value="<?PHP echo($person->get_email()) ?>">
-            &nbsp;&nbsp;&nbsp;&nbsp;Contact preference:&nbsp;&nbsp;
 <?PHP
-        echo('<select name="contact_preference">');
-        echo ('<option value=""');
-        if ($person->get_contact_preference() == '')
-            echo (' SELECTED'); echo('></option>');
-        echo ('<option value="email"');
-        if ($person->get_contact_preference() == 'email')
-            echo (' SELECTED'); echo('>email</option>');
-        echo ('<option value="phone"');
-        if ($person->get_contact_preference() == 'phone')
-            echo (' SELECTED'); echo('>phone</option>');
-        echo ('<option value="mail"');
-        if ($person->get_contact_preference() == 'mail')
-            echo (' SELECTED'); echo('>mail</option>');
-        echo('</select>');
-        
-        echo('<p>Emergency contact:&nbsp;&nbsp;');
-        echo '<input type="text" name="emergency_contact" tabindex="10" value="' . $person->get_emergency_contact() . '">';
-        echo('&nbsp;&nbsp;&nbsp;&nbsp;Emergency phone:&nbsp;&nbsp;');
-        echo '<input type="text" name="emergency_phone" tabindex="11" value="' . phone_edit($person->get_emergency_phone()) . '">';
-
-        echo '<p>Birthday:';
-        $mm = substr($person->get_birthday(), 0, 2);
-        $dd = substr($person->get_birthday(), 3, 2);
-        $yy = substr($person->get_birthday(), 6, 2);
-        select_date($mm, $dd, $yy, "DateOfBirth_Month", "DateOfBirth_Day", "DateOfBirth_Year");
-        if ($id=="new") {
-        	echo "&nbsp;&nbsp;&nbsp;&nbsp;Application Date:";
-        	$mm = date("m"); $dd = date("d"); $yy = date("y");
-        }
-        else { echo "&nbsp;&nbsp;&nbsp;&nbsp;Start Date:";
-        	$mm = substr($person->get_start_date(), 0, 2);
-        	$dd = substr($person->get_start_date(), 3, 2);
-        	$yy = substr($person->get_start_date(), 6, 2);
-        }
-        select_date($mm, $dd, $yy, "DateOfStart_Month", "DateOfStart_Day", "DateOfStart_Year");
-
-        echo('<p>Gender:&nbsp;&nbsp;');
+        echo('&nbsp;&nbsp;Gender:&nbsp;&nbsp;');
         echo('<select name="gender">');
         echo ('<option value=""');
         if ($person->get_gender() == '')
@@ -128,13 +89,72 @@ foreach ($states as $st) {
         if ($person->get_gender() == 'male')
             echo (' SELECTED'); echo('>male</option>');
         echo('</select>');
-         echo('&nbsp;&nbsp;&nbsp;&nbsp;Occupation:&nbsp;&nbsp;');
-        echo '<input type="text" name="occupation" tabindex="12" size=50 value="' . $person->get_occupation() . '">';
+
+        echo '&nbsp;&nbsp;Birthday:';
+        $mm = substr($person->get_birthday(), 0, 2);
+        $dd = substr($person->get_birthday(), 3, 2);
+        $yy = substr($person->get_birthday(), 6, 2);
+        select_date($mm, $dd, $yy, "DateOfBirth_Month", "DateOfBirth_Day", "DateOfBirth_Year");
+        
+        /*echo "<p>Start Date:&nbsp;&nbsp;";
+        $mm = substr($person->get_start_date(), 0, 2);
+        $dd = substr($person->get_start_date(), 3, 2);
+        $yy = substr($person->get_start_date(), 6, 2);
+        */
+?>
+
+	<p>
+	<form method="post">
+		<p> <b>Example Datepicker Elements</b>
+		<br> Today's date: <?php echo Date("F d, Y");?></p>
+	<table>	<tr>
+		<td valign="top"> Select Date Range: 
+			<p> from : <input name = "from" type="text" id="from">
+							to : <input name = "to" type="text" id="to"></p>
+		</td>
+	</tr></table>
+	</form>
+Start Date : <input name = "from" type="text" id="from">
+End Date : <input name = "to" type="text" id="to">
+
+<?PHP	
+        //select_date($mm, $dd, $yy, "DateOfStart_Month", "DateOfStart_Day", "DateOfStart_Year");        
+        /*
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;End Date:&nbsp;&nbsp;";
+        $mm = substr($person->get_start_date(), 0, 2);
+        $dd = substr($person->get_start_date(), 3, 2);
+        $yy = substr($person->get_start_date(), 6, 2);        
+        select_date($mm, $dd, $yy, "DateOfStart_Month", "DateOfStart_Day", "DateOfStart_Year");
+		*/
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;Reason For Leaving:";
+        echo('<select name="Reason for leaving">');
+        echo ('<option value=""');
+        if ($person->get_gender() == '')
+            echo (' SELECTED'); echo('></option>');
+        echo ('<option value="New Employment"');
+        if ($person->get_gender() == 'New Employment')
+            echo (' SELECTED'); echo('>New Employment</option>');
+        echo ('<option value="Move Away"');
+        if ($person->get_gender() == 'Move Away')
+            echo (' SELECTED'); echo('>Move Away</option>');
+        echo ('<option value="Illness"');
+        if ($person->get_gender() == 'Illness')
+            echo (' SELECTED'); echo('>Illness</option>');
+        echo ('<option value="Family Obligation"');
+        if ($person->get_gender() == 'Family Obligation')
+            echo (' SELECTED'); echo('>Family Obligation</option>');
+        echo ('<option value="School"');
+        if ($person->get_gender() == 'School')
+            echo (' SELECTED'); echo('>School</option>');
+        echo ('<option value="Other (see notes)"');
+        if ($person->get_gender() == 'Other (see notes)')
+            echo (' SELECTED'); echo('>Other (see notes)</option>');            
+        echo('</select>');
+        
         echo('<p>Notes:<br />');
         echo('<textarea name="notes" rows="2" cols="60">');
         echo($person->get_notes());
         echo('</textarea></fieldset>');
-
 
 echo ('<p>Status:');
 echo('<span style="font-size:x-small;color:FF0000">*</span>&nbsp;&nbsp;');

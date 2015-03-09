@@ -46,6 +46,15 @@ if ($id == 'new') {
             Editing <?PHP echo($person->get_first_name() . " " . $person->get_last_name()); ?>
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
+        <script src="lib/jquery-1.9.1.js"></script>
+		<script src="lib/jquery-ui.js"></script>
+		<script>
+			$(function(){
+				$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#from" ).datepicker( "show" )
+    			$( "#to" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+			})
+		</script>
     </head>
     <body>
         <div id="container">
