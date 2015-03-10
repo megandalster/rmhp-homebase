@@ -26,8 +26,8 @@ include_once('database/dbLog.php');
 $id = str_replace("_"," ",$_GET["id"]);
 
 if ($id == 'new') {
-    $person = new Person('new', 'applicant', null, null, null, null, null, null, null, null, null, null, null, null,
-                    null, null, "applicant", null, null, null, null, null, null, null, null, null, null, null, null, md5("new"));
+    $person = new Person('new', 'applicant', null, null, null, null, null, null, null, null, null, "applicant", 
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, md5("new"));
 } else {
     $person = retrieve_person($id);
     if (!$person) { // try again by changing blanks to _ in id
@@ -45,14 +45,16 @@ if ($id == 'new') {
         <title>
             Editing <?PHP echo($person->get_first_name() . " " . $person->get_last_name()); ?>
         </title>
+        <link rel="stylesheet" href="lib/jquery-ui.css" />
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <script src="lib/jquery-1.9.1.js"></script>
 		<script src="lib/jquery-ui.js"></script>
 		<script>
 			$(function(){
-				$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-				$( "#from" ).datepicker( "show" )
-    			$( "#to" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#birthday" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#start_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#end_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#screening_status[]" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
 			})
 		</script>
     </head>
@@ -83,13 +85,11 @@ if ($id == 'new') {
                           $availability = implode(',', $postavail);
                         }
                         $person = new Person($_POST['first_name'], $_POST['last_name'], $_POST['gender'], $_POST['address'], $_POST['city'], $_POST['state'], $_POST['zip'],
-                                        $_POST['county'], $_POST['phone1'], $_POST['phone2'], $_POST['email'], $_POST['contact_preference'],
-                                        $_POST['emergency_contact'], $_POST['emergency_phone'], implode(',', $_POST['type']), $_POST['screening_type'], implode(',', $_POST['screening_status']),
-                                        $_POST['status'], $_POST['occupation'], $_POST['refs'], "yes",
+                                        $_POST['phone1'], $_POST['phone2'], $_POST['work_phone'], $_POST['email'], implode(',', $_POST['type']), $_POST['screening_type'], implode(',', $_POST['screening_status']),
+                                        $_POST['status'], $_POST['refs'], "yes",
                                         $_POST['motivation'], $_POST['specialties'],
                                         $availability, $_POST['schedule'], 
-                                        $birthday,
-                                        $start_date,
+                                        $_POST['birthday'], $_POST['start_date'], $_POST['end_date'], $_POST['reason_left'], 
                                         $_POST['notes'], $_POST['old_pass']);
                         include('personForm.inc');
                     }
@@ -109,23 +109,19 @@ if ($id == 'new') {
                     //echo($_POST['first_name']);
                     //step one: sanitize data by replacing HTML entities and escaping the ' character
                     $first_name = trim(str_replace('\\\'', '', htmlentities(str_replace('&', 'and', $_POST['first_name']))));
-                //    $first_name = str_replace(' ', '_', $first_name);
                     $last_name = trim(str_replace('\\\'', '\'', htmlentities($_POST['last_name'])));
                     $gender = trim(htmlentities($_POST['gender']));
                     $address = trim(str_replace('\\\'', '\'', htmlentities($_POST['address'])));
                     $city = trim(str_replace('\\\'', '\'', htmlentities($_POST['city'])));
                     $state = trim(htmlentities($_POST['state']));
                     $zip = trim(htmlentities($_POST['zip']));
-                    $county = trim(htmlentities($_POST['county']));
                     $phone1 = trim(str_replace(' ', '', htmlentities($_POST['phone1'])));
                     $clean_phone1 = preg_replace("/[^0-9]/", "", $phone1);
                     $phone2 = trim(str_replace(' ', '', htmlentities($_POST['phone2'])));
                     $clean_phone2 = preg_replace("/[^0-9]/", "", $phone2);
+                    $work_phone = trim(str_replace(' ', '', htmlentities($_POST['work_phone'])));
+                    $clean_work_phone = preg_replace("/[^0-9]/", "", $work_phone);
                     $email = $_POST['email'];
-                    $contact_preference = $_POST['contact_preference'];
-                    $emergency_contact = $_POST['emergency_contact'];
-                    $emergency_phone = trim(str_replace(' ', '', htmlentities($_POST['emergency_phone'])));
-                    $clean_emergency_phone = preg_replace("/[^0-9]/", "", $emergency_phone);
                     $type = implode(',', $_POST['type']);
                     $screening_type = $_POST['screening_type'];
                     if ($screening_type!="") {
@@ -146,7 +142,6 @@ if ($id == 'new') {
                     $status = $_POST['status'];
                     $occupation = $_POST['occupation'];
                     $refs = $_POST['refs'];
-
                     $motivation = trim(str_replace('\\\'', '\'', htmlentities($_POST['motivation'])));
                     $specialties = trim(str_replace('\\\'', '\'', htmlentities($_POST['specialties'])));
                     if (!$_POST['availdays'] || !$_POST['availhours'] || !$_POST['availvenues'])
@@ -161,16 +156,10 @@ if ($id == 'new') {
                     }
                     // these two are not visible for editing, so they go in and out unchanged
                     $schedule = $_POST['schedule'];
-                    //concatenate birthday and start_date strings
-                    if ($_POST['DateOfBirth_Year'] == "")
-                        $birthday = $_POST['DateOfBirth_Month'] . '-' . $_POST['DateOfBirth_Day'] . '-XX';
-                    else
-                        $birthday = $_POST['DateOfBirth_Month'] . '-' . $_POST['DateOfBirth_Day'] . '-' . $_POST['DateOfBirth_Year'];
-                    if (strlen($birthday) < 8)
-                        $birthday = '';
-                    $start_date = $_POST['DateOfStart_Month'] . '-' . $_POST['DateOfStart_Day'] . '-' . $_POST['DateOfStart_Year'];
-                    if (strlen($start_date) < 8)
-                        $start_date = '';
+                    $birthday = $_POST['birthday'];
+                    $start_date = $_POST['start_date'];
+                    $end_date = $_POST['end_date'];
+                    $reason_left = $_POST['reason_left'];
                     $notes = trim(str_replace('\\\'', '\'', htmlentities($_POST['notes'])));
                     //used for url path in linking user back to edit form
                     $path = strrev(substr(strrev($_SERVER['SCRIPT_NAME']), strpos(strrev($_SERVER['SCRIPT_NAME']), '/')));
@@ -210,13 +199,10 @@ if ($id == 'new') {
                         $id = $_POST['old_id'];
                         $result = remove_person($id);
                         $pass = $first_name . $clean_phone1;
-                        $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $county, $clean_phone1, $clean_phone2, $email,
-                                        $contact_preference, $emergency_contact, $clean_emergency_phone, $type, $screening_type, $screening_status,
-                                        $status, $occupation, $refs, $maywecontact,
-                                        $motivation, $specialties,
-                                        $availability, $schedule, 
-                                        $birthday, $start_date,
-                                        $notes, md5($pass));
+                        $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $clean_phone1, $clean_phone2, $clean_work_phone, $email,
+                                        $type, $screening_type, $screening_status, $status, $refs, $maywecontact,
+                                        $motivation, $specialties, $availability, $schedule, 
+                                        $birthday, $start_date, $end_date, $reason_left, $notes, md5($pass));
                         $result = add_person($newperson);
                         if (!$result)
                             echo ('<p class="error">Unable to reset ' . $first_name . ' ' . $last_name . "'s password.. <br>Please report this error to the House Manager.");
@@ -232,13 +218,10 @@ if ($id == 'new') {
                         if ($dup)
                             echo('<p class="error">Unable to add ' . $first_name . ' ' . $last_name . ' to the database. <br>Another person with the same name and phone is already there.');
                         else {
-                            $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $county, $clean_phone1, $clean_phone2, $email,
-                                            $contact_preference, $emergency_contact, $clean_emergency_phone, $type, $screening_type, $screening_status,
-                                            $status, $occupation, $refs, $maywecontact,
-                                            $motivation, $specialties,
-                                            $availability, $schedule, 
-                                            $birthday, $start_date,
-                                            $notes, md5($id));
+                            $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $clean_phone1, $clean_phone2, $clean_work_phone, $email,
+                                        $type, $screening_type, $screening_status, $status, $refs, $maywecontact,
+                                        $motivation, $specialties, $availability, $schedule, 
+                                        $birthday, $start_date, $end_date, $reason_left, $notes, md5($pass));
                             $result = add_person($newperson);
                             if (!$result)
                                 echo ('<p class="error">Unable to add " .$first_name." ".$last_name. " in the database. <br>Please report this error to the House Manager.');
@@ -257,13 +240,10 @@ if ($id == 'new') {
                         if (!$result)
                             echo ('<p class="error">Unable to update ' . $first_name . ' ' . $last_name . '. <br>Please report this error to the House Manager.');
                         else {
-                            $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $county, $clean_phone1, $clean_phone2, $email,
-                                            $contact_preference, $emergency_contact, $clean_emergency_phone, $type, $screening_type, $screening_status,
-                                            $status, $occupation, $refs, $maywecontact,
-                                            $motivation, $specialties,
-                                            $availability, $schedule, 
-                                            $birthday, $start_date,
-                                            $notes, md5($pass));
+                            $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $clean_phone1, $clean_phone2, $clean_work_phone, $email,
+                                        $type, $screening_type, $screening_status, $status, $refs, $maywecontact,
+                                        $motivation, $specialties, $availability, $schedule, 
+                                        $birthday, $start_date, $end_date, $reason_left, $notes, md5($pass));
                             $result = add_person($newperson);
                             if (!$result)
                                 echo ('<p class="error">Unable to update ' . $first_name . ' ' . $last_name . '. <br>Please report this error to the House Manager.');

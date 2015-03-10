@@ -39,20 +39,18 @@ function validate_form() {
         $errors[] = 'Enter a valid primary phone number (10 digits: ### ### ####)';
     if ($_POST['phone2'] != "" && !valid_phone($_POST['phone2']))
         $errors[] = 'Enter a valid alternate phone number (10 digits: ### ### ####)';
+    if ($_POST['work_phone'] != "" && !valid_phone($_POST['work_phone']))
+        $errors[] = 'Enter a valid work phone number (10 digits: ### ### ####)';
  //   if (!valid_phone($_POST['emergency_phone']))
  //       $errors[] = 'Enter a valid emergency phone number (10 digits: ### ### ####)';
     if (!valid_email($_POST['email']) && $_POST['email'] != null)
         $errors[] = "Please enter a valid email";
-    $birthday = "";
-    if (($_POST['DateOfBirth_Month'] !== "" && $_POST['DateOfBirth_Day'] !== "") && $_POST['DateOfBirth_Year'] === "")
-        $birthday = $_POST['DateOfBirth_Month'] . '-' . $_POST['DateOfBirth_Day'] . '-XX';
-    else if (($_POST['DateOfBirth_Month'] !== "" && $_POST['DateOfBirth_Day'] !== "") && $_POST['DateOfBirth_Year'] !== "")
-        $birthday = $_POST['DateOfBirth_Month'] . '-' . $_POST['DateOfBirth_Day'] . '-' . $_POST['DateOfBirth_Year'];
- //   if ($birthday=="--" || strlen($birthday) > 2 && strlen($birthday) < 8)
- //       $errors[] = 'Please select a valid birthday';
-    $start_date = $_POST['DateOfStart_Month'] . '-' . $_POST['DateOfStart_Day'] . '-' . $_POST['DateOfStart_Year'];
-    if (strlen($start_date) > 2 && strlen($start_date) < 8)
+    if ($_POST['birthday'] !== "" && strlen($_POST['birthday']) != 8) 
+        $errors[] = 'Please select a valid birthday';
+    if ($_POST['start_date'] !== "" && strlen($_POST['start_date']) != 8) 
         $errors[] = 'Please select a valid start date';
+    if ($_POST['end_date'] !== "" && strlen($_POST['end_date']) != 8) 
+        $errors[] = 'Please select a valid end date';
     return $errors;
 }
 

@@ -20,7 +20,7 @@ $(function() {
 		<br> Today's date: <?php echo Date("F d, Y");?></p>
 	<table>	<tr>
 		<td valign="top"> Select Date Range: 
-			<p> from : <input name = "from" type="text" id="from">
+			<p> from : <input name = "from" type="text" id="from" value="10">
 							to : <input name = "to" type="text" id="to"></p>
 		</td>
 	</tr></table>

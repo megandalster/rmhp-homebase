@@ -72,10 +72,20 @@ foreach ($states as $st) {
             </select>,
             <input type="text" name="zip" size="5" tabindex="6" value="<?PHP echo($person->get_zip()) ?>">
             
-        <p>Cell Phone<span style="font-size:x-small;color:FF0000">*</span>: <input type="text" name="phone1" MAXLENGTH=12 tabindex="7" value="<?PHP echo(phone_edit($person->get_phone1())) ?>">
-            &nbsp;&nbsp;Home Phone<span style="font-size:x-small;color:FF0000">*</span>:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_phone2())) ?>">
+        <p>Primary Phone<span style="font-size:x-small;color:FF0000">*</span>: <input type="text" name="phone1" MAXLENGTH=12 tabindex="7" value="<?PHP echo(phone_edit($person->get_phone1())) ?>">
+            &nbsp;&nbsp;Secondary Phone:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_phone2())) ?>">
         	&nbsp;&nbsp;Work Phone:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_work_phone())) ?>">
         <p>Email:<input type="text" name="email" tabindex="9" value="<?PHP echo($person->get_email()) ?>">
+<script src="lib/jquery-1.9.1.js"></script>
+		<script src="lib/jquery-ui.js"></script>
+		<script>
+			$(function(){
+				$( "#birthday" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#start_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#end_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#screening_status[]" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+			})
+</script>
 <?PHP
         echo('&nbsp;&nbsp;Gender:&nbsp;&nbsp;');
         echo('<select name="gender">');
@@ -90,64 +100,32 @@ foreach ($states as $st) {
             echo (' SELECTED'); echo('>male</option>');
         echo('</select>');
 
-        echo '&nbsp;&nbsp;Birthday:';
-        $mm = substr($person->get_birthday(), 0, 2);
-        $dd = substr($person->get_birthday(), 3, 2);
-        $yy = substr($person->get_birthday(), 6, 2);
-        select_date($mm, $dd, $yy, "DateOfBirth_Month", "DateOfBirth_Day", "DateOfBirth_Year");
-        
-        /*echo "<p>Start Date:&nbsp;&nbsp;";
-        $mm = substr($person->get_start_date(), 0, 2);
-        $dd = substr($person->get_start_date(), 3, 2);
-        $yy = substr($person->get_start_date(), 6, 2);
-        */
-?>
+        echo '<p>Birthday: '. '<input name="birthday" type="text" id="birthday" value="'.$person->get_birthday().'">';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;Start Date: '. '<input name="start_date" type="text" id="start_date" value="'.$person->get_start_date().'">';
+        echo '<p>End Date: '. '<input name="end_date" type="text" id="end_date" value="'.$person->get_end_date().'">';
 
-	<p>
-	<form method="post">
-		<p> <b>Example Datepicker Elements</b>
-		<br> Today's date: <?php echo Date("F d, Y");?></p>
-	<table>	<tr>
-		<td valign="top"> Select Date Range: 
-			<p> from : <input name = "from" type="text" id="from">
-							to : <input name = "to" type="text" id="to"></p>
-		</td>
-	</tr></table>
-	</form>
-Start Date : <input name = "from" type="text" id="from">
-End Date : <input name = "to" type="text" id="to">
-
-<?PHP	
-        //select_date($mm, $dd, $yy, "DateOfStart_Month", "DateOfStart_Day", "DateOfStart_Year");        
-        /*
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;End Date:&nbsp;&nbsp;";
-        $mm = substr($person->get_start_date(), 0, 2);
-        $dd = substr($person->get_start_date(), 3, 2);
-        $yy = substr($person->get_start_date(), 6, 2);        
-        select_date($mm, $dd, $yy, "DateOfStart_Month", "DateOfStart_Day", "DateOfStart_Year");
-		*/
         echo "&nbsp;&nbsp;&nbsp;&nbsp;Reason For Leaving:";
-        echo('<select name="Reason for leaving">');
+        echo('<select name="reason_left">');
         echo ('<option value=""');
-        if ($person->get_gender() == '')
+        if ($person->get_reason_left() == '')
             echo (' SELECTED'); echo('></option>');
         echo ('<option value="New Employment"');
-        if ($person->get_gender() == 'New Employment')
+        if ($person->get_reason_left() == 'New Employment')
             echo (' SELECTED'); echo('>New Employment</option>');
-        echo ('<option value="Move Away"');
-        if ($person->get_gender() == 'Move Away')
-            echo (' SELECTED'); echo('>Move Away</option>');
+        echo ('<option value="Moved Away"');
+        if ($person->get_reason_left() == 'Moved Away')
+            echo (' SELECTED'); echo('>Moved Away</option>');
         echo ('<option value="Illness"');
-        if ($person->get_gender() == 'Illness')
+        if ($person->get_reason_left() == 'Illness')
             echo (' SELECTED'); echo('>Illness</option>');
         echo ('<option value="Family Obligation"');
-        if ($person->get_gender() == 'Family Obligation')
+        if ($person->get_reason_left() == 'Family Obligation')
             echo (' SELECTED'); echo('>Family Obligation</option>');
         echo ('<option value="School"');
-        if ($person->get_gender() == 'School')
+        if ($person->get_reason_left() == 'School')
             echo (' SELECTED'); echo('>School</option>');
         echo ('<option value="Other (see notes)"');
-        if ($person->get_gender() == 'Other (see notes)')
+        if ($person->get_reason_left() == 'Other (see notes)')
             echo (' SELECTED'); echo('>Other (see notes)</option>');            
         echo('</select>');
         
@@ -289,12 +267,7 @@ foreach ($types as $key => $value) {
                 for ($i = 0; $i < $step_count; $i++) {
                     $j = $i + 1;
                     echo "<tr><td>";
-                    $mm = substr($date_array[$i], 0, 2);
-                    $dd = substr($date_array[$i], 3, 2);
-                    $yy = substr($date_array[$i], 6, 2);
-                    
-                    select_date($mm, $dd, $yy, "ss_month[]", "ss_day[]", "ss_year[]");
-                    //echo('<tr><td><input type="text" name="screening_status[]" value="'.$date_array[$i]. '" size="5" /></td>');
+                    echo('<tr><td><input type="text" id="screening_status[]" name="screening_status[]" value="'.$date_array[$i]. '" size="8" /></td>');
                     echo('</td><td>' . $j . '. ' . $step_array[$i] . '</td></tr>');
                 }
                 echo('</table>');
@@ -330,38 +303,6 @@ foreach ($types as $key => $value) {
             '<input type="submit" value="Delete" name="Delete Entry"> to delete this entry. <br />' .
             '<input type="checkbox" name="reset_pass" value="RESET"> Check this box and then hit ' .
             '<input type="submit" value="Reset Password" name="Reset Password"> to reset this person\'s password.</p>');
-        }
-
-        function &select_date($month, $day, $year, $month_name, $day_name, $year_name) {
-            $months = array('', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-            echo('<select name=' . $month_name . '><option value=""></option>');
-            echo('');
-            for ($i = 1; $i <= 12; $i++) {
-                echo '<option value=' . (($i < 10) ? "0" . $i : $i);
-                if ($month == $i)
-                    echo(' SELECTED');
-                echo '>' . $months[$i] . ' </option>';
-            }
-            echo "</select>";
-
-            echo '<select name=' . $day_name . '><option value=""></option>';
-            for ($i = 1; $i <= 31; $i++) {
-                echo '<option value=' . (($i < 10) ? "0" . $i : $i);
-                if ($day == $i)
-                    echo(' SELECTED');
-                echo '>' . $i . ' </option>';
-            }
-            echo "</select>";
-            // handles a year range of 81 years, from today+1 to today-80
-            echo '<select name=' . $year_name . '><option value=""></option>';
-            $start_year = date("Y")+1;
-            for ($i = $start_year; $i >= ($start_year - 90); $i--) {
-                echo '<option value=' . substr($i, 2, 2);
-                if ($year == substr($i, 2, 2))
-                    echo(' SELECTED');
-                echo '>' . $i . ' </option>';
-            }
-            echo "</select>";
         }
         ?>
 </form>
