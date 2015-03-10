@@ -80,10 +80,10 @@ foreach ($states as $st) {
 		<script src="lib/jquery-ui.js"></script>
 		<script>
 			$(function(){
-				$( "#birthday" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-				$( "#start_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-				$( "#end_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-				$( "#screening_status[]" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+				$( "#birthday" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true,yearRange: "1920:+nn"});
+				$( "#start_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true,yearRange: "1920:+nn"});
+				$( "#end_date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true,yearRange: "1920:+nn"});
+				$( "#screening_status[]" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true,yearRange: "1920:+nn"});
 			})
 </script>
 <?PHP
