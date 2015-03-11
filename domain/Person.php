@@ -28,7 +28,7 @@ class Person {
     private $zip;    // zip code - integer
     private $phone1;   // primary phone -- cell or home
     private $phone2;   // secondary phone -- cell or home
-    private $work_phone; // office phone phone_office
+    private $work_phone; // office phone
     private $email;   // email address as a string
     private $type;       // array of "volunteer", "sub", "mealprep", "activities", "other", "manager"
     private $screening_type; // if status is "applicant", type of screening used for this applicant
@@ -65,7 +65,7 @@ class Person {
         $this->zip = $z;
         $this->phone1 = $p1;
         $this->phone2 = $p2;
-        $this->phone_office = $p3;
+        $this->work_phone = $p3;
         $this->email = $e;
         if ($t !== "")
             $this->type = explode(',', $t);
@@ -146,7 +146,7 @@ class Person {
         return $this->phone2;
     }
     
- function get_work_phone() {
+ 	function get_work_phone() {
         return $this->work_phone;
     }
 

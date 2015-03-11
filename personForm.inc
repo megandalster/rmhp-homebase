@@ -74,7 +74,7 @@ foreach ($states as $st) {
             
         <p>Primary Phone<span style="font-size:x-small;color:FF0000">*</span>: <input type="text" name="phone1" MAXLENGTH=12 tabindex="7" value="<?PHP echo(phone_edit($person->get_phone1())) ?>">
             &nbsp;&nbsp;Secondary Phone:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_phone2())) ?>">
-        	&nbsp;&nbsp;Work Phone:<input type="text" name="phone2" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_work_phone())) ?>">
+        	&nbsp;&nbsp;Work Phone:<input type="text" name="work_phone" MAXLENGTH=12 tabindex="8" value="<?PHP echo(phone_edit($person->get_work_phone())) ?>">
         <p>Email:<input type="text" name="email" tabindex="9" value="<?PHP echo($person->get_email()) ?>">
 <script src="lib/jquery-1.9.1.js"></script>
 		<script src="lib/jquery-ui.js"></script>

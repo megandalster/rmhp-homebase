@@ -84,8 +84,10 @@ if ($id == 'new') {
                             	$postavail[] = $postday.":".$posthour.":".$postvenue;
                           $availability = implode(',', $postavail);
                         }
-                        $person = new Person($_POST['first_name'], $_POST['last_name'], $_POST['gender'], $_POST['address'], $_POST['city'], $_POST['state'], $_POST['zip'],
-                                        $_POST['phone1'], $_POST['phone2'], $_POST['work_phone'], $_POST['email'], implode(',', $_POST['type']), $_POST['screening_type'], implode(',', $_POST['screening_status']),
+                        $person = new Person($_POST['first_name'], $_POST['last_name'], $_POST['gender'], 
+                        				$_POST['address'], $_POST['city'], $_POST['state'], $_POST['zip'],
+                                        $_POST['phone1'], $_POST['phone2'], $_POST['work_phone'], $_POST['email'], 
+                                        implode(',', $_POST['type']), $_POST['screening_type'], implode(',', $_POST['screening_status']),
                                         $_POST['status'], $_POST['refs'], "yes",
                                         $_POST['motivation'], $_POST['specialties'],
                                         $availability, $_POST['schedule'], 
