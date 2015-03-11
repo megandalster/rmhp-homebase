@@ -17,24 +17,105 @@
  */
 session_start();
 session_cache_expire(30);
-?>
-<html>
-<head>
-<title>Search for data objects</title>
-<link rel="stylesheet" href="styles.css" type="text/css" />
-	
-</head>
-<body>
-<div id="container">
-<?php 
+
 include_once('header.php'); 
-include_once('reports.inc.php');
 include_once('database/dbPersons.php');
 include_once('domain/Person.php');
 include_once('database/dbShifts.php');
 include_once('domain/Shift.php');
+?>
 
-?> 
+<html>
+<head>
+<title>Search for data objects</title>	
+<link rel="stylesheet" href="styles.css" type="text/css" />
+<link rel="stylesheet" href="lib/jquery-ui.css" />
+<script src="lib/jquery-ui.js"></script>
+<script>
+$(function() {
+	$( "#from" ).datepicker();
+	$( "#to" ).datepicker();
+
+	$(document).on("keyup", ".volunteer-name", function() {
+		var str = $(this).val();
+		var target = $(this);
+		$.ajax({
+			type: 'get',
+			url: 'reportsCompute.php?q='+str,
+			success: function (response) {
+				var suggestions = $.parseJSON(response);
+				console.log(target);
+				target.autocomplete({
+					source: suggestions
+				});
+			}
+		});
+	});
+
+	$("input[name='date']").change(function() {
+		if ($("input[name='date']:checked").val() == 'date-range') {
+			$("#fromto").show();
+		} else {
+			$("#fromto").hide();
+		}
+	});
+
+	$("#report-submit").on('click', function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url: 'reportsCompute.php',
+			data: $('#search-fields').serialize(),
+			success: function (response) {
+				$("#outputs").html(response);
+			}
+		});
+	} );
+	
+	$("#add-more").on('click', function(e) {
+		e.preventDefault();
+		var new_input = '<div class="ui-widget"> <input type="text" name="volunteer-names[]" class="volunteer-name"></div>';
+		$("#volunteer-name-inputs").append(new_input);
+	})
+});
+</script>
+</head>
+<body>
+<div id="container">
+
+<div id = "content">
+<div>
+	<p id="search-fields-container">
+	<form id = "search-fields" method="post">
+		<input type="hidden" name="_form_submit" value="report" />
+		<p class = "search-description" id="today"> <b>House Volunteer Hours, Shifts, and Vacancies</b><br> Report date: <?php echo Date("F d, Y");?></p>
+	<table>	<tr>
+		<td class = "search-description" valign="top"> Select Report Type: 
+		<p>	<select multiple name="report-types[]" id = "report-type">
+	  		<option value="volunteer-names">Individual Hours</option>
+	  		<option value="volunteer-hours">Total Hours</option>
+	  		<option value="shifts-staffed-vacant">Shifts/Vacancies</option>
+			</select>
+		</p>
+		</td>
+		<td class = "search-description" > Select Individuals  (optional):
+		<p id="volunteer-name-inputs"
+			class="ui-widget"> <input type="text" name="volunteer-names[]" class="volunteer-name" id="1"></p>
+		<button id="add-more">add more</button><br><br>
+		</td>
+		<td class = "search-description" valign="top"> Select Date Range: 
+			<input type="radio" name="date" value="date-range"> 
+			<p id="fromto"> from : <input name = "from" type="text" id="from">
+								to : <input name = "to" type="text" id="to"></p>
+		</td>
+	</tr></table>
+	And hit <input type="submit" value="submit" id ="report-submit" class ="btn">
+	</form>
+	<p id="outputs">
+
+	</p>
+</div>
+</div>
 </div>
 
 </body>

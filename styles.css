@@ -104,7 +104,6 @@ p.error {color: #FF0000;}
 /* LAYOUT CONTROL IDS */
 
 #container{
-    width:90%;
     align:center;
     margin-right : auto;
     margin-left : auto;
