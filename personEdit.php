@@ -13,8 +13,8 @@
 /*
  * 	personEdit.php
  *  oversees the editing of a person to be added, changed, or deleted from the database
- * 	@author Oliver Radwan and Allen Tucker
- * 	@version 9/1/2008 revised 4/1/2012
+ * 	@author Oliver Radwan, Xun Wang and Allen Tucker
+ * 	@version 9/1/2008 revised 4/1/2012 revised 3/11/2015
  */
 session_start();
 session_cache_expire(30);

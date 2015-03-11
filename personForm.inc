@@ -10,8 +10,8 @@
 /*
  * 	personForm.inc
  *  shows a form for a person to be added or edited in the database
- * 	@author Oliver Radwan and Allen Tucker
- * 	@version 9/1/2008, revised 4/1/2012
+ * 	@author Oliver Radwan, Xun Wang and Allen Tucker
+ * 	@version 9/1/2008, revised 4/1/2012, revised 3/11/2015
  */
 
 if ($_SESSION['access_level'] == 0) {
