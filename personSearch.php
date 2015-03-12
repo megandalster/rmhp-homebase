@@ -104,7 +104,7 @@ session_cache_expire(30);
                     }
 				    if (sizeof($result) > 0) {
 				       echo ' (select one for more info).';
-				       echo '<div id="target" style="overflow: scroll; width: 600px; height: 200px;">';
+				       echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';
 				       echo '<p><table> <tr><td>Name</td><td>Phone</td>
 				                            <td>E-mail</td><td>Availability</td></tr>';
 				       foreach ($result as $vol) {

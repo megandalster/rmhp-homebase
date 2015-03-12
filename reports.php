@@ -88,28 +88,45 @@ $(function() {
 	<p id="search-fields-container">
 	<form id = "search-fields" method="post">
 		<input type="hidden" name="_form_submit" value="report" />
-		<p class = "search-description" id="today"> <b>House Volunteer Hours, Shifts, and Vacancies</b><br> Report date: <?php echo Date("F d, Y");?></p>
+		<p class = "search-description" id="today"> <b>RMH Providence Volunteer Reports</b><br> Report date: <?php echo Date("F d, Y");?></p>
 	<table>	<tr>
 		<td class = "search-description" valign="top"> Select Report Type: 
-		<p>	<select multiple name="report-types[]" id = "report-type">
+		<p>	<select multiple name="report-types[]" id = "report-type" size="7">
 	  		<option value="volunteer-names">Individual Hours</option>
 	  		<option value="volunteer-hours">Total Hours</option>
 	  		<option value="shifts-staffed-vacant">Shifts/Vacancies</option>
+	  		<option value="birthdays">Birthdays</option>
+	  		<option value="history">Volunteer History</option>
+	  		<option value="shifts-staffed">Shifts Staffing</option>
 			</select>
 		</p>
 		</td>
-		<td class = "search-description" > Select Individuals  (optional):
+		<td class = "search-description"  valign="top"> Select Individuals  (optional):
 		<p id="volunteer-name-inputs"
 			class="ui-widget"> <input type="text" name="volunteer-names[]" class="volunteer-name" id="1"></p>
 		<button id="add-more">add more</button><br><br>
 		</td>
-		<td class = "search-description" valign="top"> Select Date Range: 
+		<td class = "search-description" valign="top"> Date Range: 
 			<input type="radio" name="date" value="date-range"> 
-			<p id="fromto"> from : <input name = "from" type="text" id="from">
-								to : <input name = "to" type="text" id="to"></p>
+			<p id="fromto"> from : <input name = "from" type="text" id="from"><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;to : <input name = "to" type="text" id="to"></p>
 		</td>
-	</tr></table>
-	And hit <input type="submit" value="submit" id ="report-submit" class ="btn">
+		<td class = "search-description" valign="top"> Venue:
+		    <p id="venue-input"> <select name="venue" id = "report-venue">
+	  		<option value="">--any--</option>
+	  		<option value="house">House</option>
+	  		<option value="fam">Family Room</option>
+		</td>
+	</tr> <tr> <td></td><td></td><td>
+	To view the report <p>Hit <input type="submit" value="submit" id ="report-submit" class ="btn"></p>
+	</td>
+	<td>
+	To save the report <p>Hit <input type="submit" value="PDF" id ="report-pdf" class ="btn">
+						&nbsp;&nbsp;&nbsp;&nbsp;or <input type="submit" value="CSV" id ="report-csv" class ="btn">
+	</p>
+	</td>
+	</tr>
+	</table>
 	</form>
 	<p id="outputs">
 
