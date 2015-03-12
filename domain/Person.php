@@ -194,11 +194,11 @@ class Person {
         return $this->availability;
     }
     
-	function get_availdays() {		// array of week_no:day (extracted from availability)		
+	function get_availdays() {		// array of week_no:day:hours (extracted from availability)		
 		$availdays = array();
         foreach ($this->availability as $a) {
         	$ex = explode(":",$a);
-        	$ad = $ex[0].":".$ex[1];
+        	$ad = $ex[0].":".$ex[1].":".$ex[2];
         	if (!in_array($ad,$availdays))
         		$availdays[] = $ad;
         }

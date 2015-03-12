@@ -33,8 +33,8 @@ function validate_form() {
         $errors[] = 'Please select a Position type';
     if ($_POST['type'] != null && $_SESSION['access_level'] <= 1 && in_array('manager', $_POST['type']))
         $errors[] = "Sorry, you can't promote yourself to manager.";
-    if ($_POST['availdays'] == null || $_POST['availhours'] == null || $_POST['availvenues'] == null)
-        $errors[] = 'Please enter Availability: at least one Week, Shift, and Venue';
+    if ($_POST['availdays'] == null || $_POST['availvenues'] == null)
+        $errors[] = 'Please enter Availability: at least one Venue and Shift';
     if (!valid_phone($_POST['phone1']))
         $errors[] = 'Enter a valid primary phone number (10 digits: ### ### ####)';
     if ($_POST['phone2'] != "" && !valid_phone($_POST['phone2']))

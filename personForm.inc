@@ -171,18 +171,53 @@ foreach ($types as $key => $value) {
 }
 ?>
     <fieldset id='availability'>
-        <legend>Availability:<span style="font-size:x-small;color:FF0000">*</span> (Check at least one Week, Shift, and Venue) </legend>
+        <legend>Availability:<span style="font-size:x-small;color:FF0000">*</span> (Check at least one Venue and Shift) </legend>
         <span class="bigTable">
             <table>
                 <?PHP
                 $shifts = array('9-1' => 'Morning (9-1)', '1-5' => 'Afternoon (1-5)', '5-9' => 'Evening (5-9)',
                     'night' => "Overnight");
-                $venues = array('house'=>"House", 'fam'=>"Family Room");
+                $venues = array('house'=>"House", 'fam'=>"Family Room",""=>"");
                 $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
-                $weeks = array('1st', '2nd', '3rd', '4th', '5th', 'Week of year', 'odd', 'even');
+                $shifts = array('9-1','1-5','5-9','night');
+                $oddeven = array('odd', 'even');
+                $weeks = array('1st', '2nd', '3rd', '4th', '5th');
                 $person_availability = implode(',', $person->get_availability());
     		
    		 		echo "<table>";  
+   		 		echo "<td valign='top'>";	// venues
+   		 		echo "<table><tr><td>Venue</td>";	
+   		 		    echo "</tr>";
+   		 		    foreach ($venues as $venue=>$venuename) {
+   		 		    	echo "<tr><td>".$venuename."</td>";
+   		 		    	if ($venuename!="") {
+   		 		    	    echo ('<td><input type="checkbox" name="availvenues[]" value=' . $venue);
+    	  				    if (in_array($venue, $person->get_availvenues())) echo(' CHECKED');
+    	  				    echo ('></td>');
+   		 		    	}
+   		 		    	else echo "<td>&nbsp;</td>";
+   		 		    	echo "</tr>";
+   		 		    }  
+   		 		echo "</td>";
+   		 		echo "<tr>";
+   		 			echo "<td>Week of year</td>";
+   		 			foreach ($days as $day)
+   		 				echo "<td>".$day."</td>";	
+   		 		    echo "</tr>";
+   		 		    foreach ($oddeven as $week_no) {
+   		 		    	echo "<tr><td align='center'>".$week_no."</td>";
+   		 		    	foreach ($days as $day) {
+   		 		    	  	echo "<td><select multiple name='availdays[]' size='1'";
+   		 		    	  	echo "<option value=''></option>";
+   		 		    	  	foreach ($shifts as $shift) {
+	  		                    echo ('<option value=' . $week_no . ":". $day.":".$shift);
+							    if (in_array($week_no.":".$day.":".$shift, $person->get_availdays())) echo(' SELECTED'); echo ('>'.$shift.'</option>'); }		
+							echo "</td></select>";
+   		 		    	}	
+   		 		    	echo "</tr>";
+   		 		    }
+   		 		echo "</tr></table>";
+   		 		  
    		 		echo "<td>";	// weeks and days
    		 		echo "<table><tr>";
    		 			echo "<td>Week of month</td>";
@@ -191,40 +226,20 @@ foreach ($types as $key => $value) {
    		 		    echo "</tr>";
    		 		    foreach ($weeks as $week_no) {
    		 		    	echo "<tr><td align='center'>".$week_no."</td>";
-   		 		    	if ($week_no !="Week of year")
-   		 		    	  foreach ($days as $day) {
-   		 		    		echo ('<td><input type="checkbox" name="availdays[]" value=' . $week_no . ":". $day);
-    	  				    if (in_array($week_no.":".$day, $person->get_availdays())) echo(' CHECKED');
-    	  				    echo ('></td>');	
+   		 		    	foreach ($days as $day) {
+   		 		    	  	echo "<td><select multiple name='availdays[]' size='1'";
+   		 		    	  	echo "<option value=''></option>";
+   		 		    	  	foreach ($shifts as $shift) {
+	  		                    echo ('<option value=' . $week_no . ":". $day.":".$shift);
+							    if (in_array($week_no.":".$day.":".$shift, $person->get_availdays())) echo(' SELECTED'); echo ('>'.$shift.'</option>'); }		
+							echo "</td></select>";
    		 		    	}	
    		 		    	echo "</tr>";
    		 		    }  
    		 		echo "</table>";
    		 		echo "</td>";
-   		 		echo "<td valign='top'>";	// shifts
-   		 		echo "<table><tr><td>Shift</td>";	
-   		 		    echo "</tr>";
-   		 		    foreach ($shifts as $hours=>$shiftname) {
-   		 		    	echo "<tr><td>".$shiftname."</td>";
-   		 		    	echo ('<td><input type="checkbox" name="availhours[]" value=' . $hours);
-    	  				if (in_array($hours, $person->get_availhours())) echo(' CHECKED');
-    	  				echo ('></td>');
-   		 		    	echo "</tr>";
-   		 		    }  
-   		 		echo "</table>";
-   		 		echo "</td>";
-   		 		echo "<td valign='top'>";	// venues
-   		 		echo "<table><tr><td>Venue</td>";	
-   		 		    echo "</tr>";
-   		 		    foreach ($venues as $venue=>$venuename) {
-   		 		    	echo "<tr><td>".$venuename."</td>";
-   		 		    	echo ('<td><input type="checkbox" name="availvenues[]" value=' . $venue);
-    	  				if (in_array($venue, $person->get_availvenues())) echo(' CHECKED');
-    	  				echo ('></td>');
-   		 		    	echo "</tr>";
-   		 		    }  
-   		 		echo "</table>";
-   		 		echo "</td>";
+   		 		
+   		 		
    		 		echo "</tr></table>";
     			?>
             </table>

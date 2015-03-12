@@ -74,14 +74,13 @@ if ($id == 'new') {
                     if ($errors) {
                         // display the errors and the form to fix
                         show_errors($errors);
-                        if (!$_POST['availdays'] || !$_POST['availhours'] || !$_POST['availvenues'])
+                        if (!$_POST['availdays'] || !$_POST['availvenues'])
                           $availability = null;
                         else {
                           $postavail = array();
                           foreach ($_POST['availdays'] as $postday) 
-                        	foreach($_POST['availhours'] as $posthour)
-                        	  foreach($_POST['availvenues'] as $postvenue)
-                            	$postavail[] = $postday.":".$posthour.":".$postvenue;
+                        	foreach($_POST['availvenues'] as $postvenue)
+                            	$postavail[] = $postday.":".$postvenue;
                           $availability = implode(',', $postavail);
                         }
                         $person = new Person($_POST['first_name'], $_POST['last_name'], $_POST['gender'], 
@@ -146,14 +145,13 @@ if ($id == 'new') {
                     $refs = $_POST['refs'];
                     $motivation = trim(str_replace('\\\'', '\'', htmlentities($_POST['motivation'])));
                     $specialties = trim(str_replace('\\\'', '\'', htmlentities($_POST['specialties'])));
-                    if (!$_POST['availdays'] || !$_POST['availhours'] || !$_POST['availvenues'])
+                    if (!$_POST['availdays'] || !$_POST['availvenues'])
                           $availability = null;
                     else {
                           $postavail = array();
                           foreach ($_POST['availdays'] as $postday) 
-                        	foreach($_POST['availhours'] as $posthour)
                         	  foreach($_POST['availvenues'] as $postvenue)
-                            	$postavail[] = $postday.":".$posthour.":".$postvenue;
+                            	$postavail[] = $postday.":".$postvenue;
                           $availability = implode(',', $postavail);
                     }
                     // these two are not visible for editing, so they go in and out unchanged
