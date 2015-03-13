@@ -115,7 +115,7 @@ function display_table_reports ($labels, $reports) {
 				<td>Mon</td>
 				<td>Tue</td>
 				<td>Wed</td>
-				<td>tdu</td>
+				<td>Thu</td>
 				<td>Fri</td>
 				<td>Sat</td>
 				<td>Sun</td>
