@@ -35,7 +35,7 @@
  	$days = $myPerson->get_availdays();
  	$hours = $myPerson->get_availhours();
  	$venues = $myPerson->get_availvenues();
- 	$this->assertTrue(in_array("1st:Mon",$days));
+ 	$this->assertTrue(in_array("1st:Mon:9-1",$days));
  	$this->assertTrue(in_array("9-1",$hours));
  	$this->assertTrue(in_array("house",$venues));
  $this->assertTrue($myPerson->get_last_name() !== "notMyLastName");
