@@ -171,7 +171,7 @@ foreach ($types as $key => $value) {
 }
 ?>
     <fieldset id='availability'>
-        <legend>Availability:<span style="font-size:x-small;color:FF0000">*</span> (Check at least one Venue and Shift) </legend>
+        <legend>Availability:<span style="font-size:x-small;color:FF0000">*</span> (Check at least one Venue and at least one Shift) </legend>
         <span class="bigTable">
             <table>
                 <?PHP
@@ -180,16 +180,14 @@ foreach ($types as $key => $value) {
                 $venues = array('house'=>"House", 'fam'=>"Family Room",""=>"");
                 $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
                 $shifts = array('9-1','1-5','5-9','night');
-                $oddeven = array('odd', 'even');
-                $weeks = array('1st', '2nd', '3rd', '4th', '5th');
+                $weeks = array('Week of Year', 'odd', 'even', 'Week of Month', '1st', '2nd', '3rd', '4th', '5th');
                 $person_availability = implode(',', $person->get_availability());
     		
-   		 		echo "<table>";  
-   		 		echo "<td valign='top'>";	// venues
-   		 		echo "<table><tr><td>Venue</td>";	
-   		 		    echo "</tr>";
+   		 		echo "<table><tr><td valign='top'>";
+   		 		  echo "<table><tr><td>Venues</td></tr>";	
    		 		    foreach ($venues as $venue=>$venuename) {
-   		 		    	echo "<tr><td>".$venuename."</td>";
+   		 		    	echo "<tr>";
+   		 		    	echo "<td>".$venuename."</td>";
    		 		    	if ($venuename!="") {
    		 		    	    echo ('<td><input type="checkbox" name="availvenues[]" value=' . $venue);
     	  				    if (in_array($venue, $person->get_availvenues())) echo(' CHECKED');
@@ -197,48 +195,28 @@ foreach ($types as $key => $value) {
    		 		    	}
    		 		    	else echo "<td>&nbsp;</td>";
    		 		    	echo "</tr>";
-   		 		    }  
-   		 		echo "</td>";
-   		 		echo "<tr>";
-   		 			echo "<td>Week of year</td>";
-   		 			foreach ($days as $day)
-   		 				echo "<td>".$day."</td>";	
-   		 		    echo "</tr>";
-   		 		    foreach ($oddeven as $week_no) {
-   		 		    	echo "<tr><td align='center'>".$week_no."</td>";
-   		 		    	foreach ($days as $day) {
-   		 		    	  	echo "<td><select multiple name='availdays[]' size='1'";
-   		 		    	  	echo "<option value=''></option>";
-   		 		    	  	foreach ($shifts as $shift) {
-	  		                    echo ('<option value=' . $week_no . ":". $day.":".$shift);
-							    if (in_array($week_no.":".$day.":".$shift, $person->get_availdays())) echo(' SELECTED'); echo ('>'.$shift.'</option>'); }		
-							echo "</td></select>";
-   		 		    	}	
-   		 		    	echo "</tr>";
    		 		    }
-   		 		echo "</tr></table>";
-   		 		  
-   		 		echo "<td>";	// weeks and days
-   		 		echo "<table><tr>";
-   		 			echo "<td>Week of month</td>";
+   		 		  echo "</tr></table></td>";  
+   		 	      
+   		 		  echo "<td valign='top'><table><tr><td>&nbsp;&nbsp;Shifts</td>";
    		 			foreach ($days as $day)
    		 				echo "<td>".$day."</td>";	
    		 		    echo "</tr>";
    		 		    foreach ($weeks as $week_no) {
    		 		    	echo "<tr><td align='center'>".$week_no."</td>";
+   		 		    	if ($week_no == "Week of Month" || $week_no=="Week of Year") continue;
    		 		    	foreach ($days as $day) {
-   		 		    	  	echo "<td><select multiple name='availdays[]' size='1'";
-   		 		    	  	echo "<option value=''></option>";
+   		 		    	  	echo "<td><select multiple name='availdays[]'>";
    		 		    	  	foreach ($shifts as $shift) {
 	  		                    echo ('<option value=' . $week_no . ":". $day.":".$shift);
-							    if (in_array($week_no.":".$day.":".$shift, $person->get_availdays())) echo(' SELECTED'); echo ('>'.$shift.'</option>'); }		
-							echo "</td></select>";
+							    if (in_array($week_no.":".$day.":".$shift, $person->get_availdays())) 
+							        echo(' SELECTED'); 
+							    echo ('>'.$shift.'</option>'); }		
+							echo "</select></td>";
    		 		    	}	
    		 		    	echo "</tr>";
-   		 		    }  
-   		 		echo "</table>";
-   		 		echo "</td>";
-   		 		
+   		 		    }
+   		 		  echo "</tr></table></td>";
    		 		
    		 		echo "</tr></table>";
     			?>
