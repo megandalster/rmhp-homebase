@@ -41,6 +41,7 @@ class Person {
     private $specialties;  // App: special interests and hobbies related to RMH
     private $availability; // array of week_no:day:hours:venue quads; e.g., odd:Mon:9-1:house
     private $schedule;     // array of scheduled shift ids; e.g., 01-05-15:9-1:house
+    private $hours;        // array of actual hours worked; e.g., 01-05-15:0900-1300:house:4
     private $birthday;     // format: 03-12-64
     private $start_date;   // format: 03-12-99
     private $end_date;     // format: 03-12-10
@@ -54,7 +55,7 @@ class Person {
 
     function __construct($f, $l, $g, $a, $c, $s, $z, $p1, $p2, $p3, $e, $t, 
     		$screening_type, $screening_status, $st, $re, $mwc, $mot, $spe, 
-    		$av, $sch, $bd, $sd, $ed, $rl, $notes, $pass) {
+    		$av, $sch, $hrs, $bd, $sd, $ed, $rl, $notes, $pass) {
         $this->id = $f . $p1;
         $this->first_name = $f;
         $this->last_name = $l;
@@ -93,7 +94,10 @@ class Person {
             $this->schedule = explode(',', $sch);
         else
             $this->schedule = array();
-        
+        if ($hrs !== "")
+            $this->hours = explode(',', $hrs);
+        else
+            $this->hrs = array();
 
         $this->birthday = $bd;
         $this->start_date = $sd;
@@ -235,7 +239,10 @@ class Person {
     function get_schedule() {
         return $this->schedule;
     }
-
+    function get_hours() {
+        return $this->schedule;
+    }
+    
     function get_birthday() {
         return $this->birthday;
     }
@@ -259,73 +266,6 @@ class Person {
     function get_password() {
         return $this->password;
     }
-    
-    // return a dictionary reporting total number hours worked by days of the week with
-    // a given date range. $from and $to are strings of the form 'm/d/y', if one of the strings
-    // is the empty string, then the range is unbounded in that direction.
-    // the dictionary is of the form {'Mon' => , 'Tue' => }.
-function report_hours ($histories, $from, $to) {
-    	$min_date = "01/01/2000";
-    	$max_date = "12/31/2020";
-    	if ($from == '') $from = $min_date;
-    	if ($to == '') $to = $max_date;
-    	error_log("from date = " . $from);
-    	error_log("to date = ". $to);
-    	$from_date = date_create_from_mm_dd_yyyy($from); 
-    	$to_date   = date_create_from_mm_dd_yyyy($to);
-    	$report = array('Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0, 
-    					'Fri' => 0, 'Sat' => 0, 'Sun' => 0);
-    	if (array_key_exists($this->get_id(), $histories)) {
-    	  $hid = explode(',',$histories[$this->id]);
-    	  foreach ($hid as $shift_id) {
-    		$s = select_dbShifts($shift_id);
-    		$shift_date = date_create_from_mm_dd_yyyy($s->get_mm_dd_yy());
-    		if ($shift_date >= $from_date && $shift_date <= $to_date) {
-    			$report[$s->get_day()] += $s->duration();
-    		}
-    	  }
-    	}
-    	return $report;
-    }
 }
-
-function report_hours_by_day($histories, $from, $to) {
-	$min_date = "01/01/2000";
-	$max_date = "12/31/2020";
-	if ($from == '') $from = $min_date;
-	if ($to == '') $to = $max_date;
-	error_log("from date = " . $from);
-	error_log("to date = ". $to);
-	$from_date = date_create_from_mm_dd_yyyy($from);
-	$to_date   = date_create_from_mm_dd_yyyy($to);
-	$reports = array(
-		'morning' => array('Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0,
-    				'Fri' => 0, 'Sat' => 0, 'Sun' => 0), 
-		'earlypm' => array('Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0,
-    				'Fri' => 0, 'Sat' => 0, 'Sun' => 0),
-		'latepm' => array('Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0,
-    				'Fri' => 0, 'Sat' => 0, 'Sun' => 0),
-		'evening' => array('Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0,
-    				'Fri' => 0, 'Sat' => 0, 'Sun' => 0),
-		'overnight' => array('Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0,
-    				'Fri' => 0, 'Sat' => 0, 'Sun' => 0),
-		'total' => array('Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0,
-    				'Fri' => 0, 'Sat' => 0, 'Sun' => 0)
-	);
-	
-	foreach($histories as $person_id => $person_shifts) {
-	    $ps = explode(',',$person_shifts);
-		foreach ($ps as $shift_id) {
-			$s = select_dbShifts($shift_id);
-			$shift_date = date_create_from_mm_dd_yyyy($s->get_mm_dd_yy());
-			if ($shift_date >= $from_date && $shift_date <= $to_date) {
-				$reports[$s->get_time_of_day()][$s->get_day()] += $s->duration();
-				$reports['total'][$s->get_day()] += $s->duration();
-    		}
-		}
-	}
-	return $reports;
-}
-
 
 ?>

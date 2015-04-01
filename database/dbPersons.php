@@ -25,7 +25,7 @@ function create_dbPersons() {
             "    work_phone VARCHAR(12), email TEXT, " .
             "    type TEXT, screening_type TEXT, screening_status TEXT, status TEXT, refs TEXT, maywecontact TEXT," .
             "    motivation TEXT, specialties TEXT, " .
-            "    availability TEXT, schedule TEXT, " .
+            "    availability TEXT, schedule TEXT, hours TEXT, " .
             "    birthday TEXT, start_date TEXT, end_date TEXT, reason_left TEXT, notes TEXT, password TEXT)"); 
     if (!$result)
         echo mysql_error() . "Error creating dbPersons table<br>";
@@ -66,6 +66,7 @@ function add_person($person) {
                 $person->get_specialties() . '","' . 
                 implode(',', $person->get_availability()) . '","' .
                 implode(',', $person->get_schedule()) . '","' .
+                implode(',', $person->get_hours()) . '","' .
                 $person->get_birthday() . '","' .
                 $person->get_start_date() . '","' .
                 $person->get_end_date() . '","' . 
@@ -207,6 +208,7 @@ function make_a_person($result_row) {
                     $result_row['specialties'],
                     $result_row['availability'],
                     $result_row['schedule'],
+                    $result_row['hours'],
                     $result_row['birthday'],
                     $result_row['start_date'],
                     $result_row['end_date'],

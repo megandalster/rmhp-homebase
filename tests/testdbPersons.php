@@ -23,7 +23,7 @@ class testdbPersons extends UnitTestCase {
 		$m = new Person("Gabrielle","Booth", "female","14 Way St", "Harpswell", "ME", 04079,
 		1112345679, 2071112345,7778889999,"ted@bowdoin.edu","volunteer","","","active", 
 		"Steve_2077291234","yes","a motivation","a specialty", 
-		"1st:Mon:9-1:house,3rd:Sun:5-9:fam","","02-19-89", "03-14-08","02-02-14","other","Some notes","SomePassword");
+		"1st:Mon:9-1:house,3rd:Sun:5-9:fam","","","02-19-89", "03-14-08","02-02-14","other","Some notes","SomePassword");
 		$this->assertTrue(add_person($m));
 		
 		// retrieve the person and test the fields

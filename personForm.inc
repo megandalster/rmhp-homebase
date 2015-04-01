@@ -288,6 +288,7 @@ foreach ($types as $key => $value) {
         }
 
         echo('<input type="hidden" name="schedule" value="' . implode(',', $person->get_schedule()) . '">');
+        echo('<input type="hidden" name="hours" value="' . implode(',', $person->get_hours()) . '">');
         echo('<input type="hidden" name="password" value="' . $person->get_password() . ')">');
         echo('<input type="hidden" name="_submit_check" value="1"><p>');
         if ($_SESSION['access_level'] == 0)
