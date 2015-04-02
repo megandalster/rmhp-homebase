@@ -41,7 +41,7 @@ class Person {
     private $specialties;  // App: special interests and hobbies related to RMH
     private $availability; // array of week_no:day:hours:venue quads; e.g., odd:Mon:9-1:house
     private $schedule;     // array of scheduled shift ids; e.g., 01-05-15:9-1:house
-    private $hours;        // array of actual hours worked; e.g., 01-05-15:0900-1300:house:4
+    private $hours;        // array of actual hours logged; e.g., 01-05-15:0930-1300:house:3.5
     private $birthday;     // format: 03-12-64
     private $start_date;   // format: 03-12-99
     private $end_date;     // format: 03-12-10

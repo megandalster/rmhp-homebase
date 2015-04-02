@@ -33,8 +33,8 @@ include_once('domain/Shift.php');
 <script src="lib/jquery-ui.js"></script>
 <script>
 $(function() {
-	$( "#from" ).datepicker();
-	$( "#to" ).datepicker();
+	$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+	$( "#to" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
 
 	$(document).on("keyup", ".volunteer-name", function() {
 		var str = $(this).val();
@@ -72,11 +72,6 @@ $(function() {
 		});
 	} );
 	
-	$("#add-more").on('click', function(e) {
-		e.preventDefault();
-		var new_input = '<div class="ui-widget"> <input type="text" name="volunteer-names[]" class="volunteer-name"></div>';
-		$("#volunteer-name-inputs").append(new_input);
-	})
 });
 </script>
 </head>
@@ -90,40 +85,29 @@ $(function() {
 		<input type="hidden" name="_form_submit" value="report" />
 		<p class = "search-description" id="today"> <b>RMH Providence Volunteer Reports</b><br> Report date: <?php echo Date("F d, Y");?></p>
 	<table>	<tr>
-		<td class = "search-description" valign="top"> Select Report Type: 
-		<p>	<select multiple name="report-types[]" id = "report-type" size="7">
-	  		<option value="volunteer-names">Individual Hours</option>
+		<td class = "search-description" valign="top"> &nbsp;&nbsp;&nbsp;&nbsp;Select Report Type: 
+		<p>	<select multiple name="report-types[]" id = "report-type" size="5">
 	  		<option value="volunteer-hours">Total Hours</option>
 	  		<option value="shifts-staffed-vacant">Shifts/Vacancies</option>
 	  		<option value="birthdays">Birthdays</option>
 	  		<option value="history">Volunteer History</option>
-	  		<option value="shifts-staffed">Shifts Staffing</option>
 			</select>
-		</p>
 		</td>
-		<td class = "search-description"  valign="top"> Select Individuals  (optional):
-		<p id="volunteer-name-inputs"
-			class="ui-widget"> <input type="text" name="volunteer-names[]" class="volunteer-name" id="1"></p>
-		<button id="add-more">add more</button><br><br>
-		</td>
-		<td class = "search-description" valign="top"> Date Range: 
-			<input type="radio" name="date" value="date-range"> 
+		<td class = "search-description" valign="top">&nbsp;&nbsp; Date Range: 
 			<p id="fromto"> from : <input name = "from" type="text" id="from"><br>
 							&nbsp;&nbsp;&nbsp;&nbsp;to : <input name = "to" type="text" id="to"></p>
 		</td>
-		<td class = "search-description" valign="top"> Venue:
+		<td class = "search-description" valign="top"> &nbsp;&nbsp;&nbsp;&nbsp;Venue:
 		    <p id="venue-input"> <select name="venue" id = "report-venue">
 	  		<option value="">--any--</option>
 	  		<option value="house">House</option>
-	  		<option value="fam">Family Room</option>
+	  		<option value="fam">Family Room</option></select></p>
 		</td>
-	</tr> <tr> <td></td><td></td><td>
-	To view the report <p>Hit <input type="submit" value="submit" id ="report-submit" class ="btn"></p>
-	</td>
-	<td>
-	To save the report <p>Hit <input type="submit" value="PDF" id ="report-pdf" class ="btn">
-						&nbsp;&nbsp;&nbsp;&nbsp;or <input type="submit" value="CSV" id ="report-csv" class ="btn">
-	</p>
+		<td valign="top">
+	To view the report <br><br>Hit <input type="submit" value="submit" id ="report-submit" class ="btn">
+	</td><td valign="top">
+	<p>To save the report <p>Hit <input type="submit" value="PDF" id ="report-pdf" class ="btn">
+						 or <input type="submit" value="CSV" id ="report-csv" class ="btn">
 	</td>
 	</tr>
 	</table>

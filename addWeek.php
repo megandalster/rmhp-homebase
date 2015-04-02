@@ -114,9 +114,12 @@ session_cache_expire(30);
                     $weeksofmonth = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
                     $day_id = $m . "-" . $d . "-" . $y;
                     $dates = array();
+                    $daysinmonth=date("t",mktime(0, 0, 0, $m, $d, $y));
+                        
                     foreach ($weekdays as $day) {
                     	$my_date = mktime(0, 0, 0, $m, $d, $y);
                         $week_of_month= $weeksofmonth[floor(($d - 1)/7)+1];
+                        // echo "weekofmonth,day,month,year,daysinmonth= ",$week_of_month.",".$d.",".$m.",".$y.",".$daysinmonth;
         				if (date("W", $my_date)%2==1)
             				$week_of_year= "odd";
         				else 
@@ -139,6 +142,12 @@ session_cache_expire(30);
                         $new_date = new RMHdate($day_id, $venue, $shifts, "");
                         $dates[] = $new_date;
                         $d++;
+                        if ($d>$daysinmonth) {
+                        	$d=1;
+                        	if ($m == 12) 
+                        	    {$m =1; $y++;}
+                        	else $m++;
+                        }
                         $day_id = date("m-d-y", mktime(0, 0, 0, $m, $d, $y));
                     }
                      // creates a new week from the dates
@@ -154,7 +163,7 @@ session_cache_expire(30);
                     $people1 = get_person_ids($venue, $week_of_month, $day, $time);
                     if (!$people1[0])
                         array_shift($people1);
-                    //echo($week_of_month."-".$day."-".$time.":".$venue);
+                    // echo($week_of_month.":".$day.":".$time.":".$venue);
                     $vacancies1 = get_total_slots($week_of_month.":".$day.":".$time.":".$venue) - count($people1);
                     $people2 = get_person_ids($venue, $week_of_year, $day, $time);
                     if (!$people2[0])
