@@ -1,15 +1,11 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook, 
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan, 
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker. 
- * This program is part of RMH Homebase, which is free software.  It comes with 
- * absolutely no warranty. You can redistribute and/or modify it under the terms 
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- * 
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
-
 session_start();
 session_cache_expire(30);
 ?>
@@ -36,91 +32,42 @@ session_cache_expire(30);
                 include_once('database/dbLog.php');
                 include_once('domain/Shift.php');
                 include_once('database/dbShifts.php');
+                date_default_timezone_set('America/New_York');
                 if ($_SESSION['_id'] != "guest") {
                     $person = retrieve_person($_SESSION['_id']);
                     echo "<p>Welcome, " . $person->get_first_name() . ", to Homebase!";
                 }
-                else
+                else 
                     echo "<p>Welcome to Homebase!";
-                $woms = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
-                $today = mktime();
-                $dow = date("N");
-                $todaymm = date("m");
-                $todayyyyy = date("Y");
-                $dom = date("d");
-                $wom = floor(($dom-1)/7) + 1;
-               	$weekno = date("W");
-               	if ($weekno%2==0)
-               	    $oddeven = "even";
-               	else 
-               		$oddeven = "odd";
-                echo "   Today is " . date('l F j, Y', $today) . ".<p>";
-                echo "   This is week ". $weekno . " (".$oddeven.") of the year, and the ";            
-                echo $woms[$wom] . " ". date ("l", $today) . " of the month<p>";
+                echo "   Today is " . date('l F j, Y') . ".<p>";
                 ?>
 
                 <!-- your main page data goes here. This is the place to enter content -->
                 <p>
                     <?PHP
-                    if ($_SESSION['access_level'] == 1)
-                        echo('<p>
-							This is your personal homepage:
-							your upcoming scheduled shifts will always be posted here.
-						');
                     if ($_SESSION['access_level'] == 0)
-                        echo('<p> To apply for a volunteer position at the Ronald McDonald House, select <a href="' . $path . 'personEdit.php?id=' . 'new' . '">apply</a>.');
-                    ?>
-
-                    <br>If you just want an overview of Homebase, select <a href="<?php echo($path); ?>dataSearch.php">about</a>.
-                    <?PHP
-                    if ($person)
-                        echo ('<p>If you want to learn the details of using Homebase, select <a href="' . $path . 'help.php">help</a>.');
-                    ?>
-                    </ul>
-                <p>	When you are finished, please remember to <a href="<?php echo($path); ?>logout.php">logout</a>.</li>
-
-                    <?PHP
+                        echo('<p> To apply for a volunteer position at the Ronald McDonald House, select <a href="' . 
+                              $path . 'personEdit.php?id=' . 'new' . '">apply</a>.');
                     if ($person) {
                         /*
                          * Check type of person, and display home page based on that.
                          * all: password check
                          * guests: show link to application form
                          * applicants: show status of application form
-                         * Volunteers, subs: show upcoming schedule
-                         * Managers: show vacancies, birthdays, anniversaries, applicants
+                         * Volunteers, subs: show upcoming schedule and log sheet
+                         * Managers: show upcoming vacancies, birthdays, anniversaries, applicants
                          */
-
-                        //DEFAULT PASSWORD CHECK
-                        if (md5($person->get_id()) == $person->get_password()) {
-                            if (!isset($_POST['_rp_submitted']))
-                                echo('<div class="warning"><form method="post"><p><strong>We recommend that you change your password, which is currently default.</strong><table class="warningTable"><tr><td class="warningTable">Old Password:</td><td class="warningTable"><input type="password" name="_rp_old"></td></tr><tr><td class="warningTable">New password</td><td class="warningTable"><input type="password" name="_rp_newa"></td></tr><tr><td class="warningTable">New password<br />(confirm)</td><td class="warningTable"><input type="password" name="_rp_newb"></td></tr><tr><td colspan="2" align="right" class="warningTable"><input type="hidden" name="_rp_submitted" value="1"><input type="submit" value="Change Password"></td></tr></table></p></form></div>');
-                            else {
-                                //they've submitted
-                                if (($_POST['_rp_newa'] != $_POST['_rp_newb']) || (!$_POST['_rp_newa']))
-                                    echo('<div class="warning"><form method="post"><p>Error with new password. Ensure passwords match.</p><br /><table class="warningTable"><tr><td class="warningTable">Old Password:</td><td class="warningTable"><input type="password" name="_rp_old"></td></tr><tr><td class="warningTable">New password</td><td class="warningTable"><input type="password" name="_rp_newa"></td></tr><tr><td class="warningTable">New password<br />(confirm)</td><td class="warningTable"><input type="password" name="_rp_newb"></td></tr><tr><td colspan="2" align="center" class="warningTable"><input type="hidden" name="_rp_submitted" value="1"><input type="submit" value="Change Password"></form></td></tr></table></div>');
-                                else if (md5($_POST['_rp_old']) != $person->get_password())
-                                    echo('<div class="warning"><form method="post"><p>Error with old password.</p><br /><table class="warningTable"><tr><td class="warningTable">Old Password:</td><td class="warningTable"><input type="password" name="_rp_old"></td></tr><tr><td class="warningTable">New password</td><td class="warningTable"><input type="password" name="_rp_newa"></td></tr><tr><td class="warningTable">New password<br />(confirm)</td><td class="warningTable"><input type="password" name="_rp_newb"></td></tr><tr><td colspan="2" align="center" class="warningTable"><input type="hidden" name="_rp_submitted" value="1"><input type="submit" value="Change Password"></form></td></tr></table></div>');
-                                else if ((md5($_POST['_rp_old']) == $person->get_password()) && ($_POST['_rp_newa'] == $_POST['_rp_newb'])) {
-                                    $newPass = md5($_POST['_rp_newa']);
-                                    change_password($person->get_id(), $newPass);
-                                }
-                            }
-                            echo('<br clear="all">');
-                        }
-
-                        //NOTES OUTPUT
-                        echo('<div class="infobox"><p class="notes"><strong>Notes from House Manager:</strong><br />');
-                        echo($person->get_notes() . '</p></div><br>');
 
                         //APPLICANT CHECK
                         if ($person->get_first_name() != 'guest' && $person->get_status() == 'applicant') {
                             //SHOW STATUS
-                            echo('<div class="infobox"><p><strong>Your application has been filed.</strong><br><br /><table><tr><td><strong>Step</strong></td><td><strong>Completed?</strong></td></tr><tr><td>Background Check</td><td>' . $person['background_check'] . '</td></tr><tr><td>Interview</td><td>' . $person['interview'] . '</td></tr><tr><td>Shadow</td><td>' . $person['shadow'] . '</td></tr></table></p></div>');
+                            echo('<div class="infobox"><p><strong>Your application has been submitted.</strong><br><br /><table><tr><td><strong>Step</strong></td><td><strong>Completed?</strong></td></tr><tr><td>Background Check</td><td>' . $person['background_check'] . '</td></tr><tr><td>Interview</td><td>' . $person['interview'] . '</td></tr><tr><td>Shadow</td><td>' . $person['shadow'] . '</td></tr></table></p></div>');
                         }
 
                         //VOLUNTEER CHECK
                         if ($_SESSION['access_level'] == 1) {
-                            //we need to populate their schedule.
+                        	
+                        	// display upcoming schedule
                             $shifts = selectScheduled_dbShifts($person->get_id());
 
                             $scheduled_shifts = array();
@@ -153,8 +100,15 @@ session_cache_expire(30);
                                 foreach ($upcoming_shifts as $tableId) {
                                     echo('<li type="circle">' . get_shift_name_from_id($tableId)) . '</li>';
                                 }
-                                echo('</ul><p>If you need to cancel an upcoming shift, please contact House Manager (207-980-6282 or <a href="mailto:housemgr@rmhportland.org>">housemgr@rmhportland.org</a>).</p></div>');
+                                echo('</ul><p>If you need to cancel an upcoming shift, please contact the <a href="mailto:jpowers@rmhprovidence.org">Volunteer Coordinator</a>.</p></div>');
                             }
+                            
+                            // link to personal log sheet
+                            echo('<br><div class="scheduleBox"><p><strong>View/Update your Log Sheet:</strong><br /></p><ul>');
+                                
+                                echo('</ul><p>Go <strong><a href="volunteerLog.php?id='.$person->get_id()
+                        	   .'">here</a></strong> to view or enter your recent volunteering hours.</p></div>');
+              
                         }
                         
                         if ($_SESSION['access_level'] == 2) {
@@ -165,9 +119,9 @@ session_cache_expire(30);
                             echo('<table class="searchResults">');
                             echo('<tr><td class="searchResults"><u>Time</u></td><td class="searchResults"><u>Message</u></td></tr>');
                             $log = get_last_log_entries(5);
-                            for ($i = 4; $i >= 0; --$i) {
-                                echo('<tr><td class="searchResults">' . $log[$i][1] . '</td>' .
-                                '<td class="searchResults">' . $log[$i][2] . '</td></tr>');
+                            foreach ($log as $lo) {
+                                echo('<tr><td class="searchResults">' . $lo[1] . '</td>' .
+                                '<td class="searchResults">' . $lo[2] . '</td></tr>');
                             }
                             echo ('</table><br><a href="' . $path . 'log.php">View full log</a></p></div><br>');
 
@@ -184,7 +138,6 @@ session_cache_expire(30);
                                 echo mysql_error();
                             //upcoming vacancies
                             if (mysql_num_rows($vacancy_list) > 0) {
-
                                 echo('<div class="vacancyBox">');
                                 echo('<p><strong>Upcoming Vacancies:</strong><ul>');
                                 while ($thisRow = mysql_fetch_array($vacancy_list, MYSQL_ASSOC)) {
@@ -257,9 +210,24 @@ session_cache_expire(30);
                                     }
                                 }
                                 echo('</table></p></div><br>');
+                            } 
+                        }
+                        //DEFAULT PASSWORD CHECK
+                        if (md5($person->get_id()) == $person->get_password()) {
+                            if (!isset($_POST['_rp_submitted']))
+                                echo('<p><div class="warning"><form method="post"><p><strong>We recommend that you change your password, which is currently default.</strong><table class="warningTable"><tr><td class="warningTable">Old Password:</td><td class="warningTable"><input type="password" name="_rp_old"></td></tr><tr><td class="warningTable">New password</td><td class="warningTable"><input type="password" name="_rp_newa"></td></tr><tr><td class="warningTable">New password<br />(confirm)</td><td class="warningTable"><input type="password" name="_rp_newb"></td></tr><tr><td colspan="2" align="right" class="warningTable"><input type="hidden" name="_rp_submitted" value="1"><input type="submit" value="Change Password"></td></tr></table></p></form></div>');
+                            else {
+                                //they've submitted
+                                if (($_POST['_rp_newa'] != $_POST['_rp_newb']) || (!$_POST['_rp_newa']))
+                                    echo('<div class="warning"><form method="post"><p>Error with new password. Ensure passwords match.</p><br /><table class="warningTable"><tr><td class="warningTable">Old Password:</td><td class="warningTable"><input type="password" name="_rp_old"></td></tr><tr><td class="warningTable">New password</td><td class="warningTable"><input type="password" name="_rp_newa"></td></tr><tr><td class="warningTable">New password<br />(confirm)</td><td class="warningTable"><input type="password" name="_rp_newb"></td></tr><tr><td colspan="2" align="center" class="warningTable"><input type="hidden" name="_rp_submitted" value="1"><input type="submit" value="Change Password"></form></td></tr></table></div>');
+                                else if (md5($_POST['_rp_old']) != $person->get_password())
+                                    echo('<div class="warning"><form method="post"><p>Error with old password.</p><br /><table class="warningTable"><tr><td class="warningTable">Old Password:</td><td class="warningTable"><input type="password" name="_rp_old"></td></tr><tr><td class="warningTable">New password</td><td class="warningTable"><input type="password" name="_rp_newa"></td></tr><tr><td class="warningTable">New password<br />(confirm)</td><td class="warningTable"><input type="password" name="_rp_newb"></td></tr><tr><td colspan="2" align="center" class="warningTable"><input type="hidden" name="_rp_submitted" value="1"><input type="submit" value="Change Password"></form></td></tr></table></div>');
+                                else if ((md5($_POST['_rp_old']) == $person->get_password()) && ($_POST['_rp_newa'] == $_POST['_rp_newb'])) {
+                                    $newPass = md5($_POST['_rp_newa']);
+                                    change_password($person->get_id(), $newPass);
+                                }
                             }
-                            
-                            
+                            echo('<br clear="all">');
                         }
                     }
                     ?>

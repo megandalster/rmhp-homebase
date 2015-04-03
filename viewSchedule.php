@@ -38,6 +38,7 @@ include_once("domain/MasterScheduleEntry.php");
                     die("<p>Only managers can view the master schedule.</p>");
                 }
                 $venue = $_GET['venue'];
+                show_week_no ();
                 show_master_schedule($venue);
                 echo "<br>";
                 ?>
@@ -63,19 +64,19 @@ function show_master_schedule($venue) {
     $days = array("Mon" => "Monday", "Tue" => "Tuesday", "Wed" => "Wednesday",
                     "Thu" => "Thursday", "Fri" => "Friday", "Sat" => "Saturday", "Sun" => "Sunday");
     echo ('<br><table id="calendar" align="center" ><tr class="weekname"><td colspan="' . (sizeof($days) + 2) . '" ' .
-    'bgcolor="ffdddd" align="center" >' .$venues[$venue]." Master Schedule -- week of month");
+        'bgcolor="ffdddd" align="center" >' .$venues[$venue]." Master Schedule -- use for scheduling 'every week' or 'every other week'");
     echo ('</td></tr><tr><td bgcolor="#ffdddd">  </td>');
     foreach ($days as $day => $dayname)
         echo ('<td class="dow" align="center"> ' . $dayname . ' </td>');
     echo('<td bgcolor="#ffdddd"></td></tr>');
     $columns = sizeof($days);
-    foreach ($groups as $group){
+    foreach ($altgroups as $group){
       $showgroup = $group;
       foreach ($shifts as $hour) {
-      	echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
+        echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
         foreach ($days as $day => $dayname) {
         	$master_shift = retrieve_dbMasterSchedule($group .":". $day .":". $hour .":". $venue);
-        	if ($master_shift) {
+            if ($master_shift) {
             	echo do_shift($master_shift,1);
             } else {
                 $master_shift = new MasterScheduleEntry($venue, $day, $group, $hour, 0, "", "");
@@ -89,19 +90,19 @@ function show_master_schedule($venue) {
     echo "</table>";
     
     echo ('<br><table id="calendar" align="center" ><tr class="weekname"><td colspan="' . (sizeof($days) + 2) . '" ' .
-        'bgcolor="ffdddd" align="center" >' .$venues[$venue]." Master Schedule -- week of year");
+    'bgcolor="ffdddd" align="center" >' .$venues[$venue]." Master Schedule -- use only for scheduling selected weeks of the month");
     echo ('</td></tr><tr><td bgcolor="#ffdddd">  </td>');
     foreach ($days as $day => $dayname)
         echo ('<td class="dow" align="center"> ' . $dayname . ' </td>');
     echo('<td bgcolor="#ffdddd"></td></tr>');
     $columns = sizeof($days);
-    foreach ($altgroups as $group){
+    foreach ($groups as $group){
       $showgroup = $group;
       foreach ($shifts as $hour) {
-        echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
+      	echo ("<tr><td class=\"masterhour\">   " . $showgroup . " " . $hour . "</td>");
         foreach ($days as $day => $dayname) {
         	$master_shift = retrieve_dbMasterSchedule($group .":". $day .":". $hour .":". $venue);
-            if ($master_shift) {
+        	if ($master_shift) {
             	echo do_shift($master_shift,1);
             } else {
                 $master_shift = new MasterScheduleEntry($venue, $day, $group, $hour, 0, "", "");
@@ -163,5 +164,20 @@ function get_people_for_shift($master_shift, $master_shift_length) {
     else if (count($people) == 0)
         $p = $p . "&nbsp;<br>";
     return substr($p, 0, strlen($p) - 4);
+}
+
+function show_week_no () {
+                	$woms = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
+	                $today = mktime();
+	                $dom = date("d");
+	                $wom = floor(($dom-1)/7) + 1;
+	               	$weekno = date("W");
+	               	if ($weekno%2==0)
+	               	    $oddeven = "even";
+	               	else 
+	               		$oddeven = "odd";
+	               	echo "<p>Today is " . date('l F j, Y') . ". ";
+	                echo "   This is week ". $weekno . " (".$oddeven.") of the year, and the ";            
+	                echo $woms[$wom] . " ". date ("l", $today) . " of the month<p>";
 }
 ?>

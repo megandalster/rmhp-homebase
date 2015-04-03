@@ -82,7 +82,7 @@ function delete_log_entries($ids) {
  */
 function get_full_log() {
     connect();
-    $query = "SELECT * FROM dbLog ORDER BY time";
+    $query = "SELECT * FROM dbLog ORDER BY time DESC";
     $result = mysql_query($query);
     mysql_close();
     if (!$result) {
@@ -103,11 +103,11 @@ function get_full_log() {
  * @return array of log entries
  */
 function get_last_log_entries($num) {
+    $log = array();
     $l = get_full_log();
-    $c = count($l);
-    if ($num > $c)
-        $num = $c;
-    for ($i = $c - $num; $i < $c; ++$i) {
+    if ($num > count($l))
+        $num = count($l);
+    for ($i = 0; $i < $num; $i++) {
         $log[] = $l[$i];
     }
     return $log;

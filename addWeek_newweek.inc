@@ -83,7 +83,7 @@
                 } else if ($status == "unpublished") {
                     $options = "unpublished 
 							(<a href=\"calendar.php?id=" . $id. "&venue=".$venue."&edit=true\">edit</a>)
-							(<a href=\"addWeek.php?venue='.$venue.'&publish=" . $id . "\">publish</a>)
+							(<a href=\"addWeek.php?venue=".$venue."&publish=" . $id . "\">publish</a>)
 							(<a href=\"calendar.php?id=" . $id . "&venue=".$venue."\">view</a>)";
                 } else { // status must be "published"
                     $options = "published (<a href=\"calendar.php?id=" . $id . "&venue=".$venue."&edit=true\">edit</a>)

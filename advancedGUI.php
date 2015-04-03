@@ -1,13 +1,16 @@
 <html>
 <head>
 <link rel="stylesheet" href="lib/jquery-ui.css" />
+<link rel="stylesheet" href="lib/jquery.timepicker.css" />
 <link rel="stylesheet" href="styles.css" type="text/css" />
 <script src="lib/jquery-1.9.1.js"></script>
 <script src="lib/jquery-ui.js"></script>
+<script src="lib/jquery.timepicker.js"></script>
 <script>
 $(function() {
-	$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-	$( "#to" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+	$( "#date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
+	$( "#start_time" ).timepicker();
+	$( "#end_time" ).timepicker();
 	$( "#target" ).scroll();
 });
 </script>
@@ -20,8 +23,9 @@ $(function() {
 		<br> Today's date: <?php echo Date("F d, Y");?></p>
 	<table>	<tr>
 		<td valign="top"> Select Date Range: 
-			<p> from : <input name = "from" type="text" id="from" value="10">
-							to : <input name = "to" type="text" id="to"></p>
+			<p> date : <input name = "date" type="text" id="date" value="10">
+				start time : <input name = "start_time" type="text" id="start_time">
+				end time : <input name = "end_time" type="text" id="end_time"></p>
 		</td>
 	</tr></table>
 	</form>
