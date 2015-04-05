@@ -9,8 +9,8 @@
 <script>
 $(function() {
 	$( "#date" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-	$( "#start_time" ).timepicker();
-	$( "#end_time" ).timepicker();
+	$( "#start_time" ).timepicker({'minTime': '9:00am', 'maxTime': '9:00pm'});
+	$( "#end_time" ).timepicker({'minTime': '9:00am', 'maxTime': '9:00pm'});
 	$( "#target" ).scroll();
 });
 </script>
@@ -19,11 +19,11 @@ $(function() {
 <div>
 	<p>
 	<form method="post">
-		<p> <b>Example Datepicker Elements</b>
-		<br> Today's date: <?php echo Date("F d, Y");?></p>
+		<p> <b>Example Datepicker and Timepicker Elements</b>
+		<br> Today's date and time: <?php date_default_timezone_set ("America/New_York"); echo Date("F d, Y g:ia");?></p>
 	<table>	<tr>
-		<td valign="top"> Select Date Range: 
-			<p> date : <input name = "date" type="text" id="date" value="10">
+		<td valign="top"> Select Date and Time: 
+			<p> date : <input name = "date" type="text" id="date">
 				start time : <input name = "start_time" type="text" id="start_time">
 				end time : <input name = "end_time" type="text" id="end_time"></p>
 		</td>

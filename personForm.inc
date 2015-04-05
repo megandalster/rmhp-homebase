@@ -49,7 +49,9 @@ if ($_SESSION['access_level'] == 0) {
     <p>(<span style="font-size:x-small;color:FF0000">*</span> denotes required fields)
     <p>First Name<span style="font-size:x-small;color:FF0000">*</span>: <input type="text" name="first_name" tabindex="1" value="<?PHP echo($person->get_first_name()) ?>">
         Last Name<span style="font-size:x-small;color:FF0000">*</span>: <input type="text" name="last_name" tabindex="2" value="<?PHP echo($person->get_last_name()) ?>">
-        &nbsp;&nbsp;&nbsp;&nbsp;View <strong><a href="volunteerLog.php?id=<?php echo $person->get_id() ?>">Log Sheet</a></strong>
+    <?PHP if ($id!="new") echo 
+        '&nbsp;&nbsp;&nbsp;&nbsp;View <strong><a href="volunteerLog.php?id='.$person->get_id().'">Log Sheet</a></strong>';
+    ?>
               
     <fieldset>
         <legend>Contact information:</legend>
