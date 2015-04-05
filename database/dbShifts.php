@@ -366,4 +366,50 @@ function date_create_from_mm_dd_yyyy ($mm_dd_yyyy) {
         return mktime(0,0,0,substr($mm_dd_yyyy,0,2),substr($mm_dd_yyyy,3,2),"20".substr($mm_dd_yyyy,6,2));
 }
 
+//returns an array of date:shift:totalhours
+function get_volunteer_hours($from,$to,$venue){
+	$from = strtotime($from);
+	$to = strtotime($to);
+	$the_hours = array();
+	if($venue == ""){
+		$all_shifts = get_all_shifts();
+	}else{
+		connect();
+    	$query = "SELECT * FROM dbShifts WHERE venue LIKE '%" . $venue . "%'";
+    	$result = mysql_query($query);
+    	if ($result == null || mysql_num_rows($result) == 0) {
+        	mysql_close();
+        	return false;
+    	}
+    	$result = mysql_query($query);
+    	$all_shifts = array();
+    	while ($result_row = mysql_fetch_assoc($result)) {
+        	$shift = make_a_shift($result_row);
+        	$all_shifts[] = $shift;
+    	}
+	}
+	
+    foreach($all_shifts as $a_shift){
+    	$the_date = strtotime($a_shift->get_date());	//date of this shift
+    	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
+       		$people = $a_shift->get_persons();      //a string of people on shift 		
+       		if($a_shift->get_hours() == "night"){	//sets length of shift
+        		$length = 8;
+       		}else{
+        		$length = 4;
+       		}
+       		$count = substr_count($people,"+");		//used to count #people on shift
+       		$num_people = $count / 2;
+       		$num_hours = $num_people * $length;
+       		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$num_hours;
+       		$the_hours[] = $shift_info;
+       		 
+    	}
+    }
+    
+    return $the_hours;
+   	
+    
+}
+
 ?>

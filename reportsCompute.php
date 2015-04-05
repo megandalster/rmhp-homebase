@@ -39,14 +39,32 @@ function show_report() {
 
 }
 
-function report_volunteer_hours_by_day($from, $to, $venue) {
+function report_volunteer_hours_by_day($from, $to, $venue) { 
 	echo ("<br><b>Total Volunteer Hours Report</b>");
 	// 1.  define a function get_volunteer_hours() in dbShifts to get all shifts staffed for the given date range and venue.	
 	// 2.  call that function -- it should return an array of day:shift pairs containing total number of hours in each entry
 	// 3.  Sum the resulting hours for each day and time (count 4 hours per daytime shift per volunteer, 8 hours for overnight)
 	// 4.  display a table of the results, computing and showing row and column totals totals as shown below
+	
+	
+	$report = get_volunteer_hours($from, $to, $venue);
+//	echo ".....";
+//	echo $report[4]; echo ".....";
+//	echo $report[5]; echo ".....";
+//	echo $report[6]; echo ".....";
+//	echo $report[7]; echo "  ";
+	
+//	$entry = "Mon:9-1:house:8";
+//	$entry = explode(":",$entry);
+//	$num = (int)$entry[3];
+//	echo $num;
+//	echo gettype($report[4]);
+	
 	$row_labels = array("9-1","1-5","5-9","night","Total");
 	$col_labels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun","Total");
+	
+	display_table($col_labels, $row_labels, $report);
+	
 }
 
 function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
@@ -72,5 +90,78 @@ function report_volunteer_history($from, $to, $venue) {
 	// 2.  call that function -- it should return an array of last_name:first_name:date:hours quads, sorted alphabetically
 	// 3.  display a table of the results, adding a separate "total hours" line for each volunteer
 }
+
+
+
+function display_table($col_lab, $row_lab, $report){
+	$res = "
+		<table id = 'report'> 
+			<thead>
+			<tr>
+				<td></td>";
+	//row 1
+	$row = "<tr>
+				<td></td>";
+	foreach($col_lab as $col_name){
+		$row .= "<td><b>".$col_name."</b></td>";
+	}
+	$row .="</tr>";
+	$res .= $row;
+	$res .= "
+			</thead>
+			<tbody>";
+	foreach($row_lab as $row_name){
+		if($row_name == "Total"){
+			$row = "<tr>";
+			$row .= "<td><b>".$row_name."</b></td>";
+			$row_total = 0;
+			foreach($col_lab as $col_name){
+				$count = 0;
+				if($col_name =="Total"){
+					$row .= "<td>".$row_total."</td>";
+				}else {
+					foreach($report as $entry){
+						if (strpos($col_name,$entry) !== false){
+							$entry = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
+							$num = (int)$entry[3];
+							$count = $count + $num;
+							$row_total = $row_total + $count;
+						}
+					}
+					$row .= "<td>".$count."</td>";
+				}
+			}
+			$row .= "</tr>";
+			$res .= $row;
+		}else{
+			$row = "<tr>";
+			$row .= "<td><b>".$row_name."</b></td>";
+			$row_total = 0;
+			foreach($col_lab as $col_name){
+				$count = 0;
+				if($col_name =="Total"){
+					$row .= "<td>".$row_total."</td>";
+				}else {
+					foreach($report as $entry){
+						if (strpos($col_name,$entry)!== false && strpos($row_name,$entry)!== false){
+							$entry = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
+							$num = (int)$entry[3];
+							$count = $count + $num;
+							$row_total = $row_total + $count;
+						}
+					}
+					$row .= "<td>".$count."</td>";
+				}
+			}
+			$row .= "</tr>";
+			$res .= $row;
+		}
+	}
+	$res .= "</tbody></table>";
+	echo $res;
+
+}
+
+
 
 ?>
