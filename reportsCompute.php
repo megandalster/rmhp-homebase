@@ -62,7 +62,6 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 	
 	$row_labels = array("9-1","1-5","5-9","night","Total");
 	$col_labels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun","Total");
-	
 	display_table($col_labels, $row_labels, $report);
 	
 }
@@ -111,41 +110,38 @@ function display_table($col_lab, $row_lab, $report){
 			</thead>
 			<tbody>";
 	foreach($row_lab as $row_name){
+		$row_total = 0;
+		$row = "<tr>";
+		$row .= "<td><b>".$row_name."</b></td>";
 		if($row_name == "Total"){
-			$row = "<tr>";
-			$row .= "<td><b>".$row_name."</b></td>";
-			$row_total = 0;
+			$grand_total = 0;
 			foreach($col_lab as $col_name){
 				$count = 0;
 				if($col_name =="Total"){
-					$row .= "<td>".$row_total."</td>";
+					$row .= "<td>".$grand_total."</td>";
 				}else {
 					foreach($report as $entry){
-						if (strpos($col_name,$entry) !== false){
-							$entry = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
-							$num = (int)$entry[3];
+						$elements = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
+						if ($col_name==$elements[0]){
+							$num = (int)$elements[3];
 							$count = $count + $num;
 							$row_total = $row_total + $count;
 						}
 					}
 					$row .= "<td>".$count."</td>";
+					$grand_total += $count;
 				}
 			}
-			$row .= "</tr>";
-			$res .= $row;
 		}else{
-			$row = "<tr>";
-			$row .= "<td><b>".$row_name."</b></td>";
-			$row_total = 0;
 			foreach($col_lab as $col_name){
 				$count = 0;
 				if($col_name =="Total"){
 					$row .= "<td>".$row_total."</td>";
 				}else {
 					foreach($report as $entry){
-						if (strpos($col_name,$entry)!== false && strpos($row_name,$entry)!== false){
-							$entry = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
-							$num = (int)$entry[3];
+						$elements = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
+						if ($col_name==$elements[0] && $row_name==$elements[1]){
+							$num = (int)$elements[3];
 							$count = $count + $num;
 							$row_total = $row_total + $count;
 						}
@@ -153,9 +149,9 @@ function display_table($col_lab, $row_lab, $report){
 					$row .= "<td>".$count."</td>";
 				}
 			}
-			$row .= "</tr>";
-			$res .= $row;
 		}
+		$row .= "</tr>";
+		$res .= $row;
 	}
 	$res .= "</tbody></table>";
 	echo $res;
