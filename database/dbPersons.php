@@ -144,6 +144,13 @@ function change_password($id, $newPass) {
     return $result;
 }
 
+function update_hours($id, $new_hours) {
+    connect();
+    $query = 'UPDATE dbPersons SET hours = "' . implode(",",$new_hours) . '" WHERE id = "' . $id . '"';
+    $result = mysql_query($query);
+    mysql_close();
+    return $result;
+}
 
 /*
  * @return all rows from dbPersons table ordered by last name
