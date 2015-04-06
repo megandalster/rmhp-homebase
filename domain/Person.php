@@ -240,7 +240,7 @@ class Person {
         return $this->schedule;
     }
     function get_hours() {
-        return $this->schedule;
+        return $this->hours;
     }
     
     function get_birthday() {
