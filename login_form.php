@@ -53,6 +53,7 @@
             if ($person) { //avoids null results
                 if ($person->get_password() == $db_pass) { //if the passwords match, login
                     $_SESSION['logged_in'] = 1;
+                    date_default_timezone_set ("America/New_York");
                     if ($person->get_status() == "applicant")
                         $_SESSION['access_level'] = 0;
                     else if (in_array('manager', $person->get_type())

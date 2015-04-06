@@ -368,8 +368,8 @@ function date_create_from_mm_dd_yyyy ($mm_dd_yyyy) {
 
 //returns an array of date:shift:totalhours
 function get_volunteer_hours($from,$to,$venue){
-	$from = strtotime($from);
-	$to = strtotime($to);
+	//$from = strtotime($from);
+	//$to = strtotime($to);
 	$the_hours = array();
 	if($venue == ""){
 		$all_shifts = get_all_shifts();
@@ -390,7 +390,7 @@ function get_volunteer_hours($from,$to,$venue){
 	}
 	
     foreach($all_shifts as $a_shift){
-    	$the_date = strtotime($a_shift->get_date());	//date of this shift
+    	$the_date = $a_shift->get_date();	//date of this shift
     	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
        		$people = $a_shift->get_persons();      //a string of people on shift 		
        		if($a_shift->get_hours() == "night"){	//sets length of shift

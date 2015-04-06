@@ -46,7 +46,6 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 	// 3.  Sum the resulting hours for each day and time (count 4 hours per daytime shift per volunteer, 8 hours for overnight)
 	// 4.  display a table of the results, computing and showing row and column totals totals as shown below
 	
-	
 	$report = get_volunteer_hours($from, $to, $venue);
 //	echo ".....";
 //	echo $report[4]; echo ".....";
@@ -59,7 +58,6 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 //	$num = (int)$entry[3];
 //	echo $num;
 //	echo gettype($report[4]);
-	
 	$row_labels = array("9-1","1-5","5-9","night","Total");
 	$col_labels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun","Total");
 	display_table($col_labels, $row_labels, $report);

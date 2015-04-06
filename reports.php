@@ -83,7 +83,8 @@ $(function() {
 	<p id="search-fields-container">
 	<form id = "search-fields" method="post">
 		<input type="hidden" name="_form_submit" value="report" />
-		<p class = "search-description" id="today"> <b>RMH Providence Volunteer Reports</b><br> Report date: <?php echo Date("F d, Y");?></p>
+		<p class = "search-description" id="today"> <b>RMH Providence Volunteer Reports</b><br> Report date: 
+		<?php date_default_timezone_set ("America/New_York"); echo Date("F d, Y");?></p>
 	<table>	<tr>
 		<td class = "search-description" valign="top"> &nbsp;&nbsp;&nbsp;&nbsp;Select Report Type: 
 		<p>	<select multiple name="report-types[]" id = "report-type" size="5">
