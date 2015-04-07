@@ -146,7 +146,7 @@ function change_password($id, $newPass) {
 
 function update_hours($id, $new_hours) {
     connect();
-    $query = 'UPDATE dbPersons SET hours = "' . implode(",",$new_hours) . '" WHERE id = "' . $id . '"';
+    $query = 'UPDATE dbPersons SET hours = "' . $new_hours . '" WHERE id = "' . $id . '"';
     $result = mysql_query($query);
     mysql_close();
     return $result;
