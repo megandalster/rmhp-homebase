@@ -408,8 +408,40 @@ function get_volunteer_hours($from,$to,$venue){
     }
     
     return $the_hours;
-   	
-    
+}
+
+function get_shifts_staffed($from, $to, $venue) {
+	$the_hours = array();
+	if($venue == ""){
+		$all_shifts = get_all_shifts();
+	}else{
+		connect();
+    	$query = "SELECT * FROM dbShifts WHERE venue LIKE '%" . $venue . "%'";
+    	$result = mysql_query($query);
+    	if ($result == null || mysql_num_rows($result) == 0) {
+        	mysql_close();
+        	return false;
+    	}
+    	$result = mysql_query($query);
+    	$all_shifts = array();
+    	while ($result_row = mysql_fetch_assoc($result)) {
+        	$shift = make_a_shift($result_row);
+        	$all_shifts[] = $shift;
+    	}
+	}
+	
+    foreach($all_shifts as $a_shift){
+    	$the_date = $a_shift->get_date();	//date of this shift
+    	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
+       		$people = $a_shift->get_persons();  
+       		$count = substr_count($people,"+");		//used to count #people on shift
+       		$num_people = $count / 2;
+       		$slots = $a_shift->num_vacancies() + $num_people;
+    		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$a_shift->num_vacancies().":".$slots;
+       		$the_hours[] = $shift_info;
+    	}
+    }
+    return $the_hours;
 }
 
 ?>

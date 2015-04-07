@@ -107,7 +107,7 @@ class Shift {
 
     function num_slots() {
         if (!$this->persons[0])
-            array_shift($this->persons);
+            array_shift($this->persons);  
         return $this->vacancies + count($this->persons);
     }
 
