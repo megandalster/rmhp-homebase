@@ -40,28 +40,23 @@ function show_report() {
 }
 
 function report_volunteer_hours_by_day($from, $to, $venue) { 
-	echo ("<br><b>Total Volunteer Hours Report</b>");
+	if($venue == "house"){
+		$the_venue = "the House";
+	}elseif($venue == "fam"){
+		$the_venue = "the Family Room";
+	}else{
+		$the_venue = "both the House and the Family Room";
+	}
+	echo ("<br><b>Total Volunteer Hours Report from " .$from. " to ".$to." in ".$the_venue.".</b>");
 	// 1.  define a function get_volunteer_hours() in dbShifts to get all shifts staffed for the given date range and venue.	
 	// 2.  call that function -- it should return an array of day:shift pairs containing total number of hours in each entry
 	// 3.  Sum the resulting hours for each day and time (count 4 hours per daytime shift per volunteer, 8 hours for overnight)
 	// 4.  display a table of the results, computing and showing row and column totals totals as shown below
 	
 	$report = get_volunteer_hours($from, $to, $venue);
-//	echo ".....";
-//	echo $report[4]; echo ".....";
-//	echo $report[5]; echo ".....";
-//	echo $report[6]; echo ".....";
-//	echo $report[7]; echo "  ";
-	
-//	$entry = "Mon:9-1:house:8";
-//	$entry = explode(":",$entry);
-//	$num = (int)$entry[3];
-//	echo $num;
-//	echo gettype($report[4]);
 	$row_labels = array("9-1","1-5","5-9","night","Total");
 	$col_labels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun","Total");
-	display_table($col_labels, $row_labels, $report);
-	
+	display_table($col_labels, $row_labels, $report);	
 }
 
 function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
@@ -92,13 +87,12 @@ function report_volunteer_history($from, $to, $venue) {
 
 
 
-function display_table($col_lab, $row_lab, $report){
+function display_table($col_lab, $row_lab, $report){  //Creates a table for the Total Hours report
 	$res = "
 		<table id = 'report'> 
 			<thead>
 			<tr>
 				<td></td>";
-	//row 1
 	$row = "<tr>
 				<td></td>";
 	foreach($col_lab as $col_name){
@@ -121,7 +115,7 @@ function display_table($col_lab, $row_lab, $report){
 					$row .= "<td>".$grand_total."</td>";
 				}else {
 					foreach($report as $entry){
-						$elements = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
+						$elements = explode(":",$entry); 
 						if ($col_name==$elements[0]){
 							$num = (int)$elements[3];
 							$count = $count + $num;
@@ -139,7 +133,7 @@ function display_table($col_lab, $row_lab, $report){
 					$row .= "<td>".$row_total."</td>";
 				}else {
 					foreach($report as $entry){
-						$elements = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
+						$elements = explode(":",$entry); 
 						if ($col_name==$elements[0] && $row_name==$elements[1]){
 							$num = (int)$elements[3];
 							$count = $count + $num;

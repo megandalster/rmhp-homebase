@@ -366,10 +366,8 @@ function date_create_from_mm_dd_yyyy ($mm_dd_yyyy) {
         return mktime(0,0,0,substr($mm_dd_yyyy,0,2),substr($mm_dd_yyyy,3,2),"20".substr($mm_dd_yyyy,6,2));
 }
 
-//returns an array of date:shift:totalhours
+//returns an array of date:shift:venue:totalhours
 function get_volunteer_hours($from,$to,$venue){
-	//$from = strtotime($from);
-	//$to = strtotime($to);
 	$the_hours = array();
 	if($venue == ""){
 		$all_shifts = get_all_shifts();
@@ -388,25 +386,22 @@ function get_volunteer_hours($from,$to,$venue){
         	$all_shifts[] = $shift;
     	}
 	}
-	
     foreach($all_shifts as $a_shift){
-    	$the_date = $a_shift->get_date();	//date of this shift
-    	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
-       		$people = $a_shift->get_persons();      //a string of people on shift 		
-       		if($a_shift->get_hours() == "night"){	//sets length of shift
+    	$the_date = $a_shift->get_date();	
+    	if($the_date >= $from && $the_date <= $to){  
+       		$people = $a_shift->get_persons();       		
+       		if($a_shift->get_hours() == "night"){	
         		$length = 8;
        		}else{
         		$length = 4;
        		}
-       		$count = substr_count($people,"+");		//used to count #people on shift
+       		$count = substr_count($people,"+");		
        		$num_people = $count / 2;
        		$num_hours = $num_people * $length;
        		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$num_hours;
        		$the_hours[] = $shift_info;
-       		 
     	}
-    }
-    
+    }  
     return $the_hours;
 }
 
