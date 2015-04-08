@@ -367,8 +367,8 @@ function date_create_from_mm_dd_yyyy ($mm_dd_yyyy) {
 }
 
 //returns an array of date:shift:venue:totalhours
-function get_volunteer_hours($from,$to,$venue){
-	$the_hours = array();
+
+function get_all_venue_shifts($from, $to, $venue) {
 	if($venue == ""){
 		$all_shifts = get_all_shifts();
 	}else{
@@ -386,6 +386,12 @@ function get_volunteer_hours($from,$to,$venue){
         	$all_shifts[] = $shift;
     	}
 	}
+	return $all_shifts;
+}
+
+function get_volunteer_hours($from,$to,$venue){
+	$the_hours = array();
+	$all_shifts = get_all_venue_shifts($from,$to,$venue);
     foreach($all_shifts as $a_shift){
     	$the_date = $a_shift->get_date();	
     	if($the_date >= $from && $the_date <= $to){  
@@ -407,24 +413,7 @@ function get_volunteer_hours($from,$to,$venue){
 
 function get_shifts_staffed($from, $to, $venue) {
 	$the_hours = array();
-	if($venue == ""){
-		$all_shifts = get_all_shifts();
-	}else{
-		connect();
-    	$query = "SELECT * FROM dbShifts WHERE venue LIKE '%" . $venue . "%'";
-    	$result = mysql_query($query);
-    	if ($result == null || mysql_num_rows($result) == 0) {
-        	mysql_close();
-        	return false;
-    	}
-    	$result = mysql_query($query);
-    	$all_shifts = array();
-    	while ($result_row = mysql_fetch_assoc($result)) {
-        	$shift = make_a_shift($result_row);
-        	$all_shifts[] = $shift;
-    	}
-	}
-	
+	$all_shifts = get_all_venue_shifts($from, $to, $venue);
     foreach($all_shifts as $a_shift){
     	$the_date = $a_shift->get_date();	//date of this shift
     	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
