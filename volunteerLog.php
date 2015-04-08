@@ -48,8 +48,8 @@ $(function() {
 	    	$hours = $person->get_hours();
 			echo '<p> <b>Volunteer Log Sheet </b> for '.$person->get_first_name()." ".$person->get_last_name();
 			echo "<br> Today is ".date('l F j, Y')."</p>"; 
-			echo '<p><table name="log_entries"><tr><td width="170px">Date</td><td width="100px">Start time</td><td width="100px">End time</td><td width="100px">Hours worked</td>
-			      <td width="100px">Venue</td><td>Total</td></tr>';
+			echo '<p><table name="log_entries"><tr><td width="180px">Date</td><td width="102px">Start time</td><td width="102px">End time</td><td width="102px">Hours worked</td>
+			      <td width="140px">Venue</td><td>Total</td></tr>';
 		    echo '</table></p>';
 		    $person = retrieve_person($_GET['id']);
 		    $hours = $person->get_hours();
@@ -57,10 +57,10 @@ $(function() {
 			foreach ($hours as $log_entry) {
 			   $log_details = explode(":",$log_entry);	
 			   echo '<p class=ui-widget id=log-rows>
-		    	    <input type="text" name="date[]" class="date" value='.$log_details[0].'>
-					<input type="text" name="start-time[]" class="start-time"  value='.substr($log_details[1],0,4).' size=10>
-					<input type="text" name="end-time[]" class="end-time" value='.substr($log_details[1],5,4).' size=10>
-					<input type="text" name="hours-worked[]" class="hours-worked" value='.$log_details[3].' size=10 align=right>
+		    	    <input type="text" id = "from" input name="from" class="date" value='.$log_details[0].'>
+					<input type="text" name="start-time[]" class="start-time" size=10 value='.substr($log_details[1],0,4).'>
+					<input type="text" name="end-time[]" class="end-time" size=10 value='.substr($log_details[1],5,4).'>
+					<input type="text" name="hours-worked[]" class="hours-worked" size=10 align=right value='.$log_details[3].'>
 					<select name="venue[]" class="venue">';
 			   		foreach ($venues as $v_name => $v_display) {
 						echo "<option value='" . $v_name . "' ";
@@ -72,9 +72,10 @@ $(function() {
 			   		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$total;
 			   echo "</p>";
 			}
+			
 			// now throw a blank row so that volunteer can make a new entry
 		    echo '<p class=ui-widget id=log-rows>
-		    	    <input type="text" name="date[]" class="date" tabindex=1 >
+		    	    <input type="text" id = "from" input name="from" class="date" tabindex=1 >
 					<input type="text" name="start-time[]" class="start-time" tabindex=2 size=10>
 					<input type="text" name="end-time[]" class="end-time" tabindex=3 size=10>
 					<input type="text" name="hours-worked[]" class="hours-worked" tabindex=4 size=10>
