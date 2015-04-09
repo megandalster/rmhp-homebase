@@ -27,7 +27,7 @@
 </script>
 
 <p>
-	<strong>How to Add People to the Database</strong>
+	<strong>How to Generate Reports</strong>
 <p>
 	<B>Step 1:</B> On the navigation bar at the top of the page, find <B>reports</B>
 	, like this:<BR> <BR> <a href="tutorial/screenshots/reportsstep1.png"
