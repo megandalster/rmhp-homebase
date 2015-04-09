@@ -97,7 +97,7 @@ class Person {
         if ($hrs !== "")
             $this->hours = explode(',', $hrs);
         else
-            $this->hrs = array();
+            $this->hours = array();
 
         $this->birthday = $bd;
         $this->start_date = $sd;
