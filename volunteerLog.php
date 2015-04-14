@@ -25,8 +25,8 @@ include_once('domain/Person.php');
 <script>
 $(function() {
 	$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-	$( "#start-time" ).timepicker();
-	$( "#end-time" ).timepicker();
+	$( "#start_time" ).timepicker({'minTime': '9:00am', 'maxTime': '9:00pm'});
+	$( "#end_time" ).timepicker({'minTime': '9:00am', 'maxTime': '9:00pm'});
 });
 </script>
 </head>
@@ -39,11 +39,11 @@ $(function() {
 	    $person = retrieve_person($_GET['id']);
 		$venues = array('house' => 'House', 'fam' => 'Family Room', 'mealprep' => 'Meal Prep', 'activities' => 'Activities', 'other' => 'Other');
 		if ($_POST['Submit']) {
-			$hours = gather_hours($_POST['date'], $_POST['start-time'], $_POST['end-time'], $_POST['venue'], $_POST['hours-worked']);
+			$hours = gather_hours($_POST['from'], $_POST['start_time'], $_POST['end_time'], $_POST['venue'], $_POST['hours_worked']);
 			update_hours($person->get_id(), $hours);
 	    	echo "Volunteer Log Updated; please remember to log out if finished.<p>";
 	    }
-	    else {
+	//    else {
 	        $person = retrieve_person($_GET['id']);
 	    	$hours = $person->get_hours();
 			echo '<p> <b>Volunteer Log Sheet </b> for '.$person->get_first_name()." ".$person->get_last_name();
@@ -57,10 +57,10 @@ $(function() {
 			foreach ($hours as $log_entry) {
 			   $log_details = explode(":",$log_entry);	
 			   echo '<p class=ui-widget id=log-rows>
-		    	    <input type="text" id = "from" input name="from" class="date" value='.$log_details[0].'>
-					<input type="text" name="start-time[]" class="start-time" size=10 value='.substr($log_details[1],0,4).'>
-					<input type="text" name="end-time[]" class="end-time" size=10 value='.substr($log_details[1],5,4).'>
-					<input type="text" name="hours-worked[]" class="hours-worked" size=10 align=right value='.$log_details[3].'>
+		    	    <input type="text" name="from[]" class="date" value='.$log_details[0].'>
+					<input type="text" name="start_time[]" class="start_time" size=10 value='.substr($log_details[1],0,4).'>
+					<input type="text" name="end_time[]" class="end_time" size=10 value='.substr($log_details[1],5,4).'>
+					<input type="text" name="hours_worked[]" class="hours_worked" size=10 align=right value='.$log_details[3].'>
 					<select name="venue[]" class="venue">';
 			   		foreach ($venues as $v_name => $v_display) {
 						echo "<option value='" . $v_name . "' ";
@@ -75,10 +75,10 @@ $(function() {
 			
 			// now throw a blank row so that volunteer can make a new entry
 		    echo '<p class=ui-widget id=log-rows>
-		    	    <input type="text" id = "from" input name="from" class="date" tabindex=1 >
-					<input type="text" name="start-time[]" class="start-time" tabindex=2 size=10>
-					<input type="text" name="end-time[]" class="end-time" tabindex=3 size=10>
-					<input type="text" name="hours-worked[]" class="hours-worked" tabindex=4 size=10>
+		    	    <input type="text" id="from" name="from[]" class="date" tabindex=1 >
+					<input type="text" id="start_time" name="start_time[]" class="start_time" tabindex=2 size=10>
+					<input type="text" id="end_time" name="end_time[]" class="end_time" tabindex=3 size=10>
+					<input type="text" id="hours_worked" name="hours_worked[]" class="hours_worked" tabindex=4 size=10>
 					<select name="venue[]" class="venue" tabindex=5>';
 					foreach ($venues as $v_name => $v_display) {
 						echo "<option value='" . $v_name . "' ";
@@ -89,12 +89,13 @@ $(function() {
 			echo "</p>";
 	
 		    echo('<p>Hit <input type="submit" value="Submit" name="Submit" tabindex=5> to save these changes.<br /><br />');
-	    }
+	 //   }
 	    // rebuilds the hours array from the form, taking in edits to previous entries and a new entry 
 	    function gather_hours($dates, $start_times, $end_times, $venues, $hours_worked) {
-			$hours = "";
-			for ($i=0;$i<count($dates);$i++) 
-	    		if (valid_entry($dates[$i],$start_times[$i],$end_times[$i],$venues[$i],$hours_worked[$i])) {
+			for ($i=0;$i<count($dates);$i++) {
+				$start_times[$i] = fix_time($start_times[$i]);
+	    		$end_times[$i] = fix_time($end_times[$i]);
+	    		if (valid_entry($dates[$i],$start_times[$i],$end_times[$i],$venues[$i],$hours_worked[$i])) 
 	    			$hours .= ",".$dates[$i].":".$start_times[$i]."-".$end_times[$i].":".$venues[$i].":".$hours_worked[$i];
 	    		}
 			return substr($hours,1);
@@ -111,7 +112,19 @@ $(function() {
 			if ($hours > 0) return true;
 			return false;
 		}
-	    
+		// convert time to 4-digit value -- "9:00am" to "0900" 
+		function fix_time($time) { 	
+			$parts = explode(":",$time);
+			if (count($parts) < 2)
+			    return $time;			// no need to convert
+			if (strpos($parts[1],"am")>0) {
+				if (strlen($parts[0])==1)
+					$parts[0] = "0".$parts[0];
+			}
+			else if ($parts[0]<12)
+			    $parts[0] = intval($parts[0]) + 12;
+			return $parts[0].substr($parts[1],0,2);
+		}
 	    ?>
     </form>
     </div>
