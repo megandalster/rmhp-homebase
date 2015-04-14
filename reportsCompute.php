@@ -76,6 +76,9 @@ function report_volunteer_birthdays($from, $to, $venue) {
 	// 1.  define a function get_birthdays() in dbPersons to get all volunteer birthdays in the given date range and venue.	
 	// 2.  call that function -- it should return an array of last_name:first_name:birth_date triples, sorted alphabetically
 	// 3.  display a table of the results, showing each volunteer's last name, first name, birth date, and current age
+	$report = get_birthdays($from, $to, $venue);
+	//display_birthdays($col_labels,$report);
+	display_birthdays($report);
 }
 
 function report_volunteer_history($from, $to, $venue) {
@@ -83,6 +86,74 @@ function report_volunteer_history($from, $to, $venue) {
 	// 1.  define a function get_logged_hours() in dbPersons to get all volunteer hours logged for the given dates and venue.	
 	// 2.  call that function -- it should return an array of last_name:first_name:date:hours quads, sorted alphabetically
 	// 3.  display a table of the results, adding a separate "total hours" line for each volunteer
+}
+
+
+function display_birthdays($report) { //Creat a table to display birthdays
+	$col_labels = array("Volunteer Name ","Birth Date ","Age ");
+	$res = "
+		<table id = 'report'> 
+			<thead>
+			<tr>";
+	$row = "<tr>";
+	
+	foreach($col_labels as $col_name){
+		$row .= "<td><b>".$col_name."</b></td>";
+	}
+	$row .="</tr>";
+	$res .= $row;
+	$res .= "
+			</thead>
+			<tbody>";
+	
+	$full_names = array();
+	$dobs = array();
+	$ages = array();
+	
+	foreach($report as $key){
+		$entry = explode(":",$key);
+		$last_name = $entry[0];
+		$first_name = $entry[1];	
+		//check if the person's date of birth is known 
+		if (substr($key, -1) != ":" && substr($key, -2) != "XX" ){
+			$birth_date = substr($key, -8);
+			$dob = pretty_date($birth_date);
+			$age = calculate_age($birth_date);
+			$full_name = $first_name . " " . $last_name; 
+			array_push($full_names, $full_name);
+			array_push($dobs, $dob);
+			array_push($ages, $age);
+		}
+	}
+	//below "var_dump"s is just for testing
+	//var_dump($full_names);
+	//var_dump($birth_dates);
+	//var_dump($ages);
+	
+	foreach($full_names as $index=>$row_lab){
+		$row = "<tr>";
+		$row .= "<td>".$full_names[$index]."</td><td>". $dobs[$index] ."</td><td align=right>".$ages[$index]."</td>";
+		$row .= "</tr>";
+		$res .= $row;
+	}
+	$res .= "</tbody></table>";
+	echo $res;
+}
+
+function pretty_date($date){
+	//eg. date is 03-30-78, this function can convert it into "March 30, 1978"
+  	//explode the date to get month, day and year
+	$dob=explode("-",$date); 
+	//if the year is less than 30, we can assume the person was born after 2000; if the year is greater than 30, we can 
+	//assume the person was born before 2000. 
+	if ( ((int) $dob[2] ) <= 30){
+		$dob[2] = "20".$dob[2];  	
+	} else{
+		$dob[2] = "19".$dob[2];
+	}	
+	$dateObj   = DateTime::createFromFormat('!m', $dob[0]);
+	$dob[0] = $dateObj->format('F'); 
+	return $dob[0]." ".$dob[1].", ".$dob[2];
 }
 
 
@@ -230,5 +301,28 @@ function display_vacancies_table($col_lab, $row_lab, $report){
 	echo $res;
 
 }
+
+function calculate_age($date){
+  	//eg. date is 03-30-78
+  	//explode the date to get month, day and year
+	$dob=explode("-",$date); 
+	
+	//if the year is less than 30, we can assume the person was born after 2000; if the year is greater than 30, we can 
+	//assume the person was born before 2000. 
+	if ( ((int) $dob[2] ) <= 30){
+		$dob[2] = "20".$dob[2];  	
+	} else{
+		$dob[2] = "19".$dob[2];
+	}	
+	$curMonth = date("m");
+	$curDay = date("j");
+	$curYear = date("Y");
+	$age = $curYear - $dob[2]; 
+	if($curMonth<$dob[0] || ($curMonth==$dob[1] && $curDay<$dob[1])){ 
+		$age--; 
+	}
+    return $age; 
+}
+
 
 ?>
