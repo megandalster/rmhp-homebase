@@ -44,10 +44,54 @@ $(function() {
 	    	echo "Volunteer Log Updated; please remember to log out if finished.<p>";
 	    }
 	//    else {
-	        $person = retrieve_person($_GET['id']);
-	    	$hours = $person->get_hours();
-			echo '<p> <b>Volunteer Log Sheet </b> for '.$person->get_first_name()." ".$person->get_last_name();
+		
+	    	$person = retrieve_person($_GET['id']);
+		    $hours = $person->get_hours();
+		    echo '<p> <b>Volunteer Log Sheet </b> for '.$person->get_first_name()." ".$person->get_last_name();
 			echo "<br> Today is ".date('l F j, Y')."</p>"; 
+			$total = 0;
+			echo '<p><table name="log_entries" id="spacedRowTable" style="width:40%">';
+			echo '<th align="left">Date</th><th align="left">Start time</th><th align="left">End time</th><th align="left">Hours worked</th><th align="left">Venue</th><th align="left">Total</th><p></p>';
+			
+			/*foreach ($hours as $log_entry) {
+				$log_details = explode(":",$log_entry);	
+				echo '<tr><td>'.$log_details[0].'</td><td>'.substr($log_details[1],0,4).'</td><td>'.substr($log_details[1],5,4).'</td><td>'.$log_details[3].'</td><td>'.$log_details[2].'</td></tr>';
+			}
+			*/
+			
+			foreach ($hours as $log_entry) {
+				$log_details = explode(":",$log_entry);	
+				echo '<tr><td><input type="text" name="from[]" class="date" value='.$log_details[0].'></td>
+					<td><input type="text" name="start_time[]" class="start_time" size=10 value='.substr($log_details[1],0,4).'></td>
+					<td><input type="text" name="end_time[]" class="end_time" size=10 value='.substr($log_details[1],5,4).'></td>
+					<td><input type="text" name="hours_worked[]" class="hours_worked" size=10 align=right value='.$log_details[3].'></td>
+					<td><select name="venue[]" class="venue">';
+			   		foreach ($venues as $v_name => $v_display) {
+						echo "<option value='" . $v_name . "' ";
+						if ($log_details[2]==$v_name) echo "SELECTED ";
+	            		echo ">" . $v_display . "</option>";
+					}
+					$total += $log_details[3];
+					echo '</select></td>';
+					echo '<td>'.$total.'</td></tr>';
+			}
+			echo '<tr><td><input type="text" id = "from" name="from[]" class="date" ></td>
+				<td><input type="text" id="start_time" name="start_time[]" class="start_time" size=10></td>
+				<td><input type="text" id="end_time" name="end_time[]" class="end_time"  size=10></td>
+				<td><input type="text" name="hours-worked[]" class="hours-worked" size=10></td>
+				<td><select name="venue[]" class="venue" tabindex=5>';
+				foreach ($venues as $v_name => $v_display) {
+						echo "<option value='" . $v_name . "' ";
+	            		if ("house"==$v_name) echo "SELECTED ";
+	            		echo ">" . $v_display . "</option>";
+					}
+				echo '</select></td></tr>';
+			echo '</table></p>';
+	        
+			/*
+			$person = retrieve_person($_GET['id']);
+	    	$hours = $person->get_hours();
+
 			echo '<p><table name="log_entries"><tr><td width="180px">Date</td><td width="102px">Start time</td><td width="102px">End time</td><td width="102px">Hours worked</td>
 			      <td width="140px">Venue</td><td>Total</td></tr>';
 		    echo '</table></p>';
@@ -87,7 +131,7 @@ $(function() {
 					}
 					echo '</select>';
 			echo "</p>";
-	
+			*/
 		    echo('<p>Hit <input type="submit" value="Submit" name="Submit" tabindex=5> to save these changes.<br /><br />');
 	 //   }
 	    // rebuilds the hours array from the form, taking in edits to previous entries and a new entry 

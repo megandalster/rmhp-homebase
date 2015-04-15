@@ -41,6 +41,10 @@ table#areport td{
 	padding-right:6px;
 }
 
+table#spacedRowTable td{
+	padding-top:12px;
+}
+
 /* LINK STYLES */
 A			{ color: #001460; text-decoration: none; img-decoration: none; }
 A:link		{ color: #018AFEE; text-decoration: none; img-decoration: none; }
