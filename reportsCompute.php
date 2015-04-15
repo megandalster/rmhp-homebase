@@ -165,7 +165,7 @@ function display_table($col_lab, $row_lab, $report){  //Creates a table for the 
 			<tr>
 				<td></td>";
 	$row = "<tr>
-				<td></td>";
+				<td><b>Shift</b></td>";
 	foreach($col_lab as $col_name){
 		$row .= "<td><b>".$col_name."</b></td>";
 	}
