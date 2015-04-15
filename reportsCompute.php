@@ -32,7 +32,7 @@ function show_report() {
 			report_volunteer_birthdays($from, $to, $venue);
 		}
 	    else if (in_array('history', $_POST['report-types'])) {
-			report_volunteer_history($from, $to, $venue);
+			report_volunteer_history();
 		}
 		else echo "please select a report type";
 	}
@@ -86,10 +86,12 @@ function report_volunteer_history($from, $to, $venue) {
 	// 1.  define a function get_logged_hours() in dbPersons to get all volunteer hours logged for the given dates and venue.	
 	// 2.  call that function -- it should return an array of last_name:first_name:date:hours quads, sorted alphabetically
 	// 3.  display a table of the results, adding a separate "total hours" line for each volunteer
+$report = get_logged_hours();
+display_logged_hours($report);
 }
+	
 
-
-function display_birthdays($report) { //Creat a table to display birthdays
+function display_birthdays($report) { //Create a table to display birthdays
 	$col_labels = array("Volunteer Name ","Birth Date ","Age ");
 	$res = "
 		<table id = 'report'> 
@@ -322,6 +324,70 @@ function calculate_age($date){
 		$age--; 
 	}
     return $age; 
+}
+// 24-hour time to 12-hour time 
+//eg. time is 0900, this function can convert it into "1:00 pm"
+function civil_time($army_time){
+		$time_in_12_hour_format = date("g:i a", strtotime($army_time)); 
+	return $time_in_12_hour_format;
+}
+
+// Improve venue display by using associative array, i.e, turning fam --> "Family Room" 
+function pretty_venue($v){
+	$venue = array("house"=>"House", "fam"=>"Family Room"); 
+	return $venue["$v"];
+}
+
+
+
+//Create a table to display volunteer history report
+function display_logged_hours ($report) { 
+	$col_labels = array("Name","Date","Start time","End time","Venue","Hours Count");
+	$res = "
+		<table id = 'report'> 
+			<thead>
+			<tr>";
+	$row = "<tr>";
+	
+	foreach($col_labels as $col_name){
+		$row .= "<td><b>".$col_name."</b></td>";
+	}
+	$row .="</tr>";
+	$res .= $row;
+	$res .= "
+			</thead>
+			<tbody>";
+	
+	$full_name = array();
+	$first_name = array();
+	$dates = array();
+	$shifts_worked = array();
+	$hours_count = array();
+
+	
+	foreach($report as $key){
+		$entry = explode(";",$key);
+		$last_name = $entry[0];
+		$first_name = $entry[1];
+		$dates = explode(",",$entry[2]);
+		$res .= "<tr><td>".$last_name . ", ". $first_name."</td>";
+		$total_hours=0;
+		foreach ($dates as $date) {
+			$d = explode(":",$date);
+			$total_hours += $d[3];
+			$times = explode(",",$d[1]);
+			foreach ($times as $time) {
+			$t = explode("-",$time);
+			$start_time = civil_time($t[0]);
+			$end_time = civil_time($t[1]);
+			$res .= "<td>".pretty_date($d[0])."</td><td>".$start_time."</td><td>".$end_time."</td><td>".pretty_venue($d[2])."</td><td>".$d[3]."</td></tr><tr><td></td>";
+			}
+		}
+		$res .= "<td></td><td></td><td></td><td><b>Total hours</b></td><td>".$total_hours."</td></tr>";
+	}
+	
+	$res .= "</tbody></table>";
+	echo $res;
 }
 
 

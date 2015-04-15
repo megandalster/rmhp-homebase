@@ -351,4 +351,19 @@ function get_birthdays($from, $to, $venue) {
    	return $thePersons;
 }
 
+//return an array of "last_name;first_name;hours", which is "last_name;first_name;date:start_time-end_time:venue:totalhours"
+// and sorted alphabetically
+function get_logged_hours() {
+	connect();
+   	$query = "SELECT first_name,last_name,hours FROM dbPersons ORDER BY last_name,first_name";
+	$result = mysql_query($query);
+	$thePersons = array();
+	while ($result_row = mysql_fetch_assoc($result)) {
+		if ($result_row['hours']!="")
+    		array_push($thePersons,$result_row['last_name'].";".$result_row['first_name'].";".$result_row['hours']);
+	}
+   	mysql_close();
+   	return $thePersons;
+}
+
 ?>
