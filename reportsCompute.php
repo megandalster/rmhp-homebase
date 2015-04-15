@@ -112,8 +112,8 @@ function display_birthdays($report) { //Creat a table to display birthdays
 	
 	foreach($report as $key){
 		$entry = explode(":",$key);
-		$last_name = $entry[0];
-		$first_name = $entry[1];	
+		$last_name = $entry[1];
+		$first_name = $entry[0];	
 		//check if the person's date of birth is known 
 		if (substr($key, -1) != ":" && substr($key, -2) != "XX" ){
 			$birth_date = substr($key, -8);

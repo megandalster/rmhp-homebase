@@ -341,7 +341,7 @@ function get_birthdays($from, $to, $venue) {
    	$query = "SELECT * FROM dbPersons WHERE first_name LIKE '%" . $name . "%' OR last_name LIKE'%" . $name . "%'".
    	" AND birthday >=". $from." AND birthday <=". $to .
     " AND availability LIKE '%" . $venue . "%'" . 
-    " ORDER BY last_name,first_name";
+    " ORDER BY last_name, first_name";
 	$result = mysql_query($query);
 	$thePersons = array();
 	while ($result_row = mysql_fetch_assoc($result)) {
