@@ -25,6 +25,22 @@ td.searchResults {border: none; font-size:12px; padding-top:3px; padding-bottom:
 table.warningTable{border-collapse:collapse; font-family:verdana, arial, sans-serif; padding-left:0px;}
 td.warningTable{border: none; font-size:12px; padding-top:3px; padding-bottom:3px; padding-left:6px; padding-right:6px;}
 
+table#areport{
+	border-collapse:collapse;
+	vertical-align:middle;
+	font-family:verdana, arial, sans-serif;
+	padding-left:0px;
+}
+table#areport td{
+	border:none;
+	text-align:center;
+	font-size:12px;
+	padding-top:8x;
+	padding-bottom:8px;
+	padding-left:6px;
+	padding-right:6px;
+}
+
 /* LINK STYLES */
 A			{ color: #001460; text-decoration: none; img-decoration: none; }
 A:link		{ color: #018AFEE; text-decoration: none; img-decoration: none; }

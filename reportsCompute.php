@@ -160,7 +160,7 @@ function pretty_date($date){
 
 function display_table($col_lab, $row_lab, $report){  //Creates a table for the Total Hours report
 	$res = "
-		<table id = 'report'> 
+		<table id = 'areport'> 
 			<thead>
 			<tr>
 				<td></td>";
@@ -225,7 +225,7 @@ function display_table($col_lab, $row_lab, $report){  //Creates a table for the 
 
 function display_vacancies_table($col_lab, $row_lab, $report){
 	$res = "
-		<table id = 'report'> 
+		<table id = 'areport'> 
 			<thead>
 			<tr>
 				<td></td>";
