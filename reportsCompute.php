@@ -47,6 +47,9 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 	}else{
 		$the_venue = "both the House and the Family Room";
 	}
+	if($from == ""){$from ="00-00-00";}
+	if($to == ""){$to = date("m-d-y");}
+		
 	echo ("<br><b>Total Volunteer Hours Report from " .$from. " to ".$to." in ".$the_venue.".</b>");
 	// 1.  define a function get_volunteer_hours() in dbShifts to get all shifts staffed for the given date range and venue.	
 	// 2.  call that function -- it should return an array of day:shift pairs containing total number of hours in each entry
@@ -56,7 +59,7 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 	$report = get_volunteer_hours($from, $to, $venue);
 	$row_labels = array("9-1","1-5","5-9","night","Total");
 	$col_labels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun","Total");
-	display_table($col_labels, $row_labels, $report);	
+	display_totals_table($col_labels, $row_labels, $report);	
 }
 
 function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
@@ -160,7 +163,7 @@ function pretty_date($date){
 
 
 
-function display_table($col_lab, $row_lab, $report){  //Creates a table for the Total Hours report
+function display_totals_table($col_lab, $row_lab, $report){  //Creates a table for the Total Hours report
 	$res = "
 		<table id = 'areport'> 
 			<thead>

@@ -389,7 +389,7 @@ function get_all_venue_shifts($from, $to, $venue) {
 	return $all_shifts;
 }
 
-function get_volunteer_hours($from,$to,$venue){
+function get_volunteer_hours($from,$to,$venue){ //Used for Total Hours Report
 	$the_hours = array();
 	$all_shifts = get_all_venue_shifts($from,$to,$venue);
     foreach($all_shifts as $a_shift){
