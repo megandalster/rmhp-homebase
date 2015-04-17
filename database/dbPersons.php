@@ -336,11 +336,9 @@ function get_people_for_export($attr, $first_name, $last_name, $gender, $type, $
 }
 
 //return an array of "last_name:first_name:birth_date", and sorted alphabetically
-function get_birthdays($from, $to, $venue) {
+function get_birthdays($venue) {
 	connect();
-   	$query = "SELECT * FROM dbPersons WHERE first_name LIKE '%" . $name . "%' OR last_name LIKE'%" . $name . "%'".
-   	" AND birthday >=". $from." AND birthday <=". $to .
-    " AND availability LIKE '%" . $venue . "%'" . 
+   	$query = "SELECT * FROM dbPersons WHERE availability LIKE '%" . $venue . "%'" . 
     " ORDER BY last_name, first_name";
 	$result = mysql_query($query);
 	$thePersons = array();

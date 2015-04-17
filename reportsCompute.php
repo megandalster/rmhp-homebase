@@ -74,12 +74,12 @@ function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
 	display_vacancies_table($col_labels, $row_labels, $report);
 }
 
-function report_volunteer_birthdays($from, $to, $venue) {
+function report_volunteer_birthdays($from,$to,$venue) {
 	echo ("<br><b>Volunteer Birthdays Report</b>");
 	// 1.  define a function get_birthdays() in dbPersons to get all volunteer birthdays in the given date range and venue.	
 	// 2.  call that function -- it should return an array of last_name:first_name:birth_date triples, sorted alphabetically
 	// 3.  display a table of the results, showing each volunteer's last name, first name, birth date, and current age
-	$report = get_birthdays($from, $to, $venue);
+	$report = get_birthdays($venue);
 	//display_birthdays($col_labels,$report);
 	display_birthdays($report);
 }
