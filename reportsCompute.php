@@ -63,7 +63,18 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 }
 
 function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
-	echo ("<br><b>Shifts/Vacancies Report</b>");
+	if($venue == "house"){
+		$the_venue = "the House";
+	}elseif($venue == "fam"){
+		$the_venue = "the Family Room";
+	}else{
+		$the_venue = "both the House and the Family Room";
+	}
+	if($from == ""){$from ="00-00-00";}
+	if($to == ""){$to = date("m-d-y");}
+		
+	echo ("<br><b>Shifts/Vacancies Report from " .$from. " to ".$to." in ".$the_venue.".</b>");
+
 	// 1.  define a function get_shifts_staffed() in dbShifts to get all shifts staffed for the given date range and venue.	
 	// 2.  call that function -- it should return an array of day:shift pairs containing a count of the 
 	//     number of shifts with/without vacancies in each entry.  For example, "3/1" means 3 shifts without a vacancy and 1 with a vacancy
