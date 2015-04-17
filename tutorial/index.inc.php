@@ -17,6 +17,9 @@ session_cache_expire(30);
 	<p>
 		<strong>Homebase Help Pages</strong>
 	</p>
+	<p>
+	    <a href="?helpPage=rmhp-homebase/helpPageTemplate.php">Help Page Template</a>
+	</p>
 	<ol>
 		<li><a href="?helpPage=rmhp-homebase/quickStartGuide.php">Quick Start Guide</a>
 		</li>
@@ -27,6 +30,8 @@ session_cache_expire(30);
 		<br>
 		<ul>
 			<li><a href="?helpPage=rmhp-homebase/index.php">About your Personal Home Page</a></li>
+			<li><a href="?helpPage=rmhp-homebase/volunteerLog.php">Logging Your Hours (Volunteers Only)</a></li>
+		
 		</ul>
 		<br>
 		<li><strong>Working with the Volunteer Database</strong> (Managers
