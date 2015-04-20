@@ -59,6 +59,7 @@
 
         //Check if they're at a valid page for their access level.
         $current_page = substr($_SERVER['PHP_SELF'], 1);
+
       /*  echo "current page = ".$current_page;
         if ($permission_array[$current_page] > $_SESSION['access_level']) {
             //in this case, the user doesn't have permission to view this page.
@@ -78,7 +79,10 @@
             echo('<a href="' . $path . 'about.php"><b>about</b></a>');
         }
         if ($_SESSION['access_level'] >= 1)
-            echo(' | <a href="' . $path . 'help.php?helpPage=' . $current_page . '" target="_BLANK"><b>help</b></a>');
+        	if ($_GET['id'] == 'new' && $current_page == 'rmhp-homebase/personEdit.php')
+        		echo(' | <a href="' . $path . 'help.php?helpPage=' . 'rmhp-homebase/personAdd.php' . '" target="_BLANK"><b>help</b></a>');
+            else
+            	echo(' | <a href="' . $path . 'help.php?helpPage=' . $current_page . '" target="_BLANK"><b>help</b></a>');
         if ($_SESSION['access_level'] == 0)
             echo(' | <a href="' . $path . 'personEdit.php?id=' . 'new' . '"><b>apply</b></a>');
         if ($_SESSION['access_level'] >= 1) {
