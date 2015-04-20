@@ -95,7 +95,7 @@ function report_volunteer_birthdays($from,$to,$venue) {
 	display_birthdays($report);
 }
 
-function report_volunteer_history($from, $to, $venue) {
+function report_volunteer_history() {
 	echo ("<br><b>Volunteer History Report</b>");
 	// 1.  define a function get_logged_hours() in dbPersons to get all volunteer hours logged for the given dates and venue.	
 	// 2.  call that function -- it should return an array of last_name:first_name:date:hours quads, sorted alphabetically
