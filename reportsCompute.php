@@ -206,7 +206,7 @@ function display_totals_table($col_lab, $row_lab, $report){  //Creates a table f
 						if ($col_name==$elements[0]){
 							$num = (int)$elements[3];
 							$count = $count + $num;
-							$row_total = $row_total + $count;
+							$row_total = $row_total + $num;
 						}
 					}
 					$row .= "<td>".$count."</td>";
@@ -223,8 +223,8 @@ function display_totals_table($col_lab, $row_lab, $report){  //Creates a table f
 						$elements = explode(":",$entry); 
 						if ($col_name==$elements[0] && $row_name==$elements[1]){
 							$num = (int)$elements[3];
-							$count = $count + $num;
-							$row_total = $row_total + $count;
+							$count += $num;
+							$row_total += $num;
 						}
 					}
 					$row .= "<td>".$count."</td>";
@@ -238,6 +238,8 @@ function display_totals_table($col_lab, $row_lab, $report){  //Creates a table f
 	echo $res;
 
 }
+
+
 
 function display_vacancies_table($col_lab, $row_lab, $report){
 	$res = "
