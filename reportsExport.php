@@ -28,8 +28,6 @@ session_cache_expire(30);
 <body>
 <div id="container"><?php include_once('header.php'); ?>
 <div id="content"><?php
-include_once('domain/Shift.php');
-include_once('database/dbShifts.php');
 include_once('domain/Person.php');
 include_once('database/dbPersons.php');
 
@@ -169,5 +167,6 @@ function export_data($current_time, $search_attr, $export_data) {
 
 ?></div>
 </div>
+        <?PHP include('footer.inc'); ?>
 </body>
 </html>

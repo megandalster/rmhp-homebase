@@ -84,7 +84,7 @@ $(function() {
 	<p id="search-fields-container">
 	<form id = "search-fields" method="post">
 		<input type="hidden" name="_form_submit" value="report" />
-		<p class = "search-description" id="today"> <b>RMH Providence Volunteer Reports</b><br> Report date: 
+		<p class = "search-description" id="today"> <b>RMH Providence Volunteer Reports</b><br> Today's date: 
 		<?php date_default_timezone_set ("America/New_York"); echo Date("F d, Y");?></p>
 	<table>	<tr>
 		<td class = "search-description" valign="top"> &nbsp;&nbsp;&nbsp;&nbsp;Select Report Type: 
@@ -108,8 +108,7 @@ $(function() {
 		<td valign="top">
 	To view the report <br><br>Hit <input type="submit" value="submit" id ="report-submit" class ="btn">
 	</td><td valign="top">
-	<p>To save the report <p>Hit <input type="submit" value="PDF" id ="report-pdf" class ="btn">
-						 or <input type="submit" value="CSV" id ="report-csv" class ="btn">
+	<p>To export data <p>Hit <input type="submit" value="export" id ="report-export" class ="btn">
 	</td>
 	</tr>
 	</table>
@@ -120,5 +119,6 @@ $(function() {
 </div>
 </div>
 </div>
+        <?PHP include('footer.inc'); ?>
 
 </body>

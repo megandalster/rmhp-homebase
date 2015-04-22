@@ -11,8 +11,9 @@ include_once('domain/Person.php');
 include_once('database/dbShifts.php');
 include_once('domain/Shift.php');
 
-if (isset($_POST['_form_submit']) && $_POST['_form_submit'] == 'report') {
-	show_report();
+if (isset($_POST['_form_submit'])) {
+	if  ($_POST['_form_submit'] == 'report')
+		show_report();
 }
 
 function show_report() {
@@ -40,17 +41,16 @@ function show_report() {
 }
 
 function report_volunteer_hours_by_day($from, $to, $venue) { 
-	if($venue == "house"){
-		$the_venue = "the House";
-	}elseif($venue == "fam"){
-		$the_venue = "the Family Room";
-	}else{
-		$the_venue = "both the House and the Family Room";
-	}
 	if($from == ""){$from ="00-00-00";}
 	if($to == ""){$to = date("m-d-y");}
 		
-	echo ("<br><b>Total Volunteer Hours Report from " .$from. " to ".$to." in ".$the_venue.".</b>");
+	echo "<br><b>Total Volunteer Hours Report</b><br>"; 
+	if ($from!="00-00-00")
+		echo " from " .pretty_date($from);
+	if ($to!="")
+		echo " through ".pretty_date($to);
+	echo " for the ".pretty_venue($venue).".";
+
 	// 1.  define a function get_volunteer_hours() in dbShifts to get all shifts staffed for the given date range and venue.	
 	// 2.  call that function -- it should return an array of day:shift pairs containing total number of hours in each entry
 	// 3.  Sum the resulting hours for each day and time (count 4 hours per daytime shift per volunteer, 8 hours for overnight)
@@ -63,17 +63,15 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 }
 
 function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
-	if($venue == "house"){
-		$the_venue = "the House";
-	}elseif($venue == "fam"){
-		$the_venue = "the Family Room";
-	}else{
-		$the_venue = "both the House and the Family Room";
-	}
 	if($from == ""){$from ="00-00-00";}
 	if($to == ""){$to = date("m-d-y");}
 		
-	echo ("<br><b>Shifts/Vacancies Report from " .$from. " to ".$to." in ".$the_venue.".</b>");
+	echo "<br><b>Shifts/Vacancies Report</b><br>"; 
+	if ($from!="00-00-00")
+		echo " from " .pretty_date($from);
+	if ($to!="")
+		echo " through ".pretty_date($to);
+	echo " for the ".pretty_venue($venue).".";
 
 	// 1.  define a function get_shifts_staffed() in dbShifts to get all shifts staffed for the given date range and venue.	
 	// 2.  call that function -- it should return an array of day:shift pairs containing a count of the 
@@ -86,7 +84,8 @@ function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
 }
 
 function report_volunteer_birthdays($from,$to,$venue) {
-	echo ("<br><b>Volunteer Birthdays Report</b>");
+	echo ("<br><b>Volunteer Birthdays Report</b><br> Report date: ");
+	echo date("F d, Y")."<br><br>";
 	// 1.  define a function get_birthdays() in dbPersons to get all volunteer birthdays in the given date range and venue.	
 	// 2.  call that function -- it should return an array of last_name:first_name:birth_date triples, sorted alphabetically
 	// 3.  display a table of the results, showing each volunteer's last name, first name, birth date, and current age
@@ -96,7 +95,8 @@ function report_volunteer_birthdays($from,$to,$venue) {
 }
 
 function report_volunteer_history() {
-	echo ("<br><b>Volunteer History Report</b>");
+	echo ("<br><b>Volunteer History Report</b><br> Report date: ");
+	echo date("F d, Y")."<br><br>";
 	// 1.  define a function get_logged_hours() in dbPersons to get all volunteer hours logged for the given dates and venue.	
 	// 2.  call that function -- it should return an array of last_name:first_name:date:hours quads, sorted alphabetically
 	// 3.  display a table of the results, adding a separate "total hours" line for each volunteer
@@ -166,9 +166,11 @@ function pretty_date($date){
 		$dob[2] = "20".$dob[2];  	
 	} else{
 		$dob[2] = "19".$dob[2];
-	}	
+	}
+    if ( ((int) $dob[1] ) < 10)
+		$dob[1] = substr($dob[1],1);  		
 	$dateObj   = DateTime::createFromFormat('!m', $dob[0]);
-	$dob[0] = $dateObj->format('F'); 
+	$dob[0] = $dateObj->format('M'); 
 	return $dob[0]." ".$dob[1].", ".$dob[2];
 }
 
@@ -350,15 +352,14 @@ function civil_time($army_time){
 
 // Improve venue display by using associative array, i.e, turning fam --> "Family Room" 
 function pretty_venue($v){
-	$venue = array("house"=>"House", "fam"=>"Family Room"); 
-	return $venue["$v"];
+	$venue = array('house' => 'House', 'fam' => 'Family Room', 'mealprep' => 'Meal Prep', 
+	            'activities' => 'Activities', 'other' => 'Other', ""=>"House and Family Room");
+		return $venue["$v"];
 }
-
-
 
 //Create a table to display volunteer history report
 function display_logged_hours ($report) { 
-	$col_labels = array("Name","Date","Start time","End time","Venue","Hours Count");
+	$col_labels = array("Name","Date","Start time","End time","Venue","Hours");
 	$res = "
 		<table id = 'report'> 
 			<thead>
@@ -396,15 +397,31 @@ function display_logged_hours ($report) {
 			$t = explode("-",$time);
 			$start_time = civil_time($t[0]);
 			$end_time = civil_time($t[1]);
-			$res .= "<td>".pretty_date($d[0])."</td><td>".$start_time."</td><td>".$end_time."</td><td>".pretty_venue($d[2])."</td><td>".$d[3]."</td></tr><tr><td></td>";
+			$res .= "<td align=right>".pretty_date($d[0])."</td><td align=right>".$start_time."</td><td align=right>".$end_time."</td><td>".
+			pretty_venue($d[2])."</td><td align=right>".$d[3]."</td></tr><tr><td></td>";
 			}
 		}
-		$res .= "<td></td><td></td><td></td><td><b>Total hours</b></td><td>".$total_hours."</td></tr>";
+		$res .= "<td></td><td></td><td></td><td><b>Total hours</b></td><td align=right>".$total_hours."</td></tr>";
 	}
 	
 	$res .= "</tbody></table>";
 	echo $res;
 }
-
+function export_report($current_time, $search_attr, $export_data) {
+	echo "now we need to export the report";
+	$filename = "dataexport.csv";
+	$handle = fopen($filename, "w");
+	fputcsv($handle, $current_time);
+	fputcsv($handle, $search_attr, ',');
+	foreach ($export_data as $person_data) 
+	   if (count($person_data)>1 && $person_data[1]!="") // anything more than the id, export it, otherwise skip it
+	       fputcsv($handle, $person_data, ',','"');
+	if (in_array("history",$search_attr)) { // split history into several lines per person 
+	   $people_in_past_shifts = get_all_peoples_histories();
+	   foreach ($people_in_past_shifts as $p=>$history) 
+	        fputcsv($handle, array($p,$history),',','"');  
+	}
+	fclose($handle);
+}
 
 ?>
