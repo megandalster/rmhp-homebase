@@ -21,7 +21,8 @@ function show_report() {
 	$from = $_POST["from"];
 	$to   = $_POST["to"];
 	$venue   = $_POST["venue"];
-
+	$export = $_POST["reports_export"];
+	
 	if (isset($_POST['report-types'])) {
 		if (in_array('volunteer-hours', $_POST['report-types'])) {
 			report_volunteer_hours_by_day($from, $to, $venue);
@@ -29,15 +30,16 @@ function show_report() {
 	    else if (in_array('shifts-staffed-vacant', $_POST['report-types'])) {
 			report_shifts_staffed_vacant_by_day($from, $to, $venue);
 		}
-	    else if (in_array('birthdays', $_POST['report-types'])) {
-			report_volunteer_birthdays($from, $to, $venue);
+		else if (in_array('birthdays', $_POST['report-types'])) {
+				report_volunteer_birthdays($from, $to, $venue);
 		}
 	    else if (in_array('history', $_POST['report-types'])) {
-			report_volunteer_history();
+				report_volunteer_history();
+	    }
+		if (in_array('volunteers', $_POST['report-types'])) {
+				report_all_volunteers($export);	
 		}
-		else echo "please select a report type";
 	}
-
 }
 
 function report_volunteer_hours_by_day($from, $to, $venue) { 
@@ -51,15 +53,10 @@ function report_volunteer_hours_by_day($from, $to, $venue) {
 		echo " through ".pretty_date($to);
 	echo " for the ".pretty_venue($venue).".";
 
-	// 1.  define a function get_volunteer_hours() in dbShifts to get all shifts staffed for the given date range and venue.	
-	// 2.  call that function -- it should return an array of day:shift pairs containing total number of hours in each entry
-	// 3.  Sum the resulting hours for each day and time (count 4 hours per daytime shift per volunteer, 8 hours for overnight)
-	// 4.  display a table of the results, computing and showing row and column totals totals as shown below
-	
 	$report = get_volunteer_hours($from, $to, $venue);
 	$row_labels = array("9-1","1-5","5-9","night","Total");
 	$col_labels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun","Total");
-	display_totals_table($col_labels, $row_labels, $report);	
+	display_totals_table($col_labels, $row_labels, $report, $export);	
 }
 
 function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
@@ -73,40 +70,38 @@ function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
 		echo " through ".pretty_date($to);
 	echo " for the ".pretty_venue($venue).".";
 
-	// 1.  define a function get_shifts_staffed() in dbShifts to get all shifts staffed for the given date range and venue.	
-	// 2.  call that function -- it should return an array of day:shift pairs containing a count of the 
-	//     number of shifts with/without vacancies in each entry.  For example, "3/1" means 3 shifts without a vacancy and 1 with a vacancy
-	// 3.  display a table of the results, with row and column headings and totals shown below
 	$report = get_shifts_staffed($from, $to, $venue);
 	$row_labels = array("9-1","1-5","5-9","night","Total");
 	$col_labels = array("Mon","Tue","Wed","Thu","Fri","Sat","Sun","Total");
-	display_vacancies_table($col_labels, $row_labels, $report);
+	display_vacancies_table($col_labels, $row_labels, $report, $export);
 }
 
-function report_volunteer_birthdays($from,$to,$venue) {
-	echo ("<br><b>Volunteer Birthdays Report</b><br> Report date: ");
+function report_volunteer_birthdays($from,$to,$venue,$export) {
+	echo ("<br><b>Volunteer Birthdays Report</b> (ordered by month) <br> Report date: ");
 	echo date("F d, Y")."<br><br>";
-	// 1.  define a function get_birthdays() in dbPersons to get all volunteer birthdays in the given date range and venue.	
-	// 2.  call that function -- it should return an array of last_name:first_name:birth_date triples, sorted alphabetically
-	// 3.  display a table of the results, showing each volunteer's last name, first name, birth date, and current age
+	
 	$report = get_birthdays($venue);
 	//display_birthdays($col_labels,$report);
-	display_birthdays($report);
+	display_birthdays($report, $export);
 }
 
-function report_volunteer_history() {
+function report_volunteer_history($export) {
 	echo ("<br><b>Volunteer History Report</b><br> Report date: ");
 	echo date("F d, Y")."<br><br>";
-	// 1.  define a function get_logged_hours() in dbPersons to get all volunteer hours logged for the given dates and venue.	
-	// 2.  call that function -- it should return an array of last_name:first_name:date:hours quads, sorted alphabetically
-	// 3.  display a table of the results, adding a separate "total hours" line for each volunteer
-$report = get_logged_hours();
-display_logged_hours($report);
-}
 	
+	$report = get_logged_hours();
+    display_logged_hours($report, $export);
+}
 
-function display_birthdays($report) { //Create a table to display birthdays
-	$col_labels = array("Volunteer Name ","Birth Date ","Age ");
+function report_all_volunteers($export) {
+	echo ("<br><b>Volunteer Contact Info</b><br> Report date: ");
+	echo date("F d, Y")."<br><br>";
+	$report = getall_dbPersons();
+	display_volunteers($report, $export);
+}
+
+function display_birthdays($report, $export) { //Create a table to display birthdays
+	$col_labels = array("Volunteer Name ","Address", "City", "State", "Zip", "Birth Date ","Age ");
 	$res = "
 		<table id = 'report'> 
 			<thead>
@@ -125,35 +120,35 @@ function display_birthdays($report) { //Create a table to display birthdays
 	$full_names = array();
 	$dobs = array();
 	$ages = array();
-	
-	foreach($report as $key){
-		$entry = explode(":",$key);
-		$last_name = $entry[1];
-		$first_name = $entry[0];	
+	echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';
+				       
+	foreach($report as $person){
 		//check if the person's date of birth is known 
-		if (substr($key, -1) != ":" && substr($key, -2) != "XX" ){
-			$birth_date = substr($key, -8);
-			$dob = pretty_date($birth_date);
-			$age = calculate_age($birth_date);
-			$full_name = $first_name . " " . $last_name; 
-			array_push($full_names, $full_name);
-			array_push($dobs, $dob);
-			array_push($ages, $age);
+		if (strlen($person->get_birthday()) == 8 && substr($person->get_birthday(), 6) != "XX" ){
+			$dob = pretty_date($person->get_birthday());
+			$age = calculate_age($person->get_birthday());
 		}
-	}
-	//below "var_dump"s is just for testing
-	//var_dump($full_names);
-	//var_dump($birth_dates);
-	//var_dump($ages);
-	
-	foreach($full_names as $index=>$row_lab){
-		$row = "<tr>";
-		$row .= "<td>".$full_names[$index]."</td><td>". $dobs[$index] ."</td><td align=right>".$ages[$index]."</td>";
-		$row .= "</tr>";
-		$res .= $row;
+		elseif (strlen($person->get_birthday()) == 8){
+			$dob = pretty_date($person->get_birthday());
+			$age = "N/A";
+		}
+		else {
+			$dob = "N/A";
+			$age = "N/A";
+		}
+		if ($dob != "N/A") {
+			$row = "<tr>";
+			$row .= "<td>".$person->get_first_name()." ".$person->get_last_name().
+					"</td><td>".$person->get_address() ."</td><td>".$person->get_city()."</td>". 
+			        "</td><td>".$person->get_state() ."</td><td>".$person->get_zip()."</td>". 
+			        "</td><td>".$dob ."</td><td align=right>".$age."</td>";
+			$row .= "</tr>";
+			$res .= $row;
+		}
 	}
 	$res .= "</tbody></table>";
 	echo $res;
+	echo "</div>";
 }
 
 function pretty_date($date){
@@ -162,7 +157,9 @@ function pretty_date($date){
 	$dob=explode("-",$date); 
 	//if the year is less than 30, we can assume the person was born after 2000; if the year is greater than 30, we can 
 	//assume the person was born before 2000. 
-	if ( ((int) $dob[2] ) <= 30){
+	if ($dob[2]=="XX")
+	    $dob[2] = "19XX";
+	elseif ( ((int) $dob[2] ) <= 30){
 		$dob[2] = "20".$dob[2];  	
 	} else{
 		$dob[2] = "19".$dob[2];
@@ -238,10 +235,7 @@ function display_totals_table($col_lab, $row_lab, $report){  //Creates a table f
 	}
 	$res .= "</tbody></table>";
 	echo $res;
-
 }
-
-
 
 function display_vacancies_table($col_lab, $row_lab, $report){
 	$res = "
@@ -319,7 +313,6 @@ function display_vacancies_table($col_lab, $row_lab, $report){
 	}
 	$res .= "</tbody></table>";
 	echo $res;
-
 }
 
 function calculate_age($date){
@@ -358,7 +351,7 @@ function pretty_venue($v){
 }
 
 //Create a table to display volunteer history report
-function display_logged_hours ($report) { 
+function display_logged_hours ($report, $export) { 
 	$col_labels = array("Name","Date","Start time","End time","Venue","Hours");
 	$res = "
 		<table id = 'report'> 
@@ -381,7 +374,8 @@ function display_logged_hours ($report) {
 	$shifts_worked = array();
 	$hours_count = array();
 
-	
+	echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';
+				       
 	foreach($report as $key){
 		$entry = explode(";",$key);
 		$last_name = $entry[0];
@@ -406,7 +400,45 @@ function display_logged_hours ($report) {
 	
 	$res .= "</tbody></table>";
 	echo $res;
+	echo "</div>";
 }
+
+//Create a table to display volunteer contact info
+function display_volunteers ($report, $export) { 
+	$col_labels = array("Name","Address","City","State","Zip","Phone 1", "Phone 2", "Work Phone", "Email","Start Date", "End Date", "Reason Left", "Notes");
+	$res = "
+		<table id = 'report'> 
+			<thead>
+			<tr>";
+	$row = "<tr>";
+	
+	foreach($col_labels as $col_name){
+		$row .= "<td><b>".$col_name."</b></td>";
+	}
+	$row .="</tr>";
+	$res .= $row;
+	$res .= "
+			</thead>
+			<tbody>";
+	
+	echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';
+				       
+	foreach($report as $person){
+		$res .= "<tr><td>".$person->get_last_name() . ", ". $person->get_first_name()."</td>".
+		"<td>".$person->get_address() . "</td><td>". $person->get_city()."</td>".
+		"<td>".$person->get_state() . "</td><td>". $person->get_zip()."</td>".
+		"<td>".$person->get_phone1() . "</td><td>". $person->get_phone2()."</td>".
+		"<td>".$person->get_work_phone() . "</td><td>". $person->get_email()."</td><td>".$person->get_start_date()."</td>".
+		"<td>".$person->get_end_date() . "</td><td>". $person->get_reason_left()."</td>".
+		"<td>".$person->get_notes() . "</td>";
+		$res .= "</tr>";
+	}
+	
+	$res .= "</tbody></table>";
+	echo $res;
+	echo "</div>";
+}
+
 function export_report($current_time, $search_attr, $export_data) {
 	echo "now we need to export the report";
 	$filename = "dataexport.csv";

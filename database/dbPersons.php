@@ -335,15 +335,16 @@ function get_people_for_export($attr, $first_name, $last_name, $gender, $type, $
 
 }
 
-//return an array of "last_name:first_name:birth_date", and sorted alphabetically
+//return an array of "last_name:first_name:birth_date", and sorted by month and day
 function get_birthdays($venue) {
 	connect();
    	$query = "SELECT * FROM dbPersons WHERE availability LIKE '%" . $venue . "%'" . 
-    " ORDER BY last_name, first_name";
+    " ORDER BY birthday";
 	$result = mysql_query($query);
 	$thePersons = array();
 	while ($result_row = mysql_fetch_assoc($result)) {
-    	array_push($thePersons,$result_row['first_name'].":".$result_row['last_name'].":".$result_row['birthday']);
+    	$thePerson = make_a_person($result_row);
+        $thePersons[] = $thePerson;
 	}
    	mysql_close();
    	return $thePersons;

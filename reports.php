@@ -91,13 +91,18 @@ $(function() {
 		<p>	<select multiple name="report-types[]" id = "report-type" size="5">
 	  		<option value="volunteer-hours">Total Hours</option>
 	  		<option value="shifts-staffed-vacant">Shifts/Vacancies</option>
-	  		<option value="birthdays">Birthdays</option>
-	  		<option value="history">Volunteer History</option>
+	  		<option value="birthdays">* Volunteer Birthdays</option>
+	  		<option value="history">* Volunteer History</option>
+	  		<option value="volunteers">* Volunteer Contact Info</option>
 			</select>
 		</td>
 		<td class = "search-description" valign="top">&nbsp;&nbsp; Date Range: 
-			<p id="fromto"> from : <input name = "from" type="text" id="from"><br>
-							&nbsp;&nbsp;&nbsp;&nbsp;to : <input name = "to" type="text" id="to"></p>
+			<p id="fromto"> from : <input name = "from" type="text" size="10" id="from"><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;to : <input name = "to" type="text" size="10" id="to"></p>
+		</td>
+		<td class = "search-description" valign="top">&nbsp;&nbsp; Last Name Range: 
+			<p id="fromto"> from : <input name = "name_from" type="text" size="10" id="name_from"><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;to : <input name = "name_to" type="text" size="10" id="name_to"></p>
 		</td>
 		<td class = "search-description" valign="top"> &nbsp;&nbsp;&nbsp;&nbsp;Venue:
 		    <p id="venue-input"> <select name="venue" id = "report-venue">
@@ -105,10 +110,15 @@ $(function() {
 	  		<option value="house">House</option>
 	  		<option value="fam">Family Room</option></select></p>
 		</td>
-		<td valign="top">
-	To view the report <br><br>Hit <input type="submit" value="submit" id ="report-submit" class ="btn">
-	</td><td valign="top">
-	<p>To export data <p>Hit <input type="submit" value="export" id ="report-export" class ="btn">
+		
+	</tr>
+	<tr>
+	<td></td>
+	<td valign="top">
+	<p>To view report, hit <input type="submit" value="submit" id ="report-submit" class ="btn">.</p>
+	</td>
+	<td colspan=2 valign="top">
+	<p>* To export this report to a CSV file, check here: <input type="checkbox" value="export" id ="report-export"></p>
 	</td>
 	</tr>
 	</table>
