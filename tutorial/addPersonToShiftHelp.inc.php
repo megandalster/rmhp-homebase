@@ -31,7 +31,7 @@
 	<strong>Adding/Removing a Volunteer from a Shift</strong>
 <p>
 	To begin, you must have already selected <strong>(edit this week)</strong>
-	at the top of the calendar:
+	at the top left of the calendar:
 <p>
 	<B>Step 1:</B> Click on a calendar shift, like this:<BR> <BR> <a
 		href="tutorial/screenshots/addSlotToShiftHelp_choose_shift.png"

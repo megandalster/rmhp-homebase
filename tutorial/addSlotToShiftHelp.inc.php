@@ -30,7 +30,7 @@
 	<strong>How to Add or Remove a Slot from a Shift</strong>
 <p>
 	To begin, you must have already selected <strong>(edit this week)</strong>
-	at the top of the calendar:
+	on the top left of the calendar:
 <p>
 	<B>Step 1:</B> Click on a calendar shift, like this:<BR> <BR> <a
 		href="tutorial/screenshots/addSlotToShiftHelp_choose_shift.png"
@@ -79,7 +79,7 @@
 		data-img="tutorial/screenshots/addSlotToShiftHelp_new_volunteer.png"
 		width="10%" border="1px" align="center"> </a>
 <p>
-	<B>Step 5:</B> To remove a vacant slot from a shift, click on the <b>Ignore
+	<B>Step 5:</B> To remove a vacant slot from a shift, click on the <b>Remove
 		Vacancy</b> button to the right of that slot, like this.<BR> <BR> <a
 		href="tutorial/screenshots/addSlotToShiftHelp_remove_vacancy.png"
 		class="image" title="addSlotToShiftHelp_remove_vacancy.png"
