@@ -57,8 +57,8 @@
 		border="1px" align="middle"> </a>
 </p>
 <p>
-	Another option is to search for a particular type of people, like "Sub"
-	or "Guest Chef".<BR> <BR> <a
+	Another option is to search for a particular type of people, like "Manager"
+	or "Meal Prep".<BR> <BR> <a
 		href="tutorial/screenshots/searchpersonstep2-2.png" class="image"
 		title="searchpersonstep2-2.png" horizontalalign="center"
 		target="tutorial/screenshots/searchpersonstep2-2.png">
@@ -68,8 +68,8 @@
 		border="1px" align="middle"> </a>
 </p>
 <p>
-	Yet another option is to search by availability. Remember, you can
-	always search with more than one criterion. <BR> <BR> <a
+	Yet another option is to search by availability. 
+	Remember, you can always search with more than one criterion. <BR> <BR> <a
 		href="tutorial/screenshots/searchpersonstep2-3.png" class="image"
 		title="searchpersonstep2-3.png" horizontalalign="center"
 		target="tutorial/screenshots/searchpersonstep2-3.png">
@@ -81,7 +81,7 @@
 
 <p>
 	<B>Step 3:</B> After typing your criteria in the appropriate box,
-	select the <B>Search</B> button, like this:<BR> <BR> <a
+	click on the <B>Search</B> button, like this:<BR> <BR> <a
 		href="tutorial/screenshots/searchpersonstep3.png" class="image"
 		title="searchpersonstep3.png"
 		target="tutorial/screenshots/searchpersonstep3.png">
@@ -92,7 +92,8 @@
 </p>
 <p>
 	<B>Step 4:</B> Now you will see a list of the names in the database
-	that match your search criteria, like this:<BR> <BR> <a
+	that match your search criteria, and their phone numbers will appear next to their names, 
+	like this:<BR> <BR> <a
 		href="tutorial/screenshots/searchpersonstep4.png" class="image"
 		title="searchpersonstep4.png"
 		target="tutorial/screenshots/searchpersonstep4.png">
@@ -101,18 +102,8 @@
 		rel="popover" data-img="tutorial/screenshots/searchpersonstep4.png"
 		border="1px" align="middle"> </a>
 <p>
-	Note that the person's phone number will appear next to his/her name: <BR>
-	<BR> <a href="tutorial/screenshots/searchpersonstep4-2.png"
-		class="image" title="searchpersonstep4.png"
-		target="tutorial/screenshots/searchpersonstep4-2.png">
-		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/searchpersonstep4-2.png" width="10%"
-		rel="popover" data-img="tutorial/screenshots/searchpersonstep4-2.png"
-		border="1px" align="middle"> </a>
-</p>
-<p>
 	If you see the person you want to view or edit, then <B>click on</B>
-	that person's name. <br>
+	that person's name, and you will be directed to his/her Edit Page. <br>
 <p>
 	<B>Step 5:</B> If you don't see what you were looking for, you can try
 	again by repeating <B>Step 2</B>. <BR> <BR>
