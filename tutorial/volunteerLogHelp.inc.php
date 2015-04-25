@@ -27,69 +27,93 @@
 <p>
 	<strong>HOW TO LOG YOUR HOURS </strong> </p>
 	<p>
-	>>> Sometimes a brief paragraph describing the task is useful here.
+	>>> The Volunteer Hours Log is where volunteers can keep a record of their volunteer history.<br>
+	Each entry icludes the date, start and end times, hours volunteered, and location of their shift, as well as total hours to date.<br>
+	Managers are also able to view and edit volunteers' hours.<br><br>
+	<B>Managers:</B> For instructions on navigating to the Log Sheet, see <B>Step 5</B>.<br><br>
 	</p>
 <p>
-	<B>Step 1:</B> >>>Usually the first step is for the user to select a particular tab on the navigation bar<BR> <BR> <a
-		href="tutorial/screenshots/searchpersonstep1.png" class="image"
-		title="searchpersonstep1.png"
-		target="tutorial/screenshots/searchpersonstep1.png">
+	<B>Step 1:</B> >>> After you have logged in, select "here" in View/Update your Log Sheet to go to your log sheet.<BR> <BR> <a
+		href="tutorial/screenshots/LogHoursStep1.png" class="image"
+		title="LogHoursStep1.png" horizontalalign="center"
+		target="tutorial/screenshots/LogHoursStep1.png">
 		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/searchpersonstep1.png" width="10%"
-		rel="popover" data-img="tutorial/screenshots/searchpersonstep1.png"
+		src="tutorial/screenshots/LogHoursStep1" width="10%"
+		rel="popover" data-img="tutorial/screenshots/LogHoursStep1.png"
 		border="1px" align="middle"> </a>
-<br><br>>>> The code for showing an image is standardized.  Just fill in the path to the image in the tutorial/screenshots
-folder.  To make the image take a screenshot in .png format of what you are illustrating in this step.  <br> 
+ 
 </p>
 <p>
-	<B>Step 2:</B> >>>Each additional step is usually an HTML paragraph with <b>Step n.</b> as a prefix.
+	<B>Step 2:</B> >>> If this is your first time logging hours, only a blank row will appear.  Otherwise, the blank row will be below your previously submitted entries..
 <p>
 	<a
-		href="tutorial/screenshots/searchpersonstep2.png" class="image"
-		title="searchpersonstep2.png" horizontalalign="center"
-		target="tutorial/screenshots/searchpersonstep2.png">
+		href="tutorial/screenshots/LogHoursStep2.png" class="image"
+		title="LogHoursStep2.png" horizontalalign="center"
+		target="tutorial/screenshots/LogHoursStep2.png">
 		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/searchpersonstep2.png" width="10%"
-		rel="popover" data-img="tutorial/screenshots/searchpersonstep2.png"
+		src="tutorial/screenshots/LogHoursStep2.png" width="10%"
+		rel="popover" data-img="tutorial/screenshots/LogHoursStep2.png"
 		border="1px" align="middle"> </a>
 </p>
-<p>>>>When are choices inside of a step, show 2 or 3 of them<br>
+<p>
+	<B>Step 3:</B> >>> Logging Your Shift: In the blank row, select the date, start time, and end time of your shift.
+<p>
+	<a
+		href="tutorial/screenshots/LogHoursStep3_date.png" class="image"
+		title="LogHoursStep3_date.png" horizontalalign="center"
+		target="tutorial/screenshots/LogHoursStep3_date.png">
+		&nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/LogHoursStep3_date.png" width="10%"
+		rel="popover" data-img="tutorial/screenshots/LogHoursStep3_date.png"
+		border="1px" align="middle"> </a>
+</p>
+
+
+
+<p>>>> To enter times, you may either use the drop-down menu or enter them manually.<br>
+	 <a
+		href="tutorial/screenshots/LogHoursStep3_time.png" class="image"
+		title="LogHoursStep3_time.png" horizontalalign="center"
+		target="tutorial/screenshots/LogHoursStep3_time.png">
+		&nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/LogHoursStep3_time.png" width="10%"
+		rel="popover" data-img="tutorial/screenshots/LogHoursStep3_time.png"
+		border="1px" align="middle"> </a>
+</p>
+<p>
+	>>> Enter the number of hours you volunteered, and make sure that the correct venue is selected.  <BR> <BR> 
+</p>
+
+<p>
+	<B>Step 4:</B> >>> Select "Submit" to save your new entry.  The page will refresh with 
+	this entry saved and a new blank row available.<BR> <BR> <a
+		href="tutorial/screenshots/LogHoursStep4.png" class="image"
+		title="LogHoursStep4.png"
+		target="tutorial/screenshots/LogHoursStep4.png">
+		&nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/LogHoursStep4.png" width="10%"
+		rel="popover" data-img="tutorial/screenshots/LogHoursStep4.png"
+		border="1px" align="middle"> </a>
+</p>
+
+
+<p>
+	<B>Step 5:</B> >>> <B>Managers:</B>  To find the Log Sheet for a volunteer, use the volunteer search page, select the person,
+	then select "View Log Sheet."  Then see Steps 2-4 to edit the volunteer's history.<br><br>
+	<a
+		href="tutorial/screenshots/LogHoursStep5.png" class="image"
+		title="LogHoursStep5.png"
+		target="tutorial/screenshots/LogHoursStep5.png">
+		&nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/LogHoursStep5.png" width="10%"
+		rel="popover" data-img="tutorial/screenshots/LogHoursStep5.png"
+		border="1px" align="middle"> </a>
+	</p>
 	
-	Another option is to ....<BR> <BR> <a
-		href="tutorial/screenshots/searchpersonstep2-2.png" class="image"
-		title="searchpersonstep2-2.png" horizontalalign="center"
-		target="tutorial/screenshots/searchpersonstep2-2.png">
-		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/searchpersonstep2-2.png" width="10%"
-		rel="popover" data-img="tutorial/screenshots/searchpersonstep2-2.png"
-		border="1px" align="middle"> </a>
-</p>
 <p>
-	Yet another option is to ... . <BR> <BR> <a
-		href="tutorial/screenshots/searchpersonstep2-3.png" class="image"
-		title="searchpersonstep2-3.png" horizontalalign="center"
-		target="tutorial/screenshots/searchpersonstep2-3.png">
-		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/searchpersonstep2-3.png" width="10%"
-		rel="popover" data-img="tutorial/screenshots/searchpersonstep2-3.png"
-		border="1px" align="middle"> </a>
+<B>Step 6:</B> >>> For further assistance, go to "Help Home" for additional help pages. <br><br>
 </p>
-
+	
 <p>
-	<B>Step 3:</B> >>>Be sure to cover all the possible ways for the user to complete the task.<BR> <BR> <a
-		href="tutorial/screenshots/searchpersonstep3.png" class="image"
-		title="searchpersonstep3.png"
-		target="tutorial/screenshots/searchpersonstep3.png">
-		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/searchpersonstep3.png" width="10%"
-		rel="popover" data-img="tutorial/screenshots/searchpersonstep3.png"
-		border="1px" align="middle"> </a>
+<B>Step 7:</B> >>> When you finish, you can return to any other task by selecting it on the navigation bar.
 </p>
-<p>
-	<B>Step 4:</B> >>>If this doesn't satisfy the user, point them to the Help Home 
-	to view the table of contents to all the help pages. <BR> <BR>
-</p>
-
-<p>
-	<B>Step 5:</B> >>> Be sure to suggest something like "When you finish, you can return to any other task by
-	selecting it on the navigation bar."
