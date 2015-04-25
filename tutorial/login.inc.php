@@ -47,37 +47,27 @@ session_cache_expire(30);
 			<strong>guest</strong> and no Password. Once you sign in you will be
 			able to fill out and submit an application form on-line.
 		
-		
 		<p>
 			If you are a <i>volunteer or staff member</i>, your Username is your
 			first name followed by your phone number with no spaces.
 		
-		
 		<ul>
 			<li>For example, if your first name is John and your phone number is
-				(207)-123-4567, your Username would be <strong>John2071234567</strong>.
-
-
-
-			
+				(401)-123-4567, your Username would be <strong>John4011234567</strong>.
 			
 			<li>Remember that your Username and Password are <em>case-sensitive</em>.
-
-
-			
 			
 			<li>If you mistype your Username or Password, the following error
 				message will appear:
 				<p class="error">
 					Error: invalid username/password<br />if you cannot remember your
-					password, ask the House Manager to reset it for you.
+					password, ask the Volunteer Coordinator to reset it for you.
 				</p>
 				<p>At this point, you can retry entering your Username and Password
 					(if you think you may have mistyped them).
 			
 			<li>If all else fails, or if you do not remember your password,
-				please contact the <a href="mailto:housemgr@rmhportland.org">House
-					Manager</a>.
+				please contact the <a href="mailto:jpowers@rmhprovidence.org">Volunteer Coordinator</a>.
 		
 		</ul>
 		<p>

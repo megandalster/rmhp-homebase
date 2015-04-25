@@ -31,8 +31,8 @@
     } else if ($_SESSION['logged_in']) {
 
         /*         * Set our permission array.
-         * anything a guest can do, a volunteer and house manager can also do
-         * anything a volunteer can do, a house manager can do.
+         * anything a guest can do, a volunteer and manager can also do
+         * anything a volunteer can do, a manager can do.
          *
          * If a page is not specified in the permission array, anyone logged into the system
          * can view it. If someone logged into the system attempts to access a page above their

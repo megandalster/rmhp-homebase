@@ -79,7 +79,7 @@ $assocHelp['helpPageTemplate.php']='helpPageTemplate.inc.php';
 
 				
 			</div>
-		<?PHP include('footer.inc');?>
 		</div>
+		<?PHP include('footer.inc');?>
 	</body>
 </html>

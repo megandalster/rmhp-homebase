@@ -33,29 +33,41 @@
 	appear.
 <p>
 	<B>If you are a volunteer or a manager</B> and you've never changed
-	your password, you will see the following display: <BR> <BR> <a
+	your password, you will see the following display: <br><br><a
 		href="tutorial/screenshots/homeHelp2.png" class="image"
 		title="homeHelp2.png" target="tutorial/screenshots/homeHelp2.png">
 		&nbsp&nbsp&nbsp&nbsp<img src="tutorial/screenshots/homeHelp2.png"
 		width="10%" border="1px" rel="popover"
 		data-img="tutorial/screenshots/homeHelp2.png" align="center"> </a> <br>
-	You may change your password by entering it and then entering your new
+	<br>You may change your password by entering it and then entering your new
 	password twice. After you change your password in this way, it will be
 	known only to you. If you forget your password, please contact the
 	house manager. Until you change your password, this display continue to
 	appear here.
 <p>
 	<B>If you are a volunteer</B>, you will see a display of your upcoming
-	scheduled shifts, which looks like this: <a
+	scheduled shifts, which looks like this: &nbsp;&nbsp;&nbsp;&nbsp;<a
 		href="tutorial/screenshots/indexHelp_upcoming_shifts.png"
 		class="image" title="indexHelp_upcoming_shifts.png"
 		target="tutorial/screenshots/indexHelp_upcoming_shifts.png">
-		&nbsp&nbsp&nbsp&nbsp<img
+		&nbsp;&nbsp;&nbsp;&nbsp;<img
 		src="tutorial/screenshots/indexHelp_upcoming_shifts.png" width="10%"
 		rel="popover"
 		data-img="tutorial/screenshots/indexHelp_upcoming_shifts.png"
-		border="1px" align="center"> </a> <br> If you need to cancel a shift,
-	please call the front desk (302-656-4847).
+		border="1px" align="center"> </a> <br>If you need to cancel a shift,
+	you may also call the House at (401) 274-4447.
+	<br><br> Your volunteer home page will also contain the following link: 
+	&nbsp;&nbsp;&nbsp;&nbsp;<a
+		href="tutorial/screenshots/indexHelp_logsheet.png"
+		class="image" title="indexHelp_logsheet.png"
+		target="tutorial/screenshots/indexHelp_logsheet.png">
+		&nbsp;&nbsp;&nbsp;&nbsp;<img
+		src="tutorial/screenshots/indexHelp_logsheet.png" width="10%"
+		rel="popover"
+		data-img="tutorial/screenshots/indexHelp_logsheet.png"
+		border="1px" align="center"> </a>  
+	
+	<br>This takes you to a page where you can log your recent hours.
 <p>
 	<B>If you are a manager</B>, you will also see the following current
 	information displayed:
@@ -78,19 +90,9 @@
 		rel="popover" data-img="tutorial/screenshots/indexHelp_full_log.png"
 		border="1px" align="center"> </a> <br> This full log allows you to
 	delete some or all of its entries, once they are no longer useful.
+
 <p>
-	A list of upcoming birthdays and volunteer anniversaries, which looks
-	like this: <a
-		href="tutorial/screenshots/indexHelp_upcoming_birthdays.png"
-		class="image" title="indexHelp_upcoming_birthdays.png"
-		target="tutorial/screenshots/indexHelp_upcoming_birthdays.png">
-		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/indexHelp_upcoming_birthdays.png"
-		width="10%" rel="popover"
-		data-img="tutorial/screenshots/indexHelp_upcoming_birthdays.png"
-		border="1px" align="center"> </a>
-<p>
-	A list of upcoming calendar vacancies, which looks like this: <a
+	A list of upcoming calendar vacancies: <a
 		href="tutorial/screenshots/indexHelp_upcoming_vacancies.png"
 		class="image" title="indexHelp_upcoming_vacancies.png"
 		target="tutorial/screenshots/indexHelp_upcoming_vacancies.png">
@@ -102,7 +104,7 @@
 	in this list takes you directly to that shift on the calendar, so that
 	you can examine its sub call list or other details.
 <p>
-	A list of all open applications, which looks like this: <a
+	A list of all open applications (most recent first): <a
 		href="tutorial/screenshots/indexHelp_open_applications.png"
 		class="image" title="indexHelp_open_applications.png"
 		target="tutorial/screenshots/indexHelp_open_applications.png">
@@ -112,5 +114,16 @@
 		data-img="tutorial/screenshots/indexHelp_open_applications.png"
 		border="1px" align="center"> </a> <br> An "open" application signifies
 	an applicant whose status has not yet been changed to "active". Only
-	"active" volunteers can be scheduled for a shift. <br> If an
-	application has been viewed, the link text will appear grey.
+	"active" volunteers can be scheduled for a shift.
+	
+<p>
+	A list of all active volunteers who haven't worked in the last two months: <a
+		href="tutorial/screenshots/indexHelp_inactivevolunteers.png"
+		class="image" title="indexHelp_inactivevolunteers.png"
+		target="tutorial/screenshots/indexHelp_inactivevolunteers.png">
+		&nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/indexHelp_inactivevolunteers.png" width="10%"
+		rel="popover"
+		data-img="tutorial/screenshots/indexHelp_inactivevolunteers.png"
+		border="1px" align="center"> </a> <br> This list is helpful in identifying
+		volunteers whose status may be changed to "inactive" or "former."

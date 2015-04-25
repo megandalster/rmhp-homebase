@@ -21,10 +21,6 @@ session_cache_expire(30);
 	    <a href="?helpPage=rmhp-homebase/helpPageTemplate.php">Help Page Template</a>
 	</p>
 	<ol>
-		<li><a href="?helpPage=rmhp-homebase/quickStartGuide.php">Quick Start Guide</a>
-		</li>
-		<br>
-
 		<li><a href="?helpPage=rmhp-homebase/login.php">Signing in and out of the System</a>
 		</li>
 		<br>

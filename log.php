@@ -53,8 +53,9 @@
 				}
 				echo ('</table>');
 				?>
-				<?PHP include('footer.inc');?>
+				
 			</div>
+			<?PHP include('footer.inc');?>
 		</div>
 	</body>
 </html>

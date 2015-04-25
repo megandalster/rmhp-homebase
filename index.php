@@ -163,7 +163,7 @@ session_cache_expire(30);
                                 echo('</ul></p></div><br>');
                         //    }
                             mysql_close();
-                        //volunteer birthdays and anniversary days
+                        /*volunteer birthdays and anniversary days
                             connect();
                             $anniv_query = "SELECT id,first_name,last_name,birthday,start_date FROM dbPersons WHERE status LIKE '%active%'";
                             $anniversaries = mysql_query($anniv_query);
@@ -185,7 +185,7 @@ session_cache_expire(30);
                                 echo('</table></p></div><br>');
                             }
                             mysql_close();
-                            
+                        */    
                         // active volunteers who haven't worked recently
                             $everyone = getall_names("active", "volunteer");
                             if ($everyone && mysql_num_rows($everyone) > 0) {
