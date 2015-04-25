@@ -113,12 +113,11 @@ $(function() {
 		
 	</tr>
 	<tr>
-	<td></td>
 	<td valign="top">
-	<p>To view report, hit <input type="submit" value="submit" id ="report-submit" class ="btn">.</p>
+	<p>To view report, hit <input type="submit" value="Submit" id ="report-submit" class ="btn">.</p>
 	</td>
-	<td colspan=2 valign="top">
-	<p>* To export this report to a CSV file, check here: <input type="checkbox" value="export" id ="report-export"></p>
+	<td colspan=3 valign="top">
+	<p>* To save report, check here <input type="checkbox" name="export" value="export">, hit 'Submit' again, and browse to 'export.csv'.</p>
 	</td>
 	</tr>
 	</table>

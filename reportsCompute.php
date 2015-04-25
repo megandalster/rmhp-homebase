@@ -21,7 +21,9 @@ function show_report() {
 	$from = $_POST["from"];
 	$to   = $_POST["to"];
 	$venue   = $_POST["venue"];
-	$export = $_POST["reports_export"];
+	if ($_POST['export'])	
+		$export = "yes";
+	else $export = "no";
 	
 	if (isset($_POST['report-types'])) {
 		if (in_array('volunteer-hours', $_POST['report-types'])) {
@@ -31,10 +33,10 @@ function show_report() {
 			report_shifts_staffed_vacant_by_day($from, $to, $venue);
 		}
 		else if (in_array('birthdays', $_POST['report-types'])) {
-				report_volunteer_birthdays($from, $to, $venue);
+				report_volunteer_birthdays($from, $to, $venue, $export);
 		}
 	    else if (in_array('history', $_POST['report-types'])) {
-				report_volunteer_history();
+				report_volunteer_history($export);
 	    }
 		if (in_array('volunteers', $_POST['report-types'])) {
 				report_all_volunteers($export);	
@@ -121,7 +123,8 @@ function display_birthdays($report, $export) { //Create a table to display birth
 	$dobs = array();
 	$ages = array();
 	echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';
-				       
+
+	$export_data = array();
 	foreach($report as $person){
 		//check if the person's date of birth is known 
 		if (strlen($person->get_birthday()) == 8 && substr($person->get_birthday(), 6) != "XX" ){
@@ -137,18 +140,29 @@ function display_birthdays($report, $export) { //Create a table to display birth
 			$age = "N/A";
 		}
 		if ($dob != "N/A") {
-			$row = "<tr>";
+			$p = array($person->get_first_name()." ".$person->get_last_name(),
+				   $person->get_address(), $person->get_city(), $person->get_state(), 
+				   $person->get_zip(),$dob,$age);
+			$export_data[] = $p;
+			$res .= "<tr>";
+			foreach ($p as $info)
+				$res .= "<td>". $info . "</td>";
+		    $res .= "</tr>";
+	/*    $row = "<tr>";
 			$row .= "<td>".$person->get_first_name()." ".$person->get_last_name().
 					"</td><td>".$person->get_address() ."</td><td>".$person->get_city()."</td>". 
 			        "</td><td>".$person->get_state() ."</td><td>".$person->get_zip()."</td>". 
 			        "</td><td>".$dob ."</td><td align=right>".$age."</td>";
 			$row .= "</tr>";
 			$res .= $row;
-		}
+	*/	}
+		
 	}
 	$res .= "</tbody></table>";
 	echo $res;
 	echo "</div>";
+	if ($export=="yes") 
+		export_report ("Volunteer Birthdays Report", $col_labels, $export_data);
 }
 
 function pretty_date($date){
@@ -373,26 +387,31 @@ function display_logged_hours ($report, $export) {
 	$dates = array();
 	$shifts_worked = array();
 	$hours_count = array();
-
-	echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';
-				       
+    $export_data = array();
+	
+    echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';			       
 	foreach($report as $key){
 		$entry = explode(";",$key);
 		$last_name = $entry[0];
 		$first_name = $entry[1];
 		$dates = explode(",",$entry[2]);
 		$res .= "<tr><td>".$last_name . ", ". $first_name."</td>";
+		$p = array($last_name . ", ". $first_name);
 		$total_hours=0;
 		foreach ($dates as $date) {
 			$d = explode(":",$date);
 			$total_hours += $d[3];
 			$times = explode(",",$d[1]);
 			foreach ($times as $time) {
-			$t = explode("-",$time);
-			$start_time = civil_time($t[0]);
-			$end_time = civil_time($t[1]);
-			$res .= "<td align=right>".pretty_date($d[0])."</td><td align=right>".$start_time."</td><td align=right>".$end_time."</td><td>".
-			pretty_venue($d[2])."</td><td align=right>".$d[3]."</td></tr><tr><td></td>";
+				$t = explode("-",$time);
+				$start_time = civil_time($t[0]);
+				$end_time = civil_time($t[1]);
+				$res .= "<td align=right>".pretty_date($d[0])."</td><td align=right>".$start_time.
+				        "</td><td align=right>".$end_time."</td><td>".
+				        pretty_venue($d[2])."</td><td align=right>".$d[3]."</td></tr><tr><td></td>";
+				$p = array($last_name . ", ". $first_name,
+							pretty_date($d[0]),$start_time,$end_time,pretty_venue($d[2]),$d[3]);
+				$export_data[] = $p; 
 			}
 		}
 		$res .= "<td></td><td></td><td></td><td><b>Total hours</b></td><td align=right>".$total_hours."</td></tr>";
@@ -401,6 +420,8 @@ function display_logged_hours ($report, $export) {
 	$res .= "</tbody></table>";
 	echo $res;
 	echo "</div>";
+	if ($export=="yes") 
+		export_report ("Volunteer History Report", $col_labels, $export_data);
 }
 
 //Create a table to display volunteer contact info
@@ -422,36 +443,34 @@ function display_volunteers ($report, $export) {
 			<tbody>";
 	
 	echo '<div id="target" style="overflow: scroll; width: variable; height: 400px;">';
-				       
+	$export_data = array();			       
 	foreach($report as $person){
-		$res .= "<tr><td>".$person->get_last_name() . ", ". $person->get_first_name()."</td>".
-		"<td>".$person->get_address() . "</td><td>". $person->get_city()."</td>".
-		"<td>".$person->get_state() . "</td><td>". $person->get_zip()."</td>".
-		"<td>".$person->get_phone1() . "</td><td>". $person->get_phone2()."</td>".
-		"<td>".$person->get_work_phone() . "</td><td>". $person->get_email()."</td><td>".$person->get_start_date()."</td>".
-		"<td>".$person->get_end_date() . "</td><td>". $person->get_reason_left()."</td>".
-		"<td>".$person->get_notes() . "</td>";
-		$res .= "</tr>";
+		$p = array($person->get_last_name() . ", ". $person->get_first_name(), 
+				$person->get_address(), $person->get_city(), $person->get_state(), $person->get_zip(),
+			    $person->get_phone1(), $person->get_phone2(), $person->get_work_phone(), $person->get_email(),
+			    $person->get_start_date(), $person->get_end_date(), $person->get_reason_left(),
+				$person->get_notes());
+		$export_data[] = $p;
+		$res .= "<tr>";
+		foreach ($p as $info)
+			$res .= "<td>". $info . "</td>";
+	    $res .= "</tr>";
 	}
-	
 	$res .= "</tbody></table>";
 	echo $res;
 	echo "</div>";
+	if ($export=="yes") 
+		export_report ("Volunteer Contact Info", $col_labels, $export_data);
 }
 
-function export_report($current_time, $search_attr, $export_data) {
-	echo "now we need to export the report";
-	$filename = "dataexport.csv";
+function export_report($heading, $col_labels, $data) {
+	$filename = "export.csv";
 	$handle = fopen($filename, "w");
-	fputcsv($handle, $current_time);
-	fputcsv($handle, $search_attr, ',');
-	foreach ($export_data as $person_data) 
-	   if (count($person_data)>1 && $person_data[1]!="") // anything more than the id, export it, otherwise skip it
-	       fputcsv($handle, $person_data, ',','"');
-	if (in_array("history",$search_attr)) { // split history into several lines per person 
-	   $people_in_past_shifts = get_all_peoples_histories();
-	   foreach ($people_in_past_shifts as $p=>$history) 
-	        fputcsv($handle, array($p,$history),',','"');  
+	fputcsv($handle, array($heading,"","Report date: ".date("F d, Y")));
+	fputcsv($handle, array());
+	fputcsv($handle, $col_labels);
+	foreach ($data as $aline) {
+		fputcsv($handle, $aline);
 	}
 	fclose($handle);
 }
