@@ -44,14 +44,15 @@ session_cache_expire(30);
 		<br>
 		<ul>
 			<li><a href="?helpPage=rmhp-homebase/addWeek.php">Generating and publishing
-					new calendar weeks (Managers Only)</a></li>
+					new calendar weeks (Managers Only)
+					</a></li>
 			<li><strong>Editing a Shift on the Calendar</strong></li>
 			<p>
 			
 			
 			<ul>
 				<li><a href="?helpPage=rmhp-homebase/cancelShift.php">Canceling a Shift
-						(Managers Only)</a></li>
+						</a></li>
 				<li><a href="help.php?helpPage=rmhp-homebase/addSlotToShift.php">Adding/removing a
 						slot (Managers Only)</a></li>
 				<li><a href="help.php?helpPage=rmhp-homebase/addPersonToShift.php">Adding/removing
