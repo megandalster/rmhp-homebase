@@ -126,12 +126,12 @@
 	<B>Step 7:</B> Now that the Date Called, Notes, "Yes"s and "No"s are
 	saved, you will see a page showing all the open sub call lists on the
 	calendar, like this: <br> <br> <a
-		href="tutorial/screenshots/subcallliststep7.gif" class="image"
+		href="tutorial/screenshots/subcallliststep7.png" class="image"
 		title="subcalllistStep7.png"
-		target="tutorial/screenshots/subcallliststep7.gif">
+		target="tutorial/screenshots/subcallliststep7.png">
 		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/subcallliststep7.gif" width="10%"
-		rel="popover" data-img="tutorial/screenshots/subcallliststep7.gif"
+		src="tutorial/screenshots/subcallliststep7.png" width="10%"
+		rel="popover" data-img="tutorial/screenshots/subcallliststep7.png"
 		border="1px" align="middle"> </a> <br> <br>If you had selected "Yes"
 	in <b>Step 5</b>, the vacancy will automatically be filled on the
 	active calendar. If that is the last vacancy to be filled on this
