@@ -38,7 +38,7 @@
 		title="LogHoursStep1.png" horizontalalign="center"
 		target="tutorial/screenshots/LogHoursStep1.png">
 		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/LogHoursStep1" width="10%"
+		src="tutorial/screenshots/LogHoursStep1.png" width="10%"
 		rel="popover" data-img="tutorial/screenshots/LogHoursStep1.png"
 		border="1px" align="middle"> </a>
  
