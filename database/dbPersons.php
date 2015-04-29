@@ -352,14 +352,25 @@ function get_birthdays($venue) {
 
 //return an array of "last_name;first_name;hours", which is "last_name;first_name;date:start_time-end_time:venue:totalhours"
 // and sorted alphabetically
-function get_logged_hours() {
+function get_logged_hours($from, $to, $venue) {
 	connect();
-   	$query = "SELECT first_name,last_name,hours FROM dbPersons ORDER BY last_name,first_name";
+   	$query = "SELECT first_name,last_name,hours FROM dbPersons "; 
+   	$query.= " WHERE hours LIKE '%" .$venue . "%'";
+   	$query.=" ORDER BY last_name,first_name";
 	$result = mysql_query($query);
 	$thePersons = array();
 	while ($result_row = mysql_fetch_assoc($result)) {
-		if ($result_row['hours']!="")
-    		array_push($thePersons,$result_row['last_name'].";".$result_row['first_name'].";".$result_row['hours']);
+		if ($result_row['hours']!="") {
+			$shifts = explode(',',$result_row['hours']);
+			$goodshifts = array();
+			foreach ($shifts as $shift) 
+			    if (($from == "" || substr($shift,0,8) >= $from) && ($to =="" || substr($shift,0,8) <= $to))
+			    	$goodshifts[] = $shift;
+			if (count($goodshifts)>0) {
+				$newshifts = implode(",",$goodshifts);
+				array_push($thePersons,$result_row['last_name'].";".$result_row['first_name'].";".$newshifts);
+			}   // we've just selected those shifts that follow within a date range for the given venue
+		}
 	}
    	mysql_close();
    	return $thePersons;
