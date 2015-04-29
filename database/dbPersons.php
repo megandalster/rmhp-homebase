@@ -364,7 +364,8 @@ function get_logged_hours($from, $to, $venue) {
 			$shifts = explode(',',$result_row['hours']);
 			$goodshifts = array();
 			foreach ($shifts as $shift) 
-			    if (($from == "" || substr($shift,0,8) >= $from) && ($to =="" || substr($shift,0,8) <= $to))
+			    if (($from == "" || substr($shift,0,8) >= $from) && ($to =="" || substr($shift,0,8) <= $to)
+			    		&& ($venue=="" || strpos($shift,$venue)>0))
 			    	$goodshifts[] = $shift;
 			if (count($goodshifts)>0) {
 				$newshifts = implode(",",$goodshifts);
