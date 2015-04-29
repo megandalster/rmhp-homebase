@@ -21,7 +21,7 @@
 			  html: true,
 			  trigger: 'hover',
 			  placement: 'right',
-			  content: function(){return '<img border="3" src="'+$(this).data('img') + '" width="60%"/>';}
+			  content: function(){return '<img border="3" src="'+$(this).data('img') + '" width="50%"/>';}
 			});
 	});
 </script>
