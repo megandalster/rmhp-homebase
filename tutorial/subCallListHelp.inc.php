@@ -41,14 +41,14 @@
 <p>
 	<B>Step 1:</B> Click on an editable calendar shift that has a vacancy,
 	like this:<BR> <BR> <a
-		href="tutorial/screenshots/quickStartGuideHelp_step1.pnf"
+		href="tutorial/screenshots/SubCallListStep1.png"
 		class="image" title="quickStartGuideHelp_step1.png"
 		horizontalalign="center"
-		target="tutorial/screenshots/quickStartGuideHelp_step1.png">
+		target="tutorial/screenshots/SubCallListStep1.png">
 		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/quickStartGuideHelp_step1.png" width="10%"
+		src="tutorial/screenshots/SubCallListStep1.png" width="20%"
 		rel="popover"
-		data-img="tutorial/screenshots/quickStartGuideHelp_step1.png"
+		data-img="tutorial/screenshots/SubCallListStep1.png"
 		border="1px" align="center"> </a> <br> <br> (Each upcoming calendar
 	shift will turn gray whenever the mouse passes over it. Shifts for
 	prior days on the calendar cannot be edited in this way.)

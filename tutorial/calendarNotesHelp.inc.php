@@ -37,14 +37,14 @@
 <p>
 	<B>Step 1:</B> At the bottom of each shift there's a place to enter
 	notes for that shift. <BR> <BR> <a
-		href="tutorial/screenshots/calendarNotesHelp_note_slots.png"
-		class="image" title="calendarNotesHelp_note_slots.png"
+		href="tutorial/screenshots/AddingNotesStep1.png"
+		class="image" title="AddingNotesStep1.png"
 		horizontalalign="center"
-		target="tutorial/screenshots/calendarNotesHelp_note_slots.png">
+		target="tutorial/screenshots/AddingNotesStep1.png">
 		&nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/calendarNotesHelp_note_slots.png"
+		src="tutorial/screenshots/AddingNotesStep1.png"
 		rel="popover"
-		data-img="tutorial/screenshots/calendarNotesHelp_note_slots.png"
+		data-img="tutorial/screenshots/AddingNotesStep1.png"
 		width="10%" border="1px" align="center"> </a>
 <p>
 	<B>Step 2:</B> Below all the shifts, there is an additional row marked
