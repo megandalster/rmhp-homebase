@@ -45,7 +45,7 @@
 		border="1px" align="center"> </a>
 <p>
 	<B>Step 2:</B> If you wish to view total volunteer hours, select "Total Hours", and you can 
-	pick up a specific date range or venue, like this: <BR>
+	pick a specific date range or venue, like this: <BR>
 	<BR>
 	<a href="tutorial/screenshots/reportsstep2.png" class="image"
 		title="reportsstep2.png" horizontalalign="center"
@@ -65,7 +65,7 @@
 		align="center"> </a> <BR>
 <p>
 	<B>Step 3:</B> If you wish to view total shifts or vacancies, select "Shifts/Vacancies", and you can 
-	pick up a specific date range or venue, like this: <BR>
+	pick a specific date range or venue, like this: <BR>
 	<BR>
 	<a href="tutorial/screenshots/reportsstep3.png" class="image"
 		title="reportsstep3.png" horizontalalign="center"
@@ -124,7 +124,7 @@
 		data-img="tutorial/screenshots/reportsstep5-2.png" border="1px"
 		align="center"> </a> <BR>
 <p>
-	<B>Step 6:</B> If you wish to view the contact information of volunteers in the database, 
+	<B>Step 6:</B> If you wish to view the contact information of all volunteers in the database, 
 	select "Volunteer Contact Info", and then just click on <B>Submit</B> button, like this: <BR>
 	<BR>
 	<a href="tutorial/screenshots/reportsstep6.png" class="image"
