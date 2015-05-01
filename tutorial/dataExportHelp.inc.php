@@ -43,23 +43,48 @@
 		rel="popover" data-img="tutorial/screenshots/reportsstep1-2.png"
 		border="1px" align="center"> </a>
 <p>
-	<B>Step 2:</B> If you wish to view total volunteer hours, select "Total Hours", and you can 
-	pick up a specific date range or venue, like this: <BR>
+	<B>Step 2:</B> If you wish to download the .csv file for Volunteer Birthdays Report, 
+	select "Volunteer Birthdays", pick a venue, check the box on the right, and click on <b>Submit</b>
+	button, like this: <BR>
 	<BR>
-	<a href="tutorial/screenshots/reportsstep2.png" class="image"
-		title="reportsstep3.png" horizontalalign="center"
-		target="tutorial/screenshots/reportsstep2.png"> &nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/reportsstep2.png" width="10%" rel="popover"
-		data-img="tutorial/screenshots/reportsstep2.png" border="1px"
+	<a href="tutorial/screenshots/dataexport2.png" class="image"
+		title="dataexport2.png" horizontalalign="center"
+		target="tutorial/screenshots/dataexport2.png"> &nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/dataexport2.png" width="10%" rel="popover"
+		data-img="tutorial/screenshots/dataexport2.png" border="1px"
 		align="center"> </a> <BR>
-	<BR> Note that if you wish to view the entire volunteer hours in system, you don't 
-	have to choose a date or venue - just click on <B>Submit</B> button. <BR>
-	<BR> You will see a report like this: <BR>
+	<BR> Note that if you wish to view the entire volunteer birthdays report in system, you don't 
+	have to choose a venue - just check the box and click on <B>Submit</B> button. <BR>
+	<BR> Your browser will automatically download the .csv file (the file name is "export.csv") 
+	to your local folder. If you open the file, it will look like this in Excel: <BR>
 	<BR>
-	<a href="tutorial/screenshots/reportsstep2-2.png" class="image"
-		title="reportsstep2-2.png" horizontalalign="center"
-		target="tutorial/screenshots/reportsstep2-2.png"> &nbsp&nbsp&nbsp&nbsp<img
-		src="tutorial/screenshots/reportsstep2-2.png" width="10%" rel="popover"
-		data-img="tutorial/screenshots/reportsstep2-2.png" border="1px"
+	<a href="tutorial/screenshots/dataexport2-2.png" class="image"
+		title="dataexport2-2.png" horizontalalign="center"
+		target="tutorial/screenshots/dataexport2-2.png"> &nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/dataexport2-2.png" width="10%" rel="popover"
+		data-img="tutorial/screenshots/dataexport2-2.png" border="1px"
 		align="center"> </a> <BR>
 <p>
+	<B>Step 3:</B> If you wish to download .csv file for Volunteer History Report or Volunteer 
+	Contact Information report, select "Volunteer History" or "Volunteer Contact Info", check the box on the right,
+	and then just click on <B>Submit</B> button, like this: <BR>
+	<BR>
+	<a href="tutorial/screenshots/dataexport3.png" class="image"
+		title="dataexport3.png" horizontalalign="center"
+		target="tutorial/screenshots/dataexport3.png"> &nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/dataexport3.png" width="10%" rel="popover"
+		data-img="tutorial/screenshots/dataexport3.png" border="1px"
+		align="center"> </a> <BR>
+	<BR> Your browser will automatically download the .csv file (the file name is "export.csv") to your local folder. If you open the file,
+	it will look like this in Excel: <BR>
+	<BR>
+	<a href="tutorial/screenshots/dataexport3-2.png" class="image"
+		title="dataexport3-2.png" horizontalalign="center"
+		target="tutorial/screenshots/dataexport3-2.png"> &nbsp&nbsp&nbsp&nbsp<img
+		src="tutorial/screenshots/dataexport3-2.png" width="10%" rel="popover"
+		data-img="tutorial/screenshots/dataexport3-2.png" border="1px"
+		align="center"> </a> <BR>
+
+
+
+
