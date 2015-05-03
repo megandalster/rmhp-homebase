@@ -61,11 +61,7 @@ session_cache_expire(30);
 						List (Managers Only)</a></li>
 			</ul>
 			<p>
-			
-			
 			<li><a href="?helpPage=rmhp-homebase/addNotes.php">Adding notes</a></li>
-			<li><a href="?helpPage=rmhp-homebase/navigateThroughWeeks.php">Navigate to
-					Different Weeks</a></li>
 
 		</ul>
 		<br>
@@ -75,8 +71,7 @@ session_cache_expire(30);
 		<li><a href="?helpPage=rmhp-homebase/reports.php">Generating Reports</a> (Managers
 			Only)</li>
 		<br>
-		<li><a href="?helpPage=rmhp-homebase/dataExport.inc.php">Generating CSVs (Excel
-				Spreadsheets) from Volunteer Database</a> (Managers Only)</li>
+		<li><a href="?helpPage=rmhp-homebase/dataExport.inc.php">Exporting Reports as CSVs (spreadsheet files)</a> (Managers Only)</li>
 
 	</ol>
 	<p>

@@ -171,13 +171,15 @@ include_once('database/dbLog.php');
 		if(array_key_exists('_submit_clear_shift',$post)) {
 			if ($shift->has_sub_call_list()) {
 				$scl=select_dbSCL($shift->get_id());
-				if ($scl instanceof SCL)
+				if ($scl instanceof SCL) {
 			   		delete_dbSCL($scl);
 			   		add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
 			   		    $_SESSION['l_name'].'</a> deleted a <a href=\"subCallList.php?shift='.$shift->get_id().'\">sub call list</a> for the shift: <a href=\"editShift.php?shift='.
 			   		    $shift->get_id().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
+				}
 			}
-			$shift = new Shift($shift->get_id(), "weekly", $shift->num_slots(), null, null, "", "");
+			$shift = new Shift($shift->get_mm_dd_yy().":".$shift->get_hours(), $shift->get_venue(), 
+								0, array(),array(), "", "");
 			update_dbShifts($shift);
 			add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
 			    $_SESSION['l_name'].'</a> cleared the shift: <a href=\"editShift.php?shift='.$shift->get_id().'\">'.

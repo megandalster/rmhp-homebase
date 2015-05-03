@@ -26,8 +26,10 @@
 </script>
 
 <p>
-	<strong>How to Generate CSVs (Excel Spreadsheets) from Volunteer Database</strong>
+	<strong>Exporting Reports as CSVs (spreadsheet files)</strong>
 <p>
+From the reports page, you can export (download) some of these reports as CSVs for further processing
+using Excel or OpenOffice.  
 	<B>Step 1:</B> On the navigation bar at the top of the page, find <B>reports</B>
 	, like this:<BR> <BR> <a href="tutorial/screenshots/reportsstep1.png"
 		class="image" title="reportsstep1.png" horizontalalign="center"
@@ -41,7 +43,8 @@
 		target="tutorial/screenshots/reportsstep1-2.png"> &nbsp&nbsp&nbsp&nbsp<img
 		src="tutorial/screenshots/reportsstep1-2.png" width="10%"
 		rel="popover" data-img="tutorial/screenshots/reportsstep1-2.png"
-		border="1px" align="center"> </a>
+		border="1px" align="center"> </a><br><br>
+	The three reports that can be downloaded are starred (*) in the menu on the left. 
 <p>
 	<B>Step 2:</B> If you wish to download the .csv file for Volunteer Birthdays Report, 
 	select "Volunteer Birthdays", pick a venue, check the box on the right, and click on <b>Submit</b>
@@ -53,10 +56,9 @@
 		src="tutorial/screenshots/dataexport2.png" width="10%" rel="popover"
 		data-img="tutorial/screenshots/dataexport2.png" border="1px"
 		align="center"> </a> <BR>
-	<BR> Note that if you wish to view the entire volunteer birthdays report in system, you don't 
-	have to choose a venue - just check the box and click on <B>Submit</B> button. <BR>
-	<BR> Your browser will automatically download the .csv file (the file name is "export.csv") 
-	to your local folder. If you open the file, it will look like this in Excel: <BR>
+	<BR> Now in the URL at the top of your browser, change the phrase "reports.php" to "export.csv" and hit Enter. 
+	This will download that file to the Downlaods folder on your computer.  When you open the file in Excel or OpenOffice, 
+	it will look like this: <BR>
 	<BR>
 	<a href="tutorial/screenshots/dataexport2-2.png" class="image"
 		title="dataexport2-2.png" horizontalalign="center"
@@ -65,8 +67,8 @@
 		data-img="tutorial/screenshots/dataexport2-2.png" border="1px"
 		align="center"> </a> <BR>
 <p>
-	<B>Step 3:</B> If you wish to download .csv file for Volunteer History Report or Volunteer 
-	Contact Information report, select "Volunteer History" or "Volunteer Contact Info", check the box on the right,
+	<B>Step 3:</B> If you wish to download .csv file for the Volunteer History Report or the Volunteer 
+	Contact Info report, select "Volunteer History" or "Volunteer Contact Info", check the box on the right,
 	and then just click on <B>Submit</B> button, like this: <BR>
 	<BR>
 	<a href="tutorial/screenshots/dataexport3.png" class="image"
@@ -75,8 +77,9 @@
 		src="tutorial/screenshots/dataexport3.png" width="10%" rel="popover"
 		data-img="tutorial/screenshots/dataexport3.png" border="1px"
 		align="center"> </a> <BR>
-	<BR> Your browser will automatically download the .csv file (the file name is "export.csv") to your local folder. If you open the file,
-	it will look like this in Excel: <BR>
+	<BR> Now in the URL at the top of your browser, change the phrase "reports.php" to "export.csv" and hit Enter. 
+	This will download that file to the Downlaods folder on your computer.  When you open the file in Excel or OpenOffice, 
+	it will look like this: <BR>
 	<BR>
 	<a href="tutorial/screenshots/dataexport3-2.png" class="image"
 		title="dataexport3-2.png" horizontalalign="center"

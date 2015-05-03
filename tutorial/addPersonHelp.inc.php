@@ -1,13 +1,10 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook,
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan,
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker.
- * This program is part of RMH Homebase, which is free software.  It comes with
- * absolutely no warranty. You can redistribute and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- *
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 ?>
 <script src="lib/jquery-1.9.1.js"></script>
@@ -54,7 +51,7 @@
 </p>
 
 <p>
-	<B>Step 3:</B> For date boxes, a menu will pop up allowing you to select a date:<BR> <BR> <a
+	<B>Step 3:</B> For date fields, a menu will pop up allowing you to select a date:<BR> <BR> <a
 		href="tutorial/screenshots/addpersonhelpstep3.png" class="image"
 		title="addpersonhelpstep3.png"
 		target="tutorial/screenshots/addpersonhelpstep3.png">
@@ -75,9 +72,10 @@
 		src="tutorial/screenshots/addpersonhelpstep4.png" width="10%"
 		rel="popover" data-img="tutorial/screenshots/addpersonhelpstep4.png"
 		border="1px" align="middle"> </a> <BR><BR> You can highlight multiple shifts at a time 
-		by clicking and dragging (<font color=#666666>Gray</font> or <font color=#0033ff>blue</font> shading indicates a shift is selected). <br>(NOTE:&nbsp If a volunteer is availible 
+		by clicking and dragging (<font color=#666666>Gray</font> or <font color=#0033ff>blue</font> 
+		shading indicates a shift is selected). NOTE: If a volunteer is availible 
 		all weeks of the month it is easier to fill out only the shifts for odd and 
-		even than to select all of the shifts in the lower portion.)
+		even than to select all of the shifts in the lower portion.
 </p>
 
 <p>

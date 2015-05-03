@@ -1,13 +1,10 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook,
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan,
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker.
- * This program is part of RMH Homebase, which is free software.  It comes with
- * absolutely no warranty. You can redistribute and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- *
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 ?>
 
@@ -32,7 +29,7 @@
 <p>
 	Each shift that has a vacancy may have an associated <i>sub call list</i>.
 	This list keeps track of all subs who are available and have/have not
-	been called to fill that vacancy, along with the status of that call.
+	been called to fill that vacancy, along with the status of those calls.
 	If nobody has tried to fill that shift yet, a new sub call list can be
 	generated. Here's how it works:
 <p>
@@ -74,7 +71,7 @@
 		src="tutorial/screenshots/quickStartGuideHelp_step3.png" width="10%"
 		rel="popover"
 		data-img="tutorial/screenshots/quickStartGuideHelp_step3.png"
-		border="1px" align="center"> </a> <BR> <br>&nbsp&nbsp&nbsp NOTE: If
+		border="1px" align="center"> </a> <BR> <br>NOTE: If
 	you are not the first, a sub call list will already have been created,
 	so you should click on <B>View Sub Call List</B> button instead. (If
 	there is no <B>Generate/View Sub Call List</B> button, the shift has no
@@ -93,10 +90,8 @@
 		border="1px" align="middle"> </a>
 <p>
 	<B>Step 5:</B> When you call a person to find out if they can fill in,
-	type in the date you called them, and type in any notes that apply to
-	the call. In this example, if I call William Talley on August 17 and
-	leave a message, I might enter the following on that shift's sub call
-	list:<BR> <BR> <a
+	enter both the date you called them, along with any notes that apply to
+	the call, in the boxes shown below. <BR> <BR> <a
 		href="tutorial/screenshots/quickStartGuideHelp_step5.png"
 		class="image" title="quickStartGuideHelp_step5.png"
 		target="tutorial/screenshots/quickStartGuideHelp_step5.png">
@@ -104,9 +99,11 @@
 		src="tutorial/screenshots/quickStartGuideHelp_step5.png" width="10%"
 		rel="popover"
 		data-img="tutorial/screenshots/quickStartGuideHelp_step5.png"
-		border="1px" align="middle"> </a> <br> <br> &nbsp&nbsp&nbsp If they
+		border="1px" align="middle"> </a> <br> <br>If they
 	accept or reject your request, select "Yes" or "No" in the 'Accepted'
-	box.
+	box. If you select "Yes," this vacancy will automatically be filled on the
+	active calendar. If this is the last vacancy to be filled on this
+	shift, this sub call list will be "closed." 
 <p>
 	<B>Step 6:</B> When you are finished with the sub call list for that
 	shift, click on the <B>Assign Subs/Save Changes</B> button, like this.<BR>
@@ -117,8 +114,8 @@
 		src="tutorial/screenshots/quickStartGuideHelp_step6.png" width="10%"
 		rel="popover"
 		data-img="tutorial/screenshots/quickStartGuideHelp_step6.png"
-		border="1px" align="middle"> </a> <br> <br>&nbsp&nbsp&nbsp NOTE: If
-	you fail to save your changes, any work you have done with this list
+		border="1px" align="middle"> </a> <br> <br>NOTE: If
+	you fail to save your changes, any entries that you made on this list
 	will be lost. So this is a very important step; you don't want other
 	volunteers working with this shift's sub call list at a later time to
 	duplicate your efforts and call the same person again.
@@ -132,11 +129,7 @@
 		&nbsp&nbsp&nbsp&nbsp<img
 		src="tutorial/screenshots/subcallliststep7.png" width="10%"
 		rel="popover" data-img="tutorial/screenshots/subcallliststep7.png"
-		border="1px" align="middle"> </a> <br> <br>If you had selected "Yes"
-	in <b>Step 5</b>, the vacancy will automatically be filled on the
-	active calendar. If that is the last vacancy to be filled on this
-	shift, its sub call list will be "closed." Otherwise, its sub call list
-	will remain "open." <br> <br>You can now click on any other "open" sub
+		border="1px" align="middle"> </a> <br> <br>You can now click on any other "open" sub
 	call list on this list to find out its current status and try to fill
 	another vacancy.
 <p>

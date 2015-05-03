@@ -1,13 +1,10 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook,
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan,
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker.
- * This program is part of RMH Homebase, which is free software.  It comes with
- * absolutely no warranty. You can redistribute and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- *
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 ?>
 
@@ -30,9 +27,7 @@
 <p>
 	<strong>How to Edit a Person's Information in the Database</strong>
 <p>Editing information in the volunteer database is usually done by the
-	House Manager. There is one exception: a volunteer can view and modify
-	his or her own information in the database (but nobody else's). So this
-	tutorial is mainly for the House Manager.
+	Volunteer Coordinator or Family Room Coordinator. 
 <p>
 	<strong>Step 1:</strong> First you need to <strong>search</strong> for
 	the person whose information you want to edit. <BR> <BR> <a
@@ -60,7 +55,7 @@
 		src="tutorial/screenshots/editpersonstep2.png" width="10%"
 		rel="popover" data-img="tutorial/screenshots/editpersonstep2.png"
 		border="1px" align="middle"> </a>
-		<BR><BR> If you'd like only like to delete a volunteer or change their password, skip to step <b>4(b)</b>: 
+		<BR><BR> If you'd like only to delete a volunteer or change their password, skip to step <b>4(b)</b>: 
 </p>
 <p>
 	<strong>Step 3:</strong> To change any of the person's information,
@@ -104,7 +99,7 @@
 		src="tutorial/screenshots/editpersonstep5.png" width="10%"
 		border="1px" rel="popover"
 		data-img="tutorial/screenshots/editpersonstep5.png" align="middle"> </a>
-	<BR><BR>&nbsp&nbsp&nbsp *After you have make these corrections, repeat <B>Step
+	<BR><BR>&nbsp&nbsp&nbsp *After you have made these corrections, repeat <B>Step
 		4(a)</B>.
 <p>
 	<B>Step 6:</B> If you have no errors or omissions, you will see a page

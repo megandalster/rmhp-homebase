@@ -1,13 +1,10 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook,
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan,
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker.
- * This program is part of RMH Homebase, which is free software.  It comes with
- * absolutely no warranty. You can redistribute and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- *
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 ?>
 
@@ -96,9 +93,9 @@
 		rel="popover"
 		data-img="tutorial/screenshots/addPersonToShiftHelp_add_view.png"
 		width="10%" border="1px" align="center"> </a> <br> <br> Select a
-	Volunteer using the drop down lists. The first list contains volunteers
-	who have listed that time as available, the second list contains every
-	volunteer. Once you've chosen a volunteer, click the <b>Add Volunteer</b>
+	Volunteer using the drop down lists. The first list shows volunteers
+	who have listed that time as available; the second shows every
+	House (or Family Room) volunteer. Once you've chosen a volunteer, click the <b>Add Volunteer</b>
 	button: <br> <br> <a
 		href="tutorial/screenshots/addPersonToShiftHelp_add_view_volunteer.png"
 		class="image" title="addPersonToShiftHelp_add_view_volunteer.png"
@@ -107,7 +104,7 @@
 		&nbsp&nbsp&nbsp&nbsp<img
 		src="tutorial/screenshots/addPersonToShiftHelp_add_view_volunteer.png"
 		rel="popover"
-		data-img="tutorial/screenshots/addPersonToShiftHelp_view_volunteer.png"
+		data-img="tutorial/screenshots/addPersonToShiftHelp_add_view_volunteer.png"
 		width="10%" border="1px" align="center"> </a> <br> <br> This brings
 	you back to the shift form (Step 2), and the selected volunteer will be
 	displayed. <br> <br>You can return to any other function by selecting

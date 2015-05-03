@@ -1,13 +1,10 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook,
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan,
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker.
- * This program is part of RMH Homebase, which is free software.  It comes with
- * absolutely no warranty. You can redistribute and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- *
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 ?>
 
@@ -29,7 +26,7 @@
 </script>
 
 <p>
-	<strong>How to Search for People in the Database</strong>
+	<strong>Searching for People (and Phone Numbers)</strong>
 <p>
 	<B>Step 1:</B> On the navigation bar at the top of the page, find <B>volunteers:</B>
 	and select <B>search</B>, like this:<BR> <BR> <a
@@ -92,7 +89,8 @@
 </p>
 <p>
 	<B>Step 4:</B> Now you will see a list of the names in the database
-	that match your search criteria, and their phone numbers will appear next to their names, 
+	that match your search criteria, and their primary phone number and
+	availability will appear next to their name, 
 	like this:<BR> <BR> <a
 		href="tutorial/screenshots/searchpersonstep4.png" class="image"
 		title="searchpersonstep4.png"

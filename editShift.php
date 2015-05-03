@@ -61,12 +61,12 @@
 											<input type=\"submit\" value=\"Add a Slot\" style=\"width: 150px\"
 											name=\"submit\" >
 											</form>");
-										echo ("<form method=\"POST\" style=\"margin-bottom:0;\">
+									/*	echo ("<form method=\"POST\" style=\"margin-bottom:0;\">
 											<input type=\"hidden\" name=\"_submit_clear_shift\" value=\"1\">
 											<input type=\"submit\" value=\"Clear this Shift\" style=\"width: 150px\"
 											name=\"submit\" >
 											</form>");
-										echo ("<form method=\"POST\" style=\"margin-bottom:0;\">
+									*/	echo ("<form method=\"POST\" style=\"margin-bottom:0;\">
 											<input type=\"hidden\" name=\"_submit_move_shift\" value=\"1\">
 											<input type=\"submit\" value=\"Move this Shift\" style=\"width: 150px\"
 											name=\"submit\" >

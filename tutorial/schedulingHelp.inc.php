@@ -1,13 +1,10 @@
 <?php
 /*
- * Copyright 2013 by Jerrick Hoang, Ivy Xing, Sam Roberts, James Cook,
- * Johnny Coster, Judy Yang, Jackson Moniaga, Oliver Radwan,
- * Maxwell Palmer, Nolan McNair, Taylor Talmage, and Allen Tucker.
- * This program is part of RMH Homebase, which is free software.  It comes with
- * absolutely no warranty. You can redistribute and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
- *
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
+ * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 
+ * software.  It comes with absolutely no warranty. You can redistribute and/or 
+ * modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
 ?>
 
@@ -32,7 +29,7 @@
 <p>The Master Schedules for both the House and the Family Room are grouped into 2 tables, odd/even
 	weeks of the year and first-fifth weeks of the month. Below we will
 	demonstrate by working with the house odd/even weeks table. The same steps, however, can be
-	followed when working on either table in either master schedule.
+	followed when working on either master schedule and either table.
 <p>
 	<B>Step 1:</B> On the navigation bar, select either <B>house</B> or <B>family room</B> from <B>master schedules</B>
 	and if you scroll down you will see two tables. The first shows the
@@ -50,7 +47,7 @@
 		<img src="tutorial/screenshots/schedulingstep1a.png" width="10%"
 		rel="popover" data-img="tutorial/screenshots/schedulingstep1a.png"
 		border="1px" align="middle"> </a> <br> <br> A "shift" is shown as a
-	box associated with a particular day (e.g., Thursday) and time slot
+	box for a particular day (e.g., Thursday) and time slot
 	(e.g., 1-5pm). If a shift has vacancies, the number of vacancies is
 	shown in <strong>boldface</strong>. For example, the odd Wednesday 1-5pm
 	shift has one vacancy in the <strong>odd/even</strong> schedule shown
