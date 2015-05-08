@@ -57,6 +57,7 @@
 </p>
 <p>
 	<B>Step 3:</B>  Logging Your Shift: In the blank row, select the date, start time, and end time of your shift.
+	If you are entering an overnight shift, select the date on which the shift began.
 <p>
 	<a
 		href="tutorial/screenshots/LogHoursStep3_date.png" class="image"
@@ -70,7 +71,7 @@
 
 
 
-<p> To enter times, you may either use the drop-down menu or enter them manually.<br>
+<p> To enter times, you may either use the drop-down menu or enter them manually.<br><br>
 	 <a
 		href="tutorial/screenshots/LogHoursStep3_time.png" class="image"
 		title="LogHoursStep3_time.png" horizontalalign="center"
