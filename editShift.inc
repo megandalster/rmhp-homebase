@@ -289,7 +289,7 @@ include_once('database/dbLog.php');
 	function get_available_volunteer_options($time,$day,$persons,$venue){
 		if(!$persons[0])
 			array_shift($persons);
-		$result = getall_available("volunteer", $day, $time);
+		$result = getall_available("volunteer", $day, $time, $venue);
 		$s="";
 		for($i=0;$i<mysql_num_rows($result);++$i) {
 			$row=mysql_fetch_row($result);

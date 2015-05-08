@@ -25,8 +25,8 @@ include_once('domain/Person.php');
 <script>
 $(function() {
 	$( "#from" ).datepicker({dateFormat: 'mm-dd-y',changeMonth:true,changeYear:true});
-	$( "#start_time" ).timepicker({'minTime': '9:00am', 'maxTime': '9:00pm'});
-	$( "#end_time" ).timepicker({'minTime': '9:00am', 'maxTime': '9:00pm'});
+	$( "#start_time" ).timepicker({'minTime': '12:00am', 'maxTime': '11:30pm'});
+	$( "#end_time" ).timepicker({'minTime': '12:00am', 'maxTime': '11:30pm'});
 });
 </script>
 </head>
@@ -138,7 +138,8 @@ $(function() {
 	    function gather_hours($dates, $start_times, $end_times, $venues, $hours_worked) {
 			for ($i=0;$i<count($dates);$i++) {
 				$start_times[$i] = fix_time($start_times[$i]);
-	    		$end_times[$i] = fix_time($end_times[$i]);
+				$end_times[$i] = fix_time($end_times[$i]);
+				
 	    		if (valid_entry($dates[$i],$start_times[$i],$end_times[$i],$venues[$i],$hours_worked[$i])) 
 	    			$hours .= ",".$dates[$i].":".$start_times[$i]."-".$end_times[$i].":".$venues[$i].":".$hours_worked[$i];
 	    		}
@@ -150,6 +151,9 @@ $(function() {
 			if ($start=="" || $end=="") return false;
 			if ($venue=="") return false;
 			if ($hours=='') {
+				if ($end < $start){
+				    $end+=2400;
+				}
 				$hours = (int)(($end-$start)/100);
 				if (($end-$start)%100!=0) $hours += 0.5;
 			}

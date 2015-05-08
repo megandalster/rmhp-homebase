@@ -23,7 +23,7 @@ $id = str_replace("_"," ",$_GET["id"]);
 
 if ($id == 'new') {
     $person = new Person('new', 'applicant', null, null, null, null, null, null, null, null, null, "applicant", 
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, md5("new"));
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "");
 } else {
     $person = retrieve_person($id);
     if (!$person) { // try again by changing blanks to _ in id
@@ -218,7 +218,7 @@ if ($id == 'new') {
                             $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $clean_phone1, $clean_phone2, $clean_work_phone, $email,
                                         $type, $screening_type, $screening_status, $status, $refs, $maywecontact,
                                         $motivation, $specialties, $availability, $schedule, $hours, 
-                                        $birthday, $start_date, $end_date, $reason_left, $notes, md5($pass));
+                                        $birthday, $start_date, $end_date, $reason_left, $notes, "");
                             $result = add_person($newperson);
                             if (!$result)
                                 echo ('<p class="error">Unable to add " .$first_name." ".$last_name. " in the database. <br>Please report this error to the House Manager.');

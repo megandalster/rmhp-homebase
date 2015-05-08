@@ -253,11 +253,11 @@ function getall_type($t) {
  *   get all active volunteers and subs of $type who are available for the given $frequency,$week,$day,and $shift
  */
 
-function getall_available($type, $day, $shift) {
+function getall_available($type, $day, $shift, $venue) {
     connect();
     $query = "SELECT * FROM dbPersons WHERE (type LIKE '%" . $type . "%' OR type LIKE '%sub%')" .
             " AND availability LIKE '%" . $day .":". $shift .
-            "%' AND status = 'active' ORDER BY last_name,first_name";
+            "%' AND status = 'active' AND availability LIKE '%" . $venue . "%' ORDER BY last_name,first_name";
     $result = mysql_query($query);
     mysql_close();
     return $result;
