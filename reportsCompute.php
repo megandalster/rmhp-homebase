@@ -176,7 +176,7 @@ function pretty_date($date){
 	//assume the person was born before 2000. 
 	if ($dob[2]=="XX")
 	    $dob[2] = "19XX";
-	elseif ( ((int) $dob[2] ) <= 30){
+	elseif ( ((int) $dob[2] ) <= date("y")){
 		$dob[2] = "20".$dob[2];  	
 	} else{
 		$dob[2] = "19".$dob[2];
@@ -339,7 +339,7 @@ function calculate_age($date){
 	
 	//if the year is less than 30, we can assume the person was born after 2000; if the year is greater than 30, we can 
 	//assume the person was born before 2000. 
-	if ( ((int) $dob[2] ) <= 30){
+	if ( ((int) $dob[2] ) <= date("y")){
 		$dob[2] = "20".$dob[2];  	
 	} else{
 		$dob[2] = "19".$dob[2];
