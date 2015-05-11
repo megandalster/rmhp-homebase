@@ -11,7 +11,7 @@
  */
 
 session_start();
-session_cache_expire(30);
+session_cache_expire(45);
 ?>
 <!--
         addWeek.php
@@ -74,8 +74,11 @@ session_cache_expire(30);
                       }
                       else
                         echo "<p>Week \"" . $week->get_name() . "\" is published, so it cannot be removed.<br>";
-					  include('addWeek_newweek.inc');
                     }
+                    //include('addWeek_newweek.inc');
+                    //unset($_GET('remove'));
+                    echo "<br> (Back to <a href=\"addWeek.php?venue=".$venue."&archive=".$_GET['archive']."\"><b>manage weeks</b></a>)" ;
+                         
                 }
                 else if (!array_key_exists('_submit_check_newweek', $_POST)) {
                     include('addWeek_newweek.inc');

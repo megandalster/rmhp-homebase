@@ -116,16 +116,24 @@ session_cache_expire(30);
                 function process_remove_shift($post, $msentry, $group, $day, $time, $venue) {
                     if (!array_key_exists('_submit_remove_shift', $post))
                         return false;
-                    if (delete_dbMasterSchedule($msentry->get_id())) {
-                        echo "<br>Removed a master schedule shift <br><br>";
-                        $returnpoint = "viewSchedule.php?venue=" . $venue;
-                        echo "<table align=\"center\"><tr><td align=\"center\" width=\"442\">
-				<br><a href=\"" . $returnpoint . "\">
-				Back to Master Schedule</a></td></tr></table>";
-                        add_log_entry('<a href=\"personEdit.php?id=' . $_SESSION['_id'] . '\">' . $_SESSION['f_name'] . ' ' .
-                                $_SESSION['l_name'] . '</a> deleted a new master schedule shift: <a href=\"editMasterSchedule.php?group=' .
-                                $group . "&day=" . $day . "&shift=" . $time . "&venue=" . $venue . '\">' . $group . ":" . $day .":" .  $time .":" . $venue .'</a>.');
-                        return true;
+                    if ($msentry->get_id()) {
+                    	//I tried to fix the issue here by unfilling the shift before removing it but this did not seem to work. 
+                    	//Perhaps there is something wrong with the unschedule_person function in the dbPersons.
+                    	
+                    	//process_unfill_shift($post, $msentry);
+                    	//unschedule_person($msentry, 'Elinor4017261449');
+                    	if (delete_dbMasterSchedule($msentry->get_id())) {
+                    	
+                        	echo "<br>Removed a master schedule shift <br><br>";
+                        	$returnpoint = "viewSchedule.php?venue=" . $venue;
+                        	echo "<table align=\"center\"><tr><td align=\"center\" width=\"442\">
+									<><a href=\"" . $returnpoint . "\">
+									Back to Master Schedule</a></td></tr></table>";
+                        	add_log_entry('<a href=\"personEdit.php?id=' . $_SESSION['_id'] . '\">' . $_SESSION['f_name'] . ' ' .
+                            		$_SESSION['l_name'] . '</a> deleted a new master schedule shift: <a href=\"editMasterSchedule.php?group=' .
+                            		$group . "&day=" . $day . "&shift=" . $time . "&venue=" . $venue . '\">' . $group . ":" . $day .":" .  $time .":" . $venue .'</a>.');
+                        	return true;
+                    	}
                     }
                     return false;
                 }
