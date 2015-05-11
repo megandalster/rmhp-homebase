@@ -20,6 +20,8 @@ function show_report() {
 
 	$from = $_POST["from"];
 	$to   = $_POST["to"];
+	$name_from = $_POST["name_from"];
+	$name_to = $_POST["name_to"];
 	$venue   = $_POST["venue"];
 	if ($_POST['export'])	
 		$export = "yes";
@@ -36,7 +38,7 @@ function show_report() {
 				report_volunteer_birthdays($from, $to, $venue, $export);
 		}
 	    else if (in_array('history', $_POST['report-types'])) {
-				report_volunteer_history($from, $to, $venue, $export);
+				report_volunteer_history($from, $to, $name_from,$name_to, $venue, $export);
 	    }
 		if (in_array('volunteers', $_POST['report-types'])) {
 				report_all_volunteers($export);	
@@ -87,14 +89,16 @@ function report_volunteer_birthdays($from,$to,$venue,$export) {
 	display_birthdays($report, $export);
 }
 
-function report_volunteer_history($from, $to, $venue, $export) {
+function report_volunteer_history($from, $to, $name_from, $name_to, $venue, $export) {
 	if($from == ""){$from ="00-00-00";}
 	if($to == ""){$to = date("m-d-y");}
+	if($name_from == ""){$name_from="A";}
+	if($name_to == ""){$name_to = "Z";}
 	
 	echo ("<br><b>Volunteer History Report</b><br> Report date: ");
 	echo date("F d, Y")."<br><br>";
 	
-	$report = get_logged_hours($from, $to, $venue);
+	$report = get_logged_hours($from, $to, $name_from,$name_to, $venue);
     display_logged_hours($report, $export);
 }
 

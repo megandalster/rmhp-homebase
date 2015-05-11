@@ -101,7 +101,7 @@ $(function() {
 							&nbsp;&nbsp;&nbsp;&nbsp;to : <input name = "to" type="text" size="10" id="to"></p>
 		</td>
 		<td class = "search-description" valign="top">&nbsp;&nbsp; Last Name Range: 
-			<p id="fromto"> from : <input name = "name_from" type="text" size="10" id="name_from"><br>
+			<p id="name_fromto"> from : <input name = "name_from" type="text" size="10" id="name_from"><br>
 							&nbsp;&nbsp;&nbsp;&nbsp;to : <input name = "name_to" type="text" size="10" id="name_to"></p>
 		</td>
 		<td class = "search-description" valign="top"> &nbsp;&nbsp;&nbsp;&nbsp;Venue:

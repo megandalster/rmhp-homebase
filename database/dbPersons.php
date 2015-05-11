@@ -352,11 +352,12 @@ function get_birthdays($venue) {
 
 //return an array of "last_name;first_name;hours", which is "last_name;first_name;date:start_time-end_time:venue:totalhours"
 // and sorted alphabetically
-function get_logged_hours($from, $to, $venue) {
+function get_logged_hours($from, $to, $name_from, $name_to, $venue) {
 	connect();
    	$query = "SELECT first_name,last_name,hours FROM dbPersons "; 
    	$query.= " WHERE hours LIKE '%" .$venue . "%'";
-   	$query.=" ORDER BY last_name,first_name";
+   	$query.= " AND last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'";
+   	$query.= " ORDER BY last_name,first_name";
 	$result = mysql_query($query);
 	$thePersons = array();
 	while ($result_row = mysql_fetch_assoc($result)) {
