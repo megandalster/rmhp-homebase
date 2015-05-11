@@ -35,13 +35,13 @@ function show_report() {
 			report_shifts_staffed_vacant_by_day($from, $to, $venue);
 		}
 		else if (in_array('birthdays', $_POST['report-types'])) {
-				report_volunteer_birthdays($from, $to, $venue, $export);
+				report_volunteer_birthdays($name_from,$name_to, $venue, $export);
 		}
 	    else if (in_array('history', $_POST['report-types'])) {
 				report_volunteer_history($from, $to, $name_from,$name_to, $venue, $export);
 	    }
 		if (in_array('volunteers', $_POST['report-types'])) {
-				report_all_volunteers($export);	
+				report_all_volunteers($name_from, $name_to, $export);	
 		}
 	}
 }
@@ -80,11 +80,13 @@ function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
 	display_vacancies_table($col_labels, $row_labels, $report, $export);
 }
 
-function report_volunteer_birthdays($from,$to,$venue,$export) {
+function report_volunteer_birthdays($name_from, $name_to, $venue, $export) {
 	echo ("<br><b>Volunteer Birthdays Report</b> (ordered by month) <br> Report date: ");
 	echo date("F d, Y")."<br><br>";
+	if($name_from == ""){$name_from="A";}
+	if($name_to == ""){$name_to = "Z";}
 	
-	$report = get_birthdays($venue);
+	$report = get_birthdays($name_from, $name_to,$venue);
 	//display_birthdays($col_labels,$report);
 	display_birthdays($report, $export);
 }
@@ -102,10 +104,13 @@ function report_volunteer_history($from, $to, $name_from, $name_to, $venue, $exp
     display_logged_hours($report, $export);
 }
 
-function report_all_volunteers($export) {
+function report_all_volunteers($name_from, $name_to, $export) {
 	echo ("<br><b>Volunteer Contact Info</b><br> Report date: ");
 	echo date("F d, Y")."<br><br>";
-	$report = getall_dbPersons();
+	if($name_from == ""){$name_from="A";}
+	if($name_to == ""){$name_to = "Z";}
+	
+	$report = getall_dbPersons($name_from, $name_to);
 	display_volunteers($report, $export);
 }
 

@@ -157,9 +157,11 @@ function update_hours($id, $new_hours) {
  * if none there, return false
  */
 
-function getall_dbPersons() {
+function getall_dbPersons($name_from, $name_to) {
     connect();
-    $query = "SELECT * FROM dbPersons ORDER BY last_name,first_name";
+    $query = "SELECT * FROM dbPersons";
+    $query.= " WHERE last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'"; 
+    $query.= " ORDER BY last_name,first_name";
     $result = mysql_query($query);
     if ($result == null || mysql_num_rows($result) == 0) {
         mysql_close();
@@ -336,10 +338,11 @@ function get_people_for_export($attr, $first_name, $last_name, $gender, $type, $
 }
 
 //return an array of "last_name:first_name:birth_date", and sorted by month and day
-function get_birthdays($venue) {
+function get_birthdays($name_from, $name_to, $venue) {
 	connect();
    	$query = "SELECT * FROM dbPersons WHERE availability LIKE '%" . $venue . "%'" . 
-    " ORDER BY birthday";
+   	$query.= " AND last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'";
+    $query.= " ORDER BY birthday";
 	$result = mysql_query($query);
 	$thePersons = array();
 	while ($result_row = mysql_fetch_assoc($result)) {
