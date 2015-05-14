@@ -97,6 +97,14 @@ function update_dbMasterSchedule($entry) {
 }
 
 function delete_dbMasterSchedule($id) {
+    // first, unschedule people from the shift
+    $msentry = new MasterScheduleEntry($id);
+    if ($msentry) {
+    	$ids = get_person_ids($msentry->get_venue(),$msentry->get_week_no(),
+    							$msentry->get_day(),$msentry->get_hours());
+    	foreach ($ids as $person_id)
+    		unschedule_person($msentry, $person_id);
+    }
     connect();
     $query = "DELETE FROM dbMasterSchedule WHERE id = '" . $id . "'";
     $result = mysql_query($query);
