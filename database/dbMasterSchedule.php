@@ -1,7 +1,6 @@
 <?php
 /*
- * Copyright 2015 by Adrienne Beebe, Yonah Biers-Ariel, 
- * Connor Hargus, Phuong Le, Xun Wang, and Allen Tucker. 
+ * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, Xun Wang, and Allen Tucker. 
  * This program is part of RMH Homebase, which is free software.  It comes with 
  * absolutely no warranty. You can redistribute and/or modify it under the terms 
  * of the GNU General Public License as published by the Free Software Foundation
@@ -98,12 +97,13 @@ function update_dbMasterSchedule($entry) {
 
 function delete_dbMasterSchedule($id) {
     // first, unschedule people from the shift
-    $msentry = new MasterScheduleEntry($id);
-    if ($msentry) {
+    $msentry = retrieve_dbMasterSchedule($id);
+    if ($msentry!=null) {
     	$ids = get_person_ids($msentry->get_venue(),$msentry->get_week_no(),
     							$msentry->get_day(),$msentry->get_hours());
-    	foreach ($ids as $person_id)
-    		unschedule_person($msentry, $person_id);
+    	foreach ($ids as $person_id) 
+    	    if ($person_id)
+    			unschedule_person($msentry, $person_id);
     }
     connect();
     $query = "DELETE FROM dbMasterSchedule WHERE id = '" . $id . "'";
@@ -200,7 +200,7 @@ function unschedule_person($msentry, $person_id) {
     // be sure the person exists and is scheduled
     if (!$result || mysql_num_rows($result) !== 1) {
         mysql_close();
-        die("Error: week_no:day:time:venue not valid");
+        die("Error: week_no:day:time:venue not valid person_id=".$person_id);
     } else if (!$resultp || mysql_num_rows($resultp) !== 1) {
         $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
         $persons = explode(',', $result_row['persons']);    // get an array of scheduled person id's
@@ -334,6 +334,7 @@ function get_persons($id) {
 
 function get_person_ids($venue, $week_no, $day, $time) {
     connect();
+    echo "weekdaytimevenue=".$week_no . ":" . $day . ":" . $time . ":" . $venue;
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
             $week_no . ":" . $day . ":" . $time . ":" . $venue. "'";
     $result = mysql_query($query1);
@@ -341,7 +342,7 @@ function get_person_ids($venue, $week_no, $day, $time) {
         die("get_person_ids could not query the database");
     if (mysql_num_rows($result) !== 1) {
         mysql_close();
-        return array("Error: group-day-time not valid:see get_person_ids");
+        die("Error: week-day-time-venue not valid:see get_person_ids");
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $person_ids = explode(',', $result_row['persons']);
