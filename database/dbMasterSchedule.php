@@ -334,7 +334,6 @@ function get_persons($id) {
 
 function get_person_ids($venue, $week_no, $day, $time) {
     connect();
-    echo "weekdaytimevenue=".$week_no . ":" . $day . ":" . $time . ":" . $venue;
     $query1 = "SELECT * FROM dbMasterSchedule WHERE id = '" .
             $week_no . ":" . $day . ":" . $time . ":" . $venue. "'";
     $result = mysql_query($query1);
