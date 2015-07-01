@@ -33,7 +33,7 @@ function validate_form() {
         $errors[] = 'Please select a Position type';
     if ($_POST['type'] != null && $_SESSION['access_level'] <= 1 && in_array('manager', $_POST['type']))
         $errors[] = "Sorry, you can't promote yourself to manager.";
-    if ($_POST['status']=='active')
+    if ($_POST['status']=='active' && in_array('volunteer', $_POST['type']))
         if ($_POST['availdays'] == null || $_POST['availvenues'] == null)
         	$errors[] = 'Please enter Availability: at least one Venue and Shift';
     if (!valid_phone($_POST['phone1']))
