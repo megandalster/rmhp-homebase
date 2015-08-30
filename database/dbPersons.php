@@ -338,10 +338,11 @@ function get_people_for_export($attr, $first_name, $last_name, $gender, $type, $
 }
 
 //return an array of "last_name:first_name:birth_date", and sorted by month and day
-function get_birthdays($name_from, $name_to, $venue) {
+function get_birthdays($from, $to, $name_from, $name_to, $venue) {
 	connect();
    	$query = "SELECT * FROM dbPersons WHERE availability LIKE '%" . $venue . "%'" . 
-   	$query.= " AND last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'";
+   	$query.= " AND birthday BETWEEN '" .$from. "' AND '" .$to. "'";
+    $query.= " AND last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'";
     $query.= " ORDER BY birthday";
 	$result = mysql_query($query);
 	$thePersons = array();
