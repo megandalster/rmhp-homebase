@@ -285,16 +285,16 @@ function timeslots_overlap($s1_start, $s1_end, $s2_start, $s2_end) {
 }
 
 function make_a_shift($result_row) {
-    $the_shift = new Shift(
-    				$result_row['id'],
+	$id = substr($result_row[id],0,strrpos($result_row[id],':')); // strip off venue from old id
+	$the_shift = new Shift(
+    				$id,
                     $result_row['venue'],
                     $result_row['vacancies'],
-                    $result_row['persons'],
-                    $result_row['removed_persons'],
+                    explode('*',$result_row['persons']),
+                    explode('*',$result_row['removed_persons']),
                     $result_row['sub_call_list'],
                     $result_row['notes']
                  );
-
     return $the_shift;
 }
 
@@ -314,6 +314,31 @@ function get_all_shifts() {
     }
 
     return $shifts;
+}
+// remove a person from all future shifts in the current year
+function remove_from_future_shifts($id) {
+	$today = date('m-d-y');
+	$this_year = substr($today,6);
+	connect();
+	$query = "select * from dbShifts where substring(id,1,8) >= '".$today .
+			"' AND substring(id,7,2) = '".$this_year.
+			"' AND persons LIKE '%".$id."%' ";
+	$result = mysql_query($query);
+	mysql_close();
+	while ($result_row = mysql_fetch_assoc($result)) {
+		$persons_array = explode('*',$result_row['persons']); // individual persons
+		for ($i=0; $i<count($persons_array); $i++) {
+			$p = explode('+',$persons_array[$i]); // id, first_name, last_name
+			if ($p[0]==$id) {
+				array_splice($persons_array,$i,1); // remove person from array
+				$result_row['vacancies']++;
+				$result_row['persons'] = implode('*',$persons_array);
+				$s = make_a_shift($result_row);
+				update_dbShifts($s);
+				break;
+			}
+		}
+	}
 }
 // this function is for exporting volunteer data
 function get_all_people_in_past_shifts() {
