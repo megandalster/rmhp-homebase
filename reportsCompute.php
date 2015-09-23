@@ -143,7 +143,7 @@ function display_birthdays($report, $export) { //Create a table to display birth
 			$dob = pretty_date($person->get_birthday());
 			$age = calculate_age($person->get_birthday());
 		}
-		elseif (strlen($person->get_birthday()) == 8){
+		else if (strlen($person->get_birthday()) == 8){
 			$dob = pretty_date($person->get_birthday());
 			$age = "N/A";
 		}
@@ -152,6 +152,7 @@ function display_birthdays($report, $export) { //Create a table to display birth
 			$age = "N/A";
 		}
 		if ($dob != "N/A") {
+			
 			$p = array($person->get_first_name()." ".$person->get_last_name(),
 				   $person->get_address(), $person->get_city(), $person->get_state(), 
 				   $person->get_zip(),$dob,$age);
@@ -186,15 +187,13 @@ function pretty_date($date){
 	if ($dob[2]=="XX")
 	    $dob[2] = "19XX";
 	elseif ( ((int) $dob[2] ) <= date("y")){
-		$dob[2] = "20".$dob[2];  	
+		$year = "20".$dob[2];  	
 	} else{
-		$dob[2] = "19".$dob[2];
+		$year = "19".$dob[2];
 	}
     if ( ((int) $dob[1] ) < 10)
 		$dob[1] = substr($dob[1],1);  		
-	$dateObj   = DateTime::createFromFormat('!m', $dob[0]);
-	$dob[0] = $dateObj->format('M'); 
-	return $dob[0]." ".$dob[1].", ".$dob[2];
+	return date("F j", mktime(0,0,0,$dob[0],$dob[1],(int)$year)).", ".$year;
 }
 
 
@@ -229,7 +228,7 @@ function display_totals_table($col_lab, $row_lab, $report){  //Creates a table f
 					foreach($report as $entry){
 						$elements = explode(":",$entry); 
 						if ($col_name==$elements[0]){
-							$num = (int)$elements[3];
+							$num = (int)$elements[2];
 							$count = $count + $num;
 							$row_total = $row_total + $num;
 						}
@@ -247,7 +246,7 @@ function display_totals_table($col_lab, $row_lab, $report){  //Creates a table f
 					foreach($report as $entry){
 						$elements = explode(":",$entry); 
 						if ($col_name==$elements[0] && $row_name==$elements[1]){
-							$num = (int)$elements[3];
+							$num = (int)$elements[2];
 							$count += $num;
 							$row_total += $num;
 						}
@@ -297,8 +296,8 @@ function display_vacancies_table($col_lab, $row_lab, $report){
 					foreach($report as $entry){
 						$elements = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
 						if ($col_name==$elements[0]){
-							$slots = $elements[4];
-							$vacs = $elements[3];
+							$slots = $elements[3];
+							$vacs = $elements[2];
 							$slotsint = (int)$slots;
 							$vacsint = (int)$vacs;
 							$col_total_slots += $slotsint;
@@ -320,8 +319,8 @@ function display_vacancies_table($col_lab, $row_lab, $report){
 					foreach($report as $entry){
 						$elements = explode(":",$entry); //turn each entry into an arry, hrs is final item in array
 						if ($col_name==$elements[0] && $row_name==$elements[1]){
-							$slots = $elements[4];
-							$vacs = $elements[3];
+							$slots = $elements[3];
+							$vacs = $elements[2];
 							$slots_count += $slots;
 							$vacs_count += $vacs;
 							$slotsint = (int)$slots;

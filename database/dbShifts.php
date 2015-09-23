@@ -285,7 +285,7 @@ function timeslots_overlap($s1_start, $s1_end, $s2_start, $s2_end) {
 }
 
 function make_a_shift($result_row) {
-	$id = substr($result_row[id],0,strrpos($result_row[id],':')); // strip off venue from old id
+	$id = substr($result_row['id'],0,strrpos($result_row['id'],':')); // strip off venue from old id
 	$the_shift = new Shift(
     				$id,
                     $result_row['venue'],
@@ -426,8 +426,7 @@ function get_volunteer_hours($from,$to,$venue){ //Used for Total Hours Report
        		}else{
         		$length = 4;
        		}
-       		$count = substr_count($people,"+");		
-       		$num_people = $count / 2;
+       		$num_people = count($a_shift->get_persons());
        		$num_hours = $num_people * $length;
        		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$num_hours;
        		$the_hours[] = $shift_info;
@@ -442,10 +441,8 @@ function get_shifts_staffed($from, $to, $venue) {
     foreach($all_shifts as $a_shift){
     	$the_date = $a_shift->get_date();	//date of this shift
     	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
-       		$people = $a_shift->get_persons();  
-       		$count = substr_count($people,"+");		//used to count #people on shift
-       		$num_people = $count / 2;
-       		$slots = $a_shift->num_vacancies() + $num_people;
+       		$num_people = count($a_shift->get_persons());
+       		$slots = $a_shift->get_vacancies() + $num_people;
     		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$a_shift->num_vacancies().":".$slots;
        		$the_hours[] = $shift_info;
     	}
