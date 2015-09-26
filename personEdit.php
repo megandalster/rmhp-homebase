@@ -164,10 +164,10 @@ if ($id == 'new') {
                     if ($_POST['deleteMe'] == "DELETE") {
                         $result = retrieve_person($id);
                         if (!$result)
-                            echo('<p>Unable to delete. ' . $first_name . ' ' . $last_name . ' is not in the database. <br>Please report this error to the House Manager.');
+                            echo('<p>Unable to delete. ' . $first_name . ' ' . $last_name . ' is not in the database. <br>Please report this error to the Volunteer Coordinator.');
                         else {
                             //What if they're the last remaining manager account?
-                            if (strpos($type, 'manager') !== false) {
+                            if ($_SESSION['access_level'] >= 2) {
                                 //They're a manager, we need to check that they can be deleted
                                 $managers = getall_type('manager');
                                 if (!$managers || mysql_num_rows($managers) <= 1)
@@ -175,18 +175,15 @@ if ($id == 'new') {
                                 else {
                                     $result = remove_person($id);
                                     echo("<p>You have successfully removed " . $first_name . " " . $last_name . " from the database.</p>");
+                                    add_log_entry('<a href=\"personEdit.php?id=' . $_SESSION['_id'] . '\">' . $_SESSION['f_name'] . ' ' . $_SESSION['l_name'] . '</a> removed <a href=\"personEdit.php?id=' . $id . '\">' . $first_name . ' ' . $last_name . '</a> from the database.');
                                     if ($id == $_SESSION['_id']) {
                                         session_unset();
                                         session_destroy();
                                     }
                                 }
                             } else {
-                                $result = remove_person($id);
-                                echo("<p>You have successfully removed " . $first_name . " " . $last_name . " from the database.</p>");
-                                if ($id == $_SESSION['_id']) {
-                                    session_unset();
-                                    session_destroy();
-                                }
+                                // $result = remove_person($id);
+                                echo("<p>You do not have enough privileges to remove a person from the database.</p>");
                             }
                         }
                     }
@@ -202,9 +199,11 @@ if ($id == 'new') {
                                         $birthday, $start_date, $end_date, $reason_left, $notes, md5($pass));
                         $result = add_person($newperson);
                         if (!$result)
-                            echo ('<p class="error">Unable to reset ' . $first_name . ' ' . $last_name . "'s password.. <br>Please report this error to the House Manager.");
-                        else
+                            echo ('<p class="error">Unable to reset ' . $first_name . ' ' . $last_name . "'s password.. <br>Please report this error to the .Volunteer Coordinator");
+                        else {
                             echo("<p>You have successfully reset " . $first_name . " " . $last_name . "'s password.</p>");
+                            add_log_entry('<a href=\"personEdit.php?id=' . $_SESSION['_id'] . '\">' . $_SESSION['f_name'] . ' ' . $_SESSION['l_name'] . '</a> has reset <a href=\"personEdit.php?id=' . $id . '\">' . $first_name . ' ' . $last_name . '</a>\'s password.');
+                        }
                     }
 
                     // try to add a new person to the database
@@ -221,11 +220,12 @@ if ($id == 'new') {
                                         $birthday, $start_date, $end_date, $reason_left, $notes, "");
                             $result = add_person($newperson);
                             if (!$result)
-                                echo ('<p class="error">Unable to add " .$first_name." ".$last_name. " in the database. <br>Please report this error to the House Manager.');
+                                echo ('<p class="error">Unable to add " .$first_name." ".$last_name. " in the database. <br>Please report this error to the Volunteer Coordinator.');
                             else if ($_SESSION['access_level'] == 0)
-                                echo("<p>Your application has been successfully submitted.<br>  The House Manager will contact you soon.  Thank you!");
-                            else
+                                echo("<p>Your application has been successfully submitted.<br>  The Volunteer Coordinator will contact you soon.  Thank you!");
+                            else 
                                 echo("<p>You have successfully added " . $first_name . " " . $last_name . " to the database.</p>");
+                            add_log_entry('<a href=\"personEdit.php?id=' . $_SESSION['_id'] . '\">' . $_SESSION['f_name'] . ' ' . $_SESSION['l_name'] . '</a> has added <a href=\"personEdit.php?id=' . $id . '\">' . $first_name . ' ' . $last_name . '</a> to the database.');
                         }
                     }
 
@@ -235,7 +235,7 @@ if ($id == 'new') {
                         $pass = $_POST['old_pass'];
                         $result = remove_person($id);
                         if (!$result)
-                            echo ('<p class="error">Unable to update ' . $first_name . ' ' . $last_name . '. <br>Please report this error to the House Manager.');
+                            echo ('<p class="error">Unable to update ' . $first_name . ' ' . $last_name . '. <br>Please report this error to the Volunteer Coordinator.');
                         else {
                             $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $clean_phone1, $clean_phone2, $clean_work_phone, $email,
                                         $type, $screening_type, $screening_status, $status, $refs, $maywecontact,
@@ -243,11 +243,11 @@ if ($id == 'new') {
                                         $birthday, $start_date, $end_date, $reason_left, $notes, md5($pass));
                             $result = add_person($newperson);
                             if (!$result)
-                                echo ('<p class="error">Unable to update ' . $first_name . ' ' . $last_name . '. <br>Please report this error to the House Manager.');
+                                echo ('<p class="error">Unable to update ' . $first_name . ' ' . $last_name . '. <br>Please report this error to the Volunteer Coordinator.');
                             //else echo("<p>You have successfully edited " .$first_name." ".$last_name. " in the database.</p>");
                             else
                                 echo('<p>You have successfully edited <a href="' . $path . 'personEdit.php?id=' . $id . '"><b>' . $first_name . ' ' . $last_name . ' </b></a> in the database.</p>');
-                            add_log_entry('<a href=\"personEdit.php?id=' . $id . '\">' . $first_name . ' ' . $last_name . '</a>\'s Personnel Edit Form has been changed.');
+                            add_log_entry('<a href=\"personEdit.php?id=' . $_SESSION['_id'] . '\">' . $_SESSION['f_name'] . ' ' . $_SESSION['l_name'] . '</a> has changed <a href=\"personEdit.php?id=' . $id . '\">' . $first_name . ' ' . $last_name . '</a>\'s Personnel Edit Form.');
                         }
                     }
                 }

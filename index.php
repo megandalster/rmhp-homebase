@@ -45,7 +45,7 @@ session_cache_expire(30);
                 <!-- your main page data goes here. This is the place to enter content -->
                 <p>
                     <?PHP
-                    if ($_SESSION['access_level'] == 0)
+                    if (!person && $_SESSION['access_level'] == 0)
                         echo('<p> To apply for a volunteer position at the Ronald McDonald House, select <a href="' . 
                               $path . 'personEdit.php?id=' . 'new' . '">apply</a>.');
                     if ($person) {
@@ -61,7 +61,7 @@ session_cache_expire(30);
                         //APPLICANT CHECK
                         if ($person->get_first_name() != 'guest' && $person->get_status() == 'applicant') {
                             //SHOW STATUS
-                            echo('<div class="infobox"><p><strong>Your application has been submitted.</strong><br><br /><table><tr><td><strong>Step</strong></td><td><strong>Completed?</strong></td></tr><tr><td>Background Check</td><td>' . $person['background_check'] . '</td></tr><tr><td>Interview</td><td>' . $person['interview'] . '</td></tr><tr><td>Shadow</td><td>' . $person['shadow'] . '</td></tr></table></p></div>');
+                            echo('<div class="infobox"><p><strong>Your application has been submitted. Please contact the Volunteer Coordinator for informaton about its status.</strong><br><br /></p></div>');
                         }
 
                         //VOLUNTEER CHECK
@@ -100,7 +100,7 @@ session_cache_expire(30);
                                 foreach ($upcoming_shifts as $tableId) {
                                     echo('<li type="circle">' . get_shift_name_from_id($tableId)) . '</li>';
                                 }
-                                echo('</ul><p>If you need to cancel an upcoming shift, please contact the <a href="mailto:jpowers@rmhprovidence.org">Volunteer Coordinator</a>.</p></div>');
+                                echo('</ul><p>If you need to cancel an upcoming shift, please email <a href="mailto:jpowers@rmhprovidence.org,sczekalski@rmhprovidence.org,mlepage@rmhprovidence.org">Joanna, Sue, and Michelle</a>.</p></div>');
                             }
                             
                             // link to personal log sheet
@@ -163,29 +163,7 @@ session_cache_expire(30);
                                 echo('</ul></p></div><br>');
                         //    }
                             mysql_close();
-                        /*volunteer birthdays and anniversary days
-                            connect();
-                            $anniv_query = "SELECT id,first_name,last_name,birthday,start_date FROM dbPersons WHERE status LIKE '%active%'";
-                            $anniversaries = mysql_query($anniv_query);
-                            if (!$anniversaries)
-                                echo mysql_error();
-                            if (mysql_num_rows($anniversaries) > 0) {
-                                echo('<div class="anniversaryBox">');
-                                echo('<p><strong>Upcoming Birthdays and Anniversaries:</strong>');
-
-                                echo('<table class="searchResults"><tr><td class="searchResults"><u>Name</u></td><td class="searchResults"><u>Birthday</u></td><td class="searchResults"><u>Start Date</u></td></tr>');
-                                while ($thisRow = mysql_fetch_array($anniversaries, MYSQL_ASSOC)) {
-                                	if ($thisRow['birthday'] != null && $thisRow['start_date'] != null) {
-	                                	$birthday_val = mktime(0, 0, 0, (int) substr($thisRow['birthday'], 0, 2), (int) substr($thisRow['birthday'], 3, 2), date('y'));
-	                                	$startdate_val = mktime(0, 0, 0,(int) substr($thisRow['start_date'], 0, 2), (int) substr($thisRow['start_date'], 3, 2), date('y'));
-	                                    if (($birthday_val >= $today && $birthday_val <= $two_weeks) || ($startdate_val >= $today && $startdate_val <= $two_weeks))
-	                                        echo('<tr><td class="searchResults"><a href="personEdit.php?id=' . $thisRow['id'] . '">' . $thisRow['first_name'] . ' ' . $thisRow['last_name'] . '</a></td><td class="searchResults">' . $thisRow['birthday'] . '</td><td class="searchResults">' . $thisRow['start_date'] . '</td></tr>');
-                                	}
-                                }
-                                echo('</table></p></div><br>');
-                            }
-                            mysql_close();
-                        */    
+                           
                         // active volunteers who haven't worked recently
                             $everyone = getall_names("active", "volunteer");
                             if ($everyone && mysql_num_rows($everyone) > 0) {

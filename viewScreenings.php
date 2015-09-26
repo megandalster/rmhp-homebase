@@ -131,7 +131,7 @@ if (!$screening) {
                         $result = insert_dbApplicantScreenings($screening);
                         if (!$result)
                             echo ('<p class="error">Unable to add ' . $type . ' in the screenings database. <br>
-           			Please report this error to the House Manager.');
+           			Please report this error to the Volunteer Coordinator.');
                         else
                             echo("<p>You have successfully added '$type' to the screenings database.</p>");
                         echo('<p>click <a href="' . $path . 'viewScreenings.php?type=' . $type . '">here</a> to 
@@ -149,7 +149,7 @@ if (!$screening) {
                         $result = insert_dbApplicantScreenings($newscreening);
                         if (!$result)
                             echo ('<p class="error">Unable to update ' . $type . ' in the screenings database. <br>
-           			Please report this error to the House Manager.');
+           			Please report this error to the Volunteer Coordinator.');
                         else
                             echo('<p>You have successfully edited "' . $type . '" in the screenings database.</p>');
                         echo('<p><a href="' . $path . 'viewScreenings.php?type=' . $type . '"><b>click here</b> to 
