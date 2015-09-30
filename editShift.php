@@ -36,6 +36,26 @@
 						$shift=select_dbShifts($shiftid);
 						if(!$shift instanceof Shift)
 							echo "<p>Invalid Shift ID Supplied.  Click on \"Calendar\" above to edit shifts.</p>";
+						else if ($_SESSION['access_level']==1 && $shift->get_vacancies()>0) {
+							// allow a volunteer to add herself to a vacant shift
+							if (!process_fill_vacancy($_POST,$shift,$venue) &&
+							    !process_add_volunteer($_POST,$shift,$venue)) {
+								$persons=$shift->get_persons();
+								echo "<br><br><table align=\"center\" border=\"1px\"><tr><td align=\"center\" colspan=\"2\"><b>"
+										.get_shift_name_from_id($shiftid)."</b></td></tr>";
+								echo display_filled_slots($persons);
+								echo display_vacant_slots($shift->num_vacancies());
+								echo "</td></tr></table>";
+								echo "<p align=\"center\"><a href=\"calendar.php?id=".substr($shiftid,0,8).":".$venue."&edit=true&venue=".$venue."\">
+									Back to Calendar</a>";
+							}
+						}
+						else if ($_SESSION['access_level']==1) {
+							// exit - don't allow a volunteer to do anything else
+							echo "<p align=\"center\"> You are not authorized to edit this shift.";
+							echo "<p align=\"center\"><a href=\"calendar.php?id=".substr($shiftid,0,8).":".$venue."&edit=true&venue=".$venue."\">
+									Back to Calendar</a>";
+						}
 						else {
 							if(!process_fill_vacancy($_POST,$shift,$venue) &&
 							   !process_add_volunteer($_POST,$shift,$venue) &&
@@ -61,12 +81,7 @@
 											<input type=\"submit\" value=\"Add a Slot\" style=\"width: 150px\"
 											name=\"submit\" >
 											</form>");
-									/*	echo ("<form method=\"POST\" style=\"margin-bottom:0;\">
-											<input type=\"hidden\" name=\"_submit_clear_shift\" value=\"1\">
-											<input type=\"submit\" value=\"Clear this Shift\" style=\"width: 150px\"
-											name=\"submit\" >
-											</form>");
-									*/	echo ("<form method=\"POST\" style=\"margin-bottom:0;\">
+										echo ("<form method=\"POST\" style=\"margin-bottom:0;\">
 											<input type=\"hidden\" name=\"_submit_move_shift\" value=\"1\">
 											<input type=\"submit\" value=\"Move this Shift\" style=\"width: 150px\"
 											name=\"submit\" >

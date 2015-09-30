@@ -103,7 +103,7 @@
 		
 		add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
 		    $_SESSION['l_name'].'</a> generated a <a href=\"subCallList.php?shift='.$shift->get_id().'\">sub call list</a> for the shift: <a href=\"editShift.php?shift='.
-		    $shift->get_id().'&venue='.$venue.'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 		//$_POST['_shiftid']=$id;
 		//echo "<p>SCL ".$id." added successfully.</p>";
 	}

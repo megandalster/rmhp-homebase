@@ -119,7 +119,7 @@ include_once('database/dbLog.php');
 			$name=explode("+",$vol);
 			add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
 			    $_SESSION['l_name'].'</a> assigned <a href=\"personEdit.php?id='.$name[0].'\">'.$name[1].' '.$name[2].'</a> to the shift: <a href=\"editShift.php?shift='.
-			    $shift->get_id().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 			return false;
 		}
 	}
@@ -149,7 +149,7 @@ include_once('database/dbLog.php');
 				update_dbShifts($shift);
 				add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
 				    $_SESSION['l_name'].'</a> removed <a href=\"personEdit.php?id='.$name[0].'\">'.$name[1].' '.$name[2].'</a> from the shift: <a href=\"editShift.php?shift='.
-				    $shift->get_id().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 				return true;
 			}
 		}
@@ -161,8 +161,8 @@ include_once('database/dbLog.php');
 			update_dbShifts($shift);
 			fix_SCL($shift);
 			add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
-			    $_SESSION['l_name'].'</a> added a slot to the shift: <a href=\"editShift.php?shift='.$shift->get_id().'\">'.
-			    get_shift_name_from_id($shift->get_id()).'</a>.');
+			    $_SESSION['l_name'].'</a> added a slot to the shift: <a href=\"editShift.php?shift='.
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 			return true;
 		}
 		return false;
@@ -175,15 +175,15 @@ include_once('database/dbLog.php');
 			   		delete_dbSCL($scl);
 			   		add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
 			   		    $_SESSION['l_name'].'</a> deleted a <a href=\"subCallList.php?shift='.$shift->get_id().'\">sub call list</a> for the shift: <a href=\"editShift.php?shift='.
-			   		    $shift->get_id().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 				}
 			}
 			$shift = new Shift($shift->get_mm_dd_yy().":".$shift->get_hours(), $shift->get_venue(), 
 								0, array(),array(), "", "");
 			update_dbShifts($shift);
 			add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
-			    $_SESSION['l_name'].'</a> cleared the shift: <a href=\"editShift.php?shift='.$shift->get_id().'\">'.
-			    get_shift_name_from_id($shift->get_id()).'</a>.');
+			    $_SESSION['l_name'].'</a> cleared the shift: <a href=\"editShift.php?shift='.
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 			return true;
 		}
 		return false;
@@ -219,8 +219,8 @@ include_once('database/dbLog.php');
 			delete_dbShifts($shift);
 			fix_SCL($shift);
 			add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
-			    $_SESSION['l_name'].'</a> deleted the shift: <a href=\"editShift.php?shift='.$shift->get_id().'\">'.
-			    get_shift_name_from_id($shift->get_id()).'</a>.');
+			    $_SESSION['l_name'].'</a> deleted the shift: <a href=\"editShift.php?shift='.
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 			echo "<p>Shift ".get_shift_name_from_id($shift->get_id())." deleted.";
 			echo "<p><a href=\"calendar.php?id=".substr($shiftid,0,8)."&edit=true&venue=house"."\">
 									Back to Calendar</a>";
@@ -242,7 +242,7 @@ include_once('database/dbLog.php');
 		return $s;
     }
 
-	function process_change_times($post,$shift){
+	function process_change_times($post,$shift,$venue){
         if(!array_key_exists('_submit_change_times',$post))
 			return false;
 		if($post['new_start']=="0" && $post['new_end']=="0")
@@ -268,7 +268,7 @@ include_once('database/dbLog.php');
 		else {
 			add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
 			    $_SESSION['l_name'].'</a> moved the shift: <a href=\"editShift.php?shift='.
-			    $shift->get_id().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 			return false;
 		}
 	}
@@ -279,8 +279,8 @@ include_once('database/dbLog.php');
 			update_dbShifts($shift);
 			fix_SCL($shift);
 			add_log_entry('<a href=\"personEdit.php?id='.$_SESSION['_id'].'\">'.$_SESSION['f_name'].' '.
-			    $_SESSION['l_name'].'</a> ignored a vacant slot for the shift: <a href=\"editShift.php?shift='.$shift->get_id().'\">'.
-			    get_shift_name_from_id($shift->get_id()).'</a>.');
+			    $_SESSION['l_name'].'</a> ignored a vacant slot for the shift: <a href=\"editShift.php?shift='.
+			    substr($shift->get_id(),0,strrpos($shift->get_id(),":")).'&venue='.$shift->get_venue().'\">'.get_shift_name_from_id($shift->get_id()).'</a>.');
 			return true;
 		}
 		return false;

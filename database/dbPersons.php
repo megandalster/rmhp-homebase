@@ -241,7 +241,9 @@ function getall_names($status, $type) {
 
 function getall_type($t) {
     connect();
-    $query = "SELECT * FROM dbPersons WHERE (type LIKE '%" . $t . "%' OR type LIKE '%sub%') AND status = 'active'  ORDER BY last_name,first_name";
+    if ($_SESSION['access_level']==2)
+    	$query = "SELECT * FROM dbPersons WHERE (type LIKE '%" . $t . "%' OR type LIKE '%sub%') AND status = 'active'  ORDER BY last_name,first_name";
+    else $query = "SELECT * FROM dbPersons WHERE id='".$_SESSION['_id']."'";
     $result = mysql_query($query);
     if ($result == null || mysql_num_rows($result) == 0) {
         mysql_close();
@@ -257,9 +259,11 @@ function getall_type($t) {
 
 function getall_available($type, $day, $shift, $venue) {
     connect();
-    $query = "SELECT * FROM dbPersons WHERE (type LIKE '%" . $type . "%' OR type LIKE '%sub%')" .
+    if ($_SESSION['access_level']==2)
+       $query = "SELECT * FROM dbPersons WHERE (type LIKE '%" . $type . "%' OR type LIKE '%sub%')" .
             " AND availability LIKE '%" . $day .":". $shift .
             "%' AND status = 'active' AND availability LIKE '%" . $venue . "%' ORDER BY last_name,first_name";
+    else $query = "SELECT * FROM dbPersons WHERE id='".$_SESSION['_id']."'";
     $result = mysql_query($query);
     mysql_close();
     return $result;
