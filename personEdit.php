@@ -240,7 +240,7 @@ if ($id == 'new') {
                             $newperson = new Person($first_name, $last_name, $gender, $address, $city, $state, $zip, $clean_phone1, $clean_phone2, $clean_work_phone, $email,
                                         $type, $screening_type, $screening_status, $status, $refs, $maywecontact,
                                         $motivation, $specialties, $availability, $schedule, $hours,
-                                        $birthday, $start_date, $end_date, $reason_left, $notes, md5($pass));
+                                        $birthday, $start_date, $end_date, $reason_left, $notes, $pass);
                             $result = add_person($newperson);
                             if (!$result)
                                 echo ('<p class="error">Unable to update ' . $first_name . ' ' . $last_name . '. <br>Please report this error to the Volunteer Coordinator.');
