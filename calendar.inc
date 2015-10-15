@@ -26,7 +26,7 @@ session_cache_expire(30);
  */
 function do_week_nav($week, $edit, $venue) {
     $cur_id = $week->get_id();
-//		echo ("We are doing a nav for week ".$cur_id."<br>");
+//    show_week_no ($cur_id);
     $prev_id = date("m-d-y", mktime(0, 0, 0, substr($cur_id, 0, 2), substr($cur_id, 3, 2) - 7, substr($cur_id, 6, 2))) . ":" .$venue;
     $next_id = date("m-d-y", mktime(0, 0, 0, substr($cur_id, 0, 2), substr($cur_id, 3, 2) + 7, substr($cur_id, 6, 2))). ":" .$venue;
     $s = "<p><table id=\"weeknav\" align=\"left\"><tr><td align=\"left\" >";
@@ -59,7 +59,21 @@ function do_week_nav($week, $edit, $venue) {
     $s = $s . "</td></tr></table></p><br><br>";
     return $s;
 }
-
+function show_week_no ($cur_id) {
+	$cur_time = mktime(0, 0, 0, substr($cur_id, 0, 2), substr($cur_id, 3, 2), substr($cur_id, 6, 2));
+	$woms = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
+	$dom = date("d",$cur_time);
+	$wom = floor(($dom-1)/7) + 1;
+	$weekno = date("W",$cur_time);
+	if (date("Y",$cur_time)%2==0)
+		$weekno--;
+	if ($weekno%2==0)
+		$oddeven = "even";
+	else
+		$oddeven = "odd";
+	return " (week ". $weekno . ": ".$oddeven.")";
+//	echo $woms[$wom] . " ". date ("l", $cur_time) . " of the month<p>";
+}
 /**
  * gets a week object, and displays it as a calendar
  */
@@ -73,7 +87,7 @@ function show_week($days, $week, $edit, $year, $doy, $venue) {
 //		echo ("Showing week ". $week->get_id(). " for venue " . $venue . " and first day " . $days[0]->get_id() . "<br>");
     $daynames = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
     echo ('<table id="calendar" align="center" ><tr class="weekname"><td colspan="16" ' .
-    'align="center" >' .$venues[$venue]. ' Calendar: ' . $week->get_name() . '</td></tr>
+    'align="center" >' .$venues[$venue]. ' Calendar: ' . $week->get_name() .show_week_no($week->get_id()). '</td></tr>
 				<tr><td bgcolor=lightblue></td>');
     for ($i = 0; $i < 7; $i++)
         echo ('<td class="dom">' . get_dom($days[$i]) . '</td><td class="dow">&nbsp; ' . $daynames[$i] . '</td>');

@@ -172,6 +172,8 @@ function show_week_no () {
 	                $dom = date("d");
 	                $wom = floor(($dom-1)/7) + 1;
 	               	$weekno = date("W");
+	               	if (date("Y")%2==0)
+	               		$weekno--;
 	               	if ($weekno%2==0)
 	               	    $oddeven = "even";
 	               	else 

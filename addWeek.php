@@ -123,7 +123,10 @@ session_cache_expire(45);
                     	$my_date = mktime(0, 0, 0, $m, $d, $y);
                         $week_of_month= $weeksofmonth[floor(($d - 1)/7)+1];
                         // echo "weekofmonth,day,month,year,daysinmonth= ",$week_of_month.",".$d.",".$m.",".$y.",".$daysinmonth;
-        				if (date("W", $my_date)%2==1)
+        				$weekno = date("W",$my_date);
+						if (date("Y",$my_date)%2==0) // even years start at week 0 so that can't get 2 odds in a riw
+							$weekno--;
+						if ($weekno%2==1)
             				$week_of_year= "odd";
         				else 
         					$week_of_year= "even";	
