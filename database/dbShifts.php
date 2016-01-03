@@ -315,14 +315,14 @@ function get_all_shifts() {
 
     return $shifts;
 }
-// remove a person from all future shifts in the current year
+// remove a person from all future shifts in this year and next
 function remove_from_future_shifts($id) {
 	$today = date('m-d-y');
 	$this_year = substr($today,6);
 	connect();
-	$query = "select * from dbShifts where substring(id,1,8) >= '".$today .
-			"' AND substring(id,7,2) = '".$this_year.
-			"' AND persons LIKE '%".$id."%' ";
+	$query = "select * from dbShifts where (substring(id,1,6) >= '".$today .
+			"' AND substring(id,7,2) >= '".$this_year.
+			"') AND persons LIKE '%".$id."%' ";
 	$result = mysql_query($query);
 	mysql_close();
 	while ($result_row = mysql_fetch_assoc($result)) {
@@ -340,6 +340,59 @@ function remove_from_future_shifts($id) {
 		}
 	}
 }
+// add a person to all future shifts in this year and next
+function add_to_future_shifts($msentry, $vol) {
+	$today = date('m-d-y');
+	$this_year = substr($today,6);
+//	echo("msentry, vol = ");
+	$person = retrieve_person($vol);
+	$person_entry = $vol . "+" . $person->get_first_name() . "+" . $person->get_last_name();
+	$hoursvenue = $msentry->get_hours().":".$msentry->get_venue();
+//	echo ($vol." ".$person_entry . " " . $hoursvenue);
+//	var_dump($msentry);
+	
+	connect();
+	$query = "select * from dbShifts where (substring(id,1,6) >= '".$today .
+	"' AND substring(id,7,2) >= '".$this_year.
+	"') AND id LIKE '%".$hoursvenue."%' ";
+	$result = mysql_query($query);
+	mysql_close();
+	while ($result_row = mysql_fetch_assoc($result)) {
+	    $dww = get_dowwomoddeven(substr($result_row['id'],0,8));
+	//    echo 'dww='.$dww[0].$dww[1].$dww[2];
+	    $persons_array = explode('*',$result_row['persons']); // individual persons
+		if ($dww[0]!=$msentry->get_day() || // different day of week or week of month or year
+	    		$dww[1]!=$msentry->get_week_no() && $dww[2]!=$msentry->get_week_no() ||
+				in_array($person_entry,$persons_array)  // person already there
+	    	)
+	    	continue;
+		else {  //  add person to the shift
+			array_push($persons_array,$person_entry);
+			if ($result_row['vacancies']>0) 
+				$result_row['vacancies']--;
+			$result_row['persons'] = implode('*',$persons_array);
+			$s = make_a_shift($result_row);
+			update_dbShifts($s);
+	//		echo "person added: ". $person_entry;
+		}
+	}
+}
+function get_dowwomoddeven ($mdy) {
+	$woms = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
+	$stamp = mktime(0,0,0,substr($mdy,0,2),substr($mdy,3,2),substr($mdy,6,2));
+	$dow = date("D",$stamp);      // Mon, Tue, ...
+	$dom = substr($mdy,3,2);
+	$wom = $woms[floor(($dom-1)/7) + 1];   // 1st, 2nd, ...
+	$weekno = date("W",$stamp);   // week of year
+	if (date("Y",$stamp)%2==0)
+		$weekno--;
+	if ($weekno%2==0)
+		$oddeven = "even";
+	else
+		$oddeven = "odd";
+	return array($dow,$wom,$oddeven);
+}
+
 // this function is for exporting volunteer data
 function get_all_people_in_past_shifts() {
     $today = date('m-d-y');
@@ -441,9 +494,9 @@ function get_shifts_staffed($from, $to, $venue) {
     foreach($all_shifts as $a_shift){
     	$the_date = $a_shift->get_date();	//date of this shift
     	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
-       		$num_people = count($a_shift->get_persons());
-       		$slots = $a_shift->get_vacancies() + $num_people;
-    		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$a_shift->num_vacancies().":".$slots;
+    	//	$num_people = count($a_shift->get_persons());
+       	//	$slots = $a_shift->num_slots() + $num_people;
+    		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$a_shift->num_vacancies().":".$a_shift->num_slots();
        		$the_hours[] = $shift_info;
     	}
     }

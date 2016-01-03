@@ -156,6 +156,8 @@ class Shift {
     }
 
     function get_persons() {
+        if (!$this->persons[0])
+            array_shift($this->persons);  
         return $this->persons;
     }
     

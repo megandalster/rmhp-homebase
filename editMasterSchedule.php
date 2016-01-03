@@ -271,11 +271,12 @@ session_cache_expire(30);
                     return $s;
                 }
 
-                function get_all_volunteer_options($persons, $week_no) {
+                function get_all_volunteer_options($persons, $venue) {
                     if (!$persons[0])
                         array_shift($persons);
                     connect();
-                    $query = "SELECT * FROM dbPersons WHERE status = 'active' ORDER BY last_name,first_name";
+                    $query = "SELECT * FROM dbPersons WHERE status = 'active' ".
+                      	" AND availability LIKE '%" . $venue . "%' ORDER BY last_name,first_name";
                     $result = mysql_query($query);
                     mysql_close();
                     $s = "";
@@ -312,6 +313,7 @@ session_cache_expire(30);
                         return true;
                     } else {
                         schedule_person($msentry, $vol);
+                        add_to_future_shifts($msentry, $vol);
                         return false;
                     }
                 }

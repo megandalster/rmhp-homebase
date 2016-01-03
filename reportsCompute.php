@@ -67,7 +67,7 @@ function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
 	if($from == ""){$from ="00-00-00";}
 	if($to == ""){$to = date("m-d-y");}
 		
-	echo "<br><b>Shifts/Vacancies Report</b><br>"; 
+	echo "<br><b>Volunteers in Shifts/Vacancies Report</b><br>"; 
 	if ($from!="00-00-00")
 		echo " from " .pretty_date($from);
 	if ($to!="")

@@ -75,7 +75,7 @@ include_once('database/dbLog.php');
 			<br>or<br><br>
 			<select name=\"all_vol\">
 			<option value=\"0\" style=\"width: 371px;\">Select from all volunteers for this venue</option>"
-			.get_all_volunteer_options($shifttime,$shift->get_day(),$shift->get_persons(),$venue).
+			.get_all_volunteer_options($shift->get_persons(),$venue).
 			"</select><br><br>
 			<input type=\"hidden\" name=\"_submit_add_volunteer\" value=\"1\">
 			<input type=\"submit\" value=\"Add Volunteer\" name=\"submit\" style=\"width: 400px\">
@@ -309,10 +309,10 @@ include_once('database/dbLog.php');
 		return $s;
 	}
 
-	function get_all_volunteer_options($name,$day,$persons,$venue) {
+	function get_all_volunteer_options($persons,$venue) {
 		if(!$persons[0])
 			array_shift($persons);
-		$result = getall_type("volunteer");
+		$result = getall_available("volunteer", "", "", $venue);
 		$s="";
 		for($i=0;$i<mysql_num_rows($result);$i++) {
 		  $row=mysql_fetch_row($result);
