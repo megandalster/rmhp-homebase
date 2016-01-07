@@ -320,8 +320,8 @@ function remove_from_future_shifts($id) {
 	$today = date('m-d-y');
 	$this_year = substr($today,6);
 	connect();
-	$query = "select * from dbShifts where (substring(id,1,6) >= '".$today .
-			"' AND substring(id,7,2) >= '".$this_year.
+	$query = "select * from dbShifts where (substring(id,1,8) >= '".$today .
+			"' OR substring(id,7,2) > '".$this_year.
 			"') AND persons LIKE '%".$id."%' ";
 	$result = mysql_query($query);
 	mysql_close();
@@ -352,8 +352,8 @@ function add_to_future_shifts($msentry, $vol) {
 //	var_dump($msentry);
 	
 	connect();
-	$query = "select * from dbShifts where (substring(id,1,6) >= '".$today .
-	"' AND substring(id,7,2) >= '".$this_year.
+	$query = "select * from dbShifts where (substring(id,1,8) >= '".$today .
+	"' OR substring(id,7,2) > '".$this_year.
 	"') AND id LIKE '%".$hoursvenue."%' ";
 	$result = mysql_query($query);
 	mysql_close();
@@ -472,7 +472,7 @@ function get_volunteer_hours($from,$to,$venue){ //Used for Total Hours Report
 	$all_shifts = get_all_venue_shifts($from,$to,$venue);
     foreach($all_shifts as $a_shift){
     	$the_date = $a_shift->get_date();	
-    	if($the_date >= $from && $the_date <= $to){  
+    	if(ge($the_date,$from) && ge($to,$the_date)){  
        		$people = $a_shift->get_persons();       		
        		if($a_shift->get_hours() == "night"){	
         		$length = 8;
@@ -487,13 +487,19 @@ function get_volunteer_hours($from,$to,$venue){ //Used for Total Hours Report
     }  
     return $the_hours;
 }
+// true comparison of two dates for >= relationship 
+function ge($date1, $date2){
+	$d1 = substr($date1,6,2).substr($date1,0,5);
+	$d2 = substr($date2,6,2).substr($date2,0,5);
+	return $d1>=$d2;
+}
 
 function get_shifts_staffed($from, $to, $venue) {
 	$the_hours = array();
 	$all_shifts = get_all_venue_shifts($from, $to, $venue);
     foreach($all_shifts as $a_shift){
     	$the_date = $a_shift->get_date();	//date of this shift
-    	if($the_date >= $from && $the_date <= $to){  //keeps dates within range, only looks @ relevant
+    	if(ge($the_date,$from) && ge($to,$the_date)){  //keeps dates within range, only looks @ relevant
     	//	$num_people = count($a_shift->get_persons());
        	//	$slots = $a_shift->num_slots() + $num_people;
     		$shift_info = $a_shift->get_day().":".$a_shift->get_hours().":".$a_shift->num_vacancies().":".$a_shift->num_slots();
