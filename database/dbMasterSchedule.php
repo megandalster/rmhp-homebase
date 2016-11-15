@@ -225,8 +225,10 @@ function unschedule_person($msentry, $person_id) {
         if (in_array($msentry->get_id(), $schedule))       	
         	array_splice($schedule, $indexp, 1); // remove the time from the person's schedule
         $result_row['persons'] = implode(',', $persons);     // and update one row in each table
+        $result_row['slots']--;
         $resultp_row['schedule'] = implode(',', $schedule);  // in the database
         mysql_query("UPDATE dbMasterSchedule SET persons = '" . $result_row['persons'] .
+        		"', slots = '" . $result_row['slots'] .
                 "' WHERE id = '" . $msentry->get_id() . "'");
         mysql_query("UPDATE dbPersons SET schedule = '" . $resultp_row['schedule'] .
                 "' WHERE id = '" . $person_id . "'");

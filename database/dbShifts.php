@@ -331,7 +331,7 @@ function remove_from_future_shifts($id) {
 			$p = explode('+',$persons_array[$i]); // id, first_name, last_name
 			if ($p[0]==$id) {
 				array_splice($persons_array,$i,1); // remove person from array
-				$result_row['vacancies']++;
+		//		$result_row['vacancies']++;
 				$result_row['persons'] = implode('*',$persons_array);
 				$s = make_a_shift($result_row);
 				update_dbShifts($s);
@@ -384,8 +384,9 @@ function get_dowwomoddeven ($mdy) {
 	$dom = substr($mdy,3,2);
 	$wom = $woms[floor(($dom-1)/7) + 1];   // 1st, 2nd, ...
 	$weekno = date("W",$stamp);   // week of year
-	if (date("Y",$stamp)%2==0)
-		$weekno--;
+	if ($weekno==53)   // one in 7 years will have a 53rd week, so punt when that happens
+		$weekno==52;
+	$weekno--;         // all years start at week 0 so we can't get 2 odds in a row
 	if ($weekno%2==0)
 		$oddeven = "even";
 	else

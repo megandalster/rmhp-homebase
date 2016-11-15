@@ -124,8 +124,9 @@ session_cache_expire(45);
                         $week_of_month= $weeksofmonth[floor(($d - 1)/7)+1];
                         // echo "weekofmonth,day,month,year,daysinmonth= ",$week_of_month.",".$d.",".$m.",".$y.",".$daysinmonth;
         				$weekno = date("W",$my_date);
-						if (date("Y",$my_date)%2==0) // even years start at week 0 so that can't get 2 odds in a riw
-							$weekno--;
+						if ($weekno==53)   // one in 7 years will have a 53rd week, so punt when that happens
+							$weekno==52;
+						$weekno--;         // all years start at week 0 so we can't get 2 odds in a row
 						if ($weekno%2==1)
             				$week_of_year= "odd";
         				else 

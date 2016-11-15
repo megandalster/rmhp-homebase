@@ -65,8 +65,9 @@ function show_week_no ($cur_id) {
 	$dom = date("d",$cur_time);
 	$wom = floor(($dom-1)/7) + 1;
 	$weekno = date("W",$cur_time);
-	if (date("Y",$cur_time)%2==0)
-		$weekno--;
+	if ($weekno==53)   // one in 7 years will have a 53rd week, so punt when that happens
+		$weekno==52;
+	$weekno--;         // all years start at week 0 so we can't get 2 odds in a row
 	if ($weekno%2==0)
 		$oddeven = "even";
 	else

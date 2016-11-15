@@ -84,7 +84,7 @@ function report_volunteer_birthdays($from, $to, $name_from, $name_to, $venue, $e
 	echo ("<br><b>Volunteer Birthdays Report</b> (ordered by month) <br> Report date: ");
 	echo date("F d, Y")."<br><br>";
 	if($name_from == ""){$name_from="A";}
-	if($name_to == ""){$name_to = "Z";}
+	if($name_to == ""){$name_to = "ZZZ";}
 	
 	$report = get_birthdays($from, $to, $name_from, $name_to,$venue);
 	//display_birthdays($col_labels,$report);
@@ -95,7 +95,7 @@ function report_volunteer_history($from, $to, $name_from, $name_to, $venue, $exp
 	if($from == ""){$from ="00-00-00";}
 	if($to == ""){$to = date("m-d-y");}
 	if($name_from == ""){$name_from="A";}
-	if($name_to == ""){$name_to = "Z";}
+	if($name_to == ""){$name_to = "ZZZ";}
 	
 	echo ("<br><b>Volunteer History Report</b><br> Report date: ");
 	echo date("F d, Y")."<br><br>";
@@ -108,7 +108,7 @@ function report_all_volunteers($name_from, $name_to, $export) {
 	echo ("<br><b>Volunteer Contact Info</b><br> Report date: ");
 	echo date("F d, Y")."<br><br>";
 	if($name_from == ""){$name_from="A";}
-	if($name_to == ""){$name_to = "Z";}
+	if($name_to == ""){$name_to = "ZZZ";}
 	
 	$report = getall_dbPersons($name_from, $name_to);
 	display_volunteers($report, $export);
