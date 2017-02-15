@@ -212,7 +212,7 @@ function unschedule_person($msentry, $person_id) {
                     "' WHERE id = '" . $msentry->get_id() . "'");
         }
         mysql_close();
-        die("Error: person not in database" . $person_id);
+        die("Error: person not in database" . $person_id);    
     }
     $result_row = mysql_fetch_array($result, MYSQL_ASSOC);
     $resultp_row = mysql_fetch_array($resultp, MYSQL_ASSOC);

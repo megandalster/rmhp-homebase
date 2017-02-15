@@ -372,10 +372,11 @@ function get_logged_hours($from, $to, $name_from, $name_to, $venue) {
 		if ($result_row['hours']!="") {
 			$shifts = explode(',',$result_row['hours']);
 			$goodshifts = array();
-			foreach ($shifts as $shift) 
-			    if (($from == "" || substr($shift,0,8) >= $from) && ($to =="" || substr($shift,0,8) <= $to)
+			foreach ($shifts as $shift) {
+			    if (($from == "" || ge(substr($shift,0,8), $from)) && ($to =="" || ge($to, substr($shift,0,8)))
 			    		&& ($venue=="" || strpos($shift,$venue)>0))
 			    	$goodshifts[] = $shift;
+			}
 			if (count($goodshifts)>0) {
 				$newshifts = implode(",",$goodshifts);
 				array_push($thePersons,$result_row['last_name'].";".$result_row['first_name'].";".$newshifts);
@@ -384,6 +385,12 @@ function get_logged_hours($from, $to, $name_from, $name_to, $venue) {
 	}
    	mysql_close();
    	return $thePersons;
+}
+// true comparison of two dates for >= relationship
+function ge($date1, $date2){
+	$d1 = substr($date1,6,2).substr($date1,0,5);
+	$d2 = substr($date2,6,2).substr($date2,0,5);
+	return $d1>=$d2;
 }
 
 ?>
