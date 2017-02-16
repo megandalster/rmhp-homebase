@@ -386,11 +386,5 @@ function get_logged_hours($from, $to, $name_from, $name_to, $venue) {
    	mysql_close();
    	return $thePersons;
 }
-// true comparison of two dates for >= relationship
-function ge($date1, $date2){
-	$d1 = substr($date1,6,2).substr($date1,0,5);
-	$d2 = substr($date2,6,2).substr($date2,0,5);
-	return $d1>=$d2;
-}
 
 ?>
