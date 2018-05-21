@@ -29,13 +29,13 @@ include_once('dbinfo.php');
  *  manager notes
  */
 function create_dbDates() {
-    connect();
-    mysql_query("DROP TABLE IF EXISTS dbDates");
-    $result = mysql_query("CREATE TABLE dbDates (id CHAR(8) NOT NULL, shifts TEXT,
+    $con=connect();
+    mysqli_query($con,"DROP TABLE IF EXISTS dbDates");
+    $result = mysqli_query($con,"CREATE TABLE dbDates (id CHAR(8) NOT NULL, shifts TEXT,
 								mgr_notes TEXT, PRIMARY KEY (id))");
     if (!$result)
-        echo mysql_error();
-    mysql_close();
+        echo mysqli_error($con);
+    mysqli_close($con);
 }
 
 /**
@@ -46,23 +46,23 @@ function insert_dbDates($d) {
 	if (!$d instanceof RMHdate) {
         die("Invalid argument for dbDates->insert_dbdates function call");
     }
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbDates WHERE id =\"" . $d->get_id() . "\"";
-    $result = mysql_query($query);
-    if (mysql_num_rows($result) != 0) {
+    $result = mysqli_query($con,$query);
+    if (mysqli_num_rows($result) != 0) {
         delete_dbDates($d);
-        connect();
+        $con=connect();
     }
     $query = "INSERT INTO dbDates VALUES
 				(\"" . $d->get_id() . "\",\"" .
             get_shifts_text($d) . "\",\"" . $d->get_mgr_notes() . "\")";
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     if (!$result) {
-        echo ("unable to insert into dbDates: " . $d->get_id() . mysql_error());
-        mysql_close();
+        echo ("unable to insert into dbDates: " . $d->get_id() . mysqli_error($con));
+        mysqli_close($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     $shifts = $d->get_shifts();
     foreach ($shifts as $key => $value) {
         insert_dbShifts($d->get_shift($key));
@@ -76,15 +76,15 @@ function insert_dbDates($d) {
 function delete_dbDates($d) {
     if (!$d instanceof RMHdate)
         die("Invalid argument for dbShifts->delete_dbDates function call");
-    connect();
+    $con=connect();
     $query = "DELETE FROM dbDates WHERE id=\"" . $d->get_id() . "\"";
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     if (!$result) {
-        echo ("unable to delete from dbDates: " . $d->get_id() . mysql_error());
-        mysql_close();
+        echo ("unable to delete from dbDates: " . $d->get_id() . mysqli_error($con));
+        mysqli_close($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     $shifts = $d->get_shifts();
     foreach ($shifts as $key => $value) {
         $s = $d->get_shift($key);
@@ -124,17 +124,17 @@ function replace_dbDates($old_s, $new_s) {
 function select_dbDates($id) {
     if (strlen($id) < 12)
         die("Invalid argument for dbDates->select_dbDates call =" . $id);
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbDates WHERE id =\"" . $id . "\"";
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     if (!$result) {
         echo 'Could not select from dbDates: ' . $id;
         error_log('Could not select from dbDates: '. $id);
         return null;
     } 
     else {
-        $result_row = mysql_fetch_row($result);
+        $result_row = mysqli_fetch_row($result);
         if ($result_row) {
             $shifts = $result_row[1];
             $shifts = explode("*", $shifts);
@@ -157,7 +157,7 @@ function select_dbDates($id) {
 }
 
 /**
- * @return a * delimited list of the ids of the shifts for the specified day
+ * @return *-delimited list of the ids of the shifts for the specified day
  */
 function get_shifts_text($d) {
     $shifts = $d->get_shifts();

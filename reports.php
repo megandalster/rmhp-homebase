@@ -91,9 +91,9 @@ $(function() {
 		<p>	<select multiple name="report-types[]" id = "report-type" size="5">
 	  		<option value="volunteer-hours">Total Hours</option>
 	  		<option value="shifts-staffed-vacant">Shifts/Vacancies</option>
-	  		<option value="birthdays">* Volunteer Birthdays</option>
-	  		<option value="history">* Volunteer History</option>
-	  		<option value="volunteers">* Volunteer Contact Info</option>
+	  		<option value="birthdays">* Active Volunteer Birthdays</option>
+	  		<option value="history">* Active Volunteer History</option>
+	  		<option value="volunteers">* Active Volunteer Contact Info</option>
 			</select>
 		</td>
 		<td class = "search-description" valign="top">&nbsp;&nbsp; Date Range: 

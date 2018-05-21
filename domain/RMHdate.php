@@ -179,7 +179,7 @@ class RMHdate {
     }
 
     /**
-     * @return a string name of the date
+     * @return string name of the date
      */
     function get_name() {
         return date("F j, Y", mktime(0, 0, 0, $this->month_num, $this->dom, $this->year));

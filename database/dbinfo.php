@@ -21,14 +21,11 @@ function connect() {
     $user = "rmhphomebasedb";
     $pass = "math204";
 
-    $connected = mysql_connect($host, $user, $pass);
-    if (!$connected)
-        return "cant connect to the database".mysql_error();
-    $selected = mysql_select_db($database, $connected);
-    if (!$selected)
-        return mysql_error();
-    else
-        return true;
+    $connected = mysqli_connect($host,$user,$pass);
+    if (!$connected) { echo "not connected"; return mysqli_error($connected);}
+    $selected = mysqli_select_db($connected,$database);
+    if (!$selected) { echo "not selected"; return mysqli_error($connected); }
+    else return $connected;
 }
 
 ?>

@@ -81,7 +81,7 @@ function report_shifts_staffed_vacant_by_day($from, $to, $venue) {
 }
 
 function report_volunteer_birthdays($from, $to, $name_from, $name_to, $venue, $export) {
-	echo ("<br><b>Volunteer Birthdays Report</b> (ordered by month) <br> Report date: ");
+	echo ("<br><b>Active Volunteer Birthdays Report</b> (ordered by month) <br> Report date: ");
 	echo date("F d, Y")."<br><br>";
 	if($name_from == ""){$name_from="A";}
 	if($name_to == ""){$name_to = "ZZZ";}
@@ -97,7 +97,7 @@ function report_volunteer_history($from, $to, $name_from, $name_to, $venue, $exp
 	if($name_from == ""){$name_from="A";}
 	if($name_to == ""){$name_to = "ZZZ";}
 	
-	echo ("<br><b>Volunteer History Report</b><br> Report date: ");
+	echo ("<br><b>Active Volunteer History Report</b><br> Report date: ");
 	echo date("F d, Y")."<br><br>";
 	
 	$report = get_logged_hours($from, $to, $name_from,$name_to, $venue);
@@ -105,7 +105,7 @@ function report_volunteer_history($from, $to, $name_from, $name_to, $venue, $exp
 }
 
 function report_all_volunteers($name_from, $name_to, $export) {
-	echo ("<br><b>Volunteer Contact Info</b><br> Report date: ");
+	echo ("<br><b>Active Volunteer Contact Info</b><br> Report date: ");
 	echo date("F d, Y")."<br><br>";
 	if($name_from == ""){$name_from="A";}
 	if($name_to == ""){$name_to = "ZZZ";}
@@ -175,7 +175,7 @@ function display_birthdays($report, $export) { //Create a table to display birth
 	echo $res;
 	echo "</div>";
 	if ($export=="yes") 
-		export_report ("Volunteer Birthdays Report", $col_labels, $export_data);
+		export_report ("Active Volunteer Birthdays Report", $col_labels, $export_data);
 }
 
 function pretty_date($date){
@@ -341,11 +341,11 @@ function display_vacancies_table($col_lab, $row_lab, $report){
 }
 
 function calculate_age($date){
-  	//eg. date is 03-30-78
-  	//explode the date to get month, day and year
+  	//eg. date is 03-30-78 and today is 05-20-18 then age is 40.  Bit if today is 01-01-18 then age is 39.
+  	//explode today's date to get month, day and year for today
 	$dob=explode("-",$date); 
 	
-	//if the year is less than 30, we can assume the person was born after 2000; if the year is greater than 30, we can 
+	//if the birth year is <= today's year, we can assume the person was born after 2000; if the year is greater than 30, we can 
 	//assume the person was born before 2000. 
 	if ( ((int) $dob[2] ) <= date("y")){
 		$dob[2] = "20".$dob[2];  	
@@ -356,7 +356,7 @@ function calculate_age($date){
 	$curDay = date("j");
 	$curYear = date("Y");
 	$age = $curYear - $dob[2]; 
-	if($curMonth<$dob[0] || ($curMonth==$dob[1] && $curDay<$dob[1])){ 
+	if($curMonth<$dob[0] || ($curMonth==$dob[0] && $curDay<$dob[1])){ 
 		$age--; 
 	}
     return $age; 
@@ -432,7 +432,7 @@ function display_logged_hours ($report, $export) {
 	echo $res;
 	echo "</div>";
 	if ($export=="yes") 
-		export_report ("Volunteer History Report", $col_labels, $export_data);
+		export_report ("Active Volunteer History Report", $col_labels, $export_data);
 }
 
 //Create a table to display volunteer contact info
@@ -471,7 +471,7 @@ function display_volunteers ($report, $export) {
 	echo $res;
 	echo "</div>";
 	if ($export=="yes") 
-		export_report ("Volunteer Contact Info", $col_labels, $export_data);
+		export_report ("Active Volunteer Contact Info", $col_labels, $export_data);
 }
 
 function export_report($heading, $col_labels, $data) {

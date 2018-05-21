@@ -160,7 +160,7 @@ class Person {
 
 
     /**
-     * @return type of person, an array of: "volunteer", "guestchef", "sub", etc.
+     * @return: "volunteer", "guestchef", "sub", etc.
      */
     function get_type() {
         return $this->type;

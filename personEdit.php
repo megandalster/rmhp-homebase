@@ -170,7 +170,7 @@ if ($id == 'new') {
                             if ($_SESSION['access_level'] >= 2) {
                                 //They're a manager, we need to check that they can be deleted
                                 $managers = getall_type('manager');
-                                if (!$managers || mysql_num_rows($managers) <= 1)
+                                if (!$managers || mysqli_num_rows($managers) <= 1)
                                     echo('<p class="error">You cannot remove the last remaining manager from the database.</p>');
                                 else {
                                     $result = remove_person($id);

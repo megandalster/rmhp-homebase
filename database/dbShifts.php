@@ -34,71 +34,71 @@ include_once('dbinfo.php');
  * 8 notes: shift notes
  */
 function create_dbShifts() {
-    connect();
-    mysql_query("DROP TABLE IF EXISTS dbShifts");
-    $result = mysql_query("CREATE TABLE dbShifts (id CHAR(20) NOT NULL, " .
+    $con=connect();
+    mysqli_query($con,"DROP TABLE IF EXISTS dbShifts");
+    $result = mysqli_query($con,"CREATE TABLE dbShifts (id CHAR(20) NOT NULL, " .
             "start_time INT, end_time INT, venue TEXT, vacancies INT, " .
             "persons TEXT, removed_persons TEXT, sub_call_list TEXT, notes TEXT, PRIMARY KEY (id))");
     if (!$result) {
-        echo mysql_error();
+        echo mysqli_error($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     return true;
 }
 
 /**
  * Inserts a shift into the db
- * @param $s the shift to insert
+ * @param $s shift to insert
  */
 function insert_dbShifts($s) {
     if (!$s instanceof Shift) {
         die("Invalid argument for insert_dbShifts function call" . $s);
     }
-    connect();
+    $con=connect();
     $query = 'SELECT * FROM dbShifts WHERE id ="' . $s->get_id() . '"';
-    $result = mysql_query($query);
-    if (mysql_num_rows($result) != 0) {
+    $result = mysqli_query($con,$query);
+    if (mysqli_num_rows($result) != 0) {
         delete_dbShifts($s);
-        connect();
+        $con=connect();
     }
     $query = "INSERT INTO dbShifts VALUES (\"" . $s->get_id() . "\",\"" .
             $s->get_start_time() . "\",\"" . $s->get_end_time() . "\",\"" . $s->get_venue() . "\"," .
             $s->num_vacancies() . ",\"" .
             implode("*", $s->get_persons()) . "\",\"" .implode("*", $s->get_removed_persons()) . "\",\"" .
             $s->get_sub_call_list() . "\",\"" . $s->get_notes() . "\")";
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     if (!$result) {
-        echo "unable to insert into dbShifts " . $s->get_id() . mysql_error();
-        mysql_close();
+        echo "unable to insert into dbShifts " . $s->get_id() . mysqli_error($con);
+        mysqli_close($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     return true;
 }
 
 /**
  * Deletes a shift from the db
- * @param $s the shift to delete
+ * @param $s shift to delete
  */
 function delete_dbShifts($s) {
     if (!$s instanceof Shift)
         die("Invalid argument for delete_dbShifts function call");
-    connect();
+    $con=connect();
     $query = "DELETE FROM dbShifts WHERE id=\"" . $s->get_id() . "\"";
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     if (!$result) {
-        echo "unable to delete from dbShifts " . $s->get_id() . mysql_error();
-        mysql_close();
+        echo "unable to delete from dbShifts " . $s->get_id() . mysqli_error($con);
+        mysqli_close($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     return true;
 }
 
 /**
  * Updates a shift in the db by deleting it (if it exists) and then replacing it
- * @param $s the shift to update
+ * @param $s shift to update
  */
 function update_dbShifts($s) {
 	error_log("updating shift in database");
@@ -111,19 +111,19 @@ function update_dbShifts($s) {
 
 /**
  * Selects a shift from the database
- * @param $id a shift id
+ * @param $id shift id
  * @return Shift or null
  */
 function select_dbShifts($id) {
-    connect();
+    $con=connect();
     $s = null;
     $query = "SELECT * FROM dbShifts WHERE id =\"" . $id . "\"";
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     if (!$result) {
-        echo 'Could not run query2: ' . mysql_error();
+        echo 'Could not run query2: ' . mysqli_error($con);
     } else {
-        $result_row = mysql_fetch_row($result);
+        $result_row = mysqli_fetch_row($result);
         if ($result_row != null) {
         	$persons = array();
         	$parts = explode(":",$result_row[0]);
@@ -141,14 +141,14 @@ function select_dbShifts($id) {
 
 /**
  * Selects all shifts from the database for a given date and venue
- * @param $id is a shift id
- * @return a result set or false (if there are no shifts for that date and venue)
+ * @param $id shift id
+ * @return result-set or false (if there are no shifts for that date and venue)
  */
 function selectDateVenue_dbShifts($date, $venue) {
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbShifts WHERE id LIKE '%" . $date . "%' AND venue LIKE '%" . $venue . "%'";
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     return $result;
 }
 
@@ -156,15 +156,15 @@ function selectDateVenue_dbShifts($date, $venue) {
  * Returns an array of $ids for all shifts scheduled for the person having $person_id
  */
 function selectScheduled_dbShifts($person_id) {
-    connect();
-    $shift_ids = mysql_query("SELECT id FROM dbShifts WHERE persons LIKE '%" . $person_id . "%' ORDER BY id");
+    $con=connect();
+    $shift_ids = mysqli_query($con,"SELECT id FROM dbShifts WHERE persons LIKE '%" . $person_id . "%' ORDER BY id");
     $shifts = array();
     if ($shift_ids) {
-        while ($thisRow = mysql_fetch_array($shift_ids, MYSQL_ASSOC)) {
+        while ($thisRow = mysqli_fetch_assoc($shift_ids)) {
             $shifts[] = $thisRow['id'];
         }
     }
-    mysql_close();
+    mysqli_close($con);
     return $shifts;
 }
 
@@ -246,18 +246,18 @@ function move_shift($s, $new_start, $new_end) {
 // now see if it can be moved by looking at all other shifts for the same date and venue
     $new_s = $s->set_start_end_time($new_start, $new_end);
     $current_shifts = selectDateVenue_dbShifts($s->get_date(), $s->get_venue());
-    connect();
-    for ($i = 0; $i < mysql_num_rows($current_shifts); ++$i) {
-        $same_day_shift = mysql_fetch_row($current_shifts);
+    $con=connect();
+    for ($i = 0; $i < mysqli_num_rows($current_shifts); ++$i) {
+        $same_day_shift = mysqli_fetch_row($current_shifts);
         if ($old_s->get_id() == $same_day_shift[0])  // skip its own entry
             continue;
         if (timeslots_overlap($same_day_shift[1], $same_day_shift[2], $new_s->get_start_time(), $new_s->get_end_time())) {
             $s = $old_s;
-            mysql_close();
+            mysqli_close($con);
             return false;
         }
     }
-    mysql_close();
+    mysqli_close($con);
 // we're good to go
     replace_dbDates($old_s, $new_s);
     delete_dbShifts($old_s);
@@ -299,16 +299,16 @@ function make_a_shift($result_row) {
 }
 
 function get_all_shifts() {
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbShifts";
-    $result = mysql_query($query);
-    if ($result == null || mysql_num_rows($result) == 0) {
-        mysql_close();
+    $result = mysqli_query($con,$query);
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        mysqli_close($con);
         return false;
     }
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     $shifts = array();
-    while ($result_row = mysql_fetch_assoc($result)) {
+    while ($result_row = mysqli_fetch_assoc($result)) {
         $shift = make_a_shift($result_row);
         $shifts[] = $shift;
     }
@@ -316,17 +316,26 @@ function get_all_shifts() {
     return $shifts;
 }
 // remove a person from all future shifts in this year and next
-function remove_from_future_shifts($id) {
+function remove_from_future_shifts($msentry,$id) {
 	$today = date('m-d-y');
 	$this_year = substr($today,6);
-	connect();
+	$person = retrieve_person($id);
+	$person_entry = $id . "+" . $person->get_first_name() . "+" . $person->get_last_name();
+	$hoursvenue = $msentry->get_hours().":".$msentry->get_venue();
+	$con=connect();
 	$query = "select * from dbShifts where (substring(id,1,8) >= '".$today .
 			"' OR substring(id,7,2) > '".$this_year.
 			"') AND persons LIKE '%".$id."%' ";
-	$result = mysql_query($query);
-	mysql_close();
-	while ($result_row = mysql_fetch_assoc($result)) {
+	$result = mysqli_query($con,$query);
+	mysqli_close($con);
+	while ($result_row = mysqli_fetch_assoc($result)) {
+	    $dww = get_dowwomoddeven(substr($result_row['id'],0,8));
 		$persons_array = explode('*',$result_row['persons']); // individual persons
+		if ($dww[0]!=$msentry->get_day() || // different day of week or week of month or year
+		    $dww[1]!=$msentry->get_week_no() && $dww[2]!=$msentry->get_week_no() ||
+		    !in_array($person_entry,$persons_array)  // person not there
+		    )
+		    continue;
 		for ($i=0; $i<count($persons_array); $i++) {
 			$p = explode('+',$persons_array[$i]); // id, first_name, last_name
 			if ($p[0]==$id) {
@@ -351,13 +360,13 @@ function add_to_future_shifts($msentry, $vol) {
 //	echo ($vol." ".$person_entry . " " . $hoursvenue);
 //	var_dump($msentry);
 	
-	connect();
+	$con=connect();
 	$query = "select * from dbShifts where (substring(id,1,8) >= '".$today .
 	"' OR substring(id,7,2) > '".$this_year.
 	"') AND id LIKE '%".$hoursvenue."%' ";
-	$result = mysql_query($query);
-	mysql_close();
-	while ($result_row = mysql_fetch_assoc($result)) {
+	$result = mysqli_query($con,$query);
+	mysqli_close($con);
+	while ($result_row = mysqli_fetch_assoc($result)) {
 	    $dww = get_dowwomoddeven(substr($result_row['id'],0,8));
 	//    echo 'dww='.$dww[0].$dww[1].$dww[2];
 	    $persons_array = explode('*',$result_row['persons']); // individual persons
@@ -377,6 +386,7 @@ function add_to_future_shifts($msentry, $vol) {
 		}
 	}
 }
+
 function get_dowwomoddeven ($mdy) {
 	$woms = array(1=>"1st",2=>"2nd",3=>"3rd",4=>"4th",5=>"5th");
 	$stamp = mktime(0,0,0,substr($mdy,0,2),substr($mdy,3,2),substr($mdy,6,2));
@@ -451,16 +461,16 @@ function get_all_venue_shifts($from, $to, $venue) {
 	if($venue == ""){
 		$all_shifts = get_all_shifts();
 	}else{
-		connect();
+		$con=connect();
     	$query = "SELECT * FROM dbShifts WHERE venue LIKE '%" . $venue . "%'";
-    	$result = mysql_query($query);
-    	if ($result == null || mysql_num_rows($result) == 0) {
-        	mysql_close();
+    	$result = mysqli_query($con,$query);
+    	if ($result == null || mysqli_num_rows($result) == 0) {
+        	mysqli_close($con);
         	return false;
     	}
-    	$result = mysql_query($query);
+    	$result = mysqli_query($con,$query);
     	$all_shifts = array();
-    	while ($result_row = mysql_fetch_assoc($result)) {
+    	while ($result_row = mysqli_fetch_assoc($result)) {
         	$shift = make_a_shift($result_row);
         	$all_shifts[] = $shift;
     	}

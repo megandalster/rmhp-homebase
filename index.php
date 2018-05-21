@@ -130,17 +130,17 @@ session_cache_expire(30);
                             $today = mktime(0, 0, 0, date('m'), date('d'), date('y'));
                             $two_weeks = $today + 14 * 86400;
 
-                            connect();
+                            $con=connect();
                             $vacancy_query = "SELECT id,vacancies FROM dbShifts " .
                                     "WHERE vacancies > 0 ORDER BY id;";
-                            $vacancy_list = mysql_query($vacancy_query);
+                            $vacancy_list = mysqli_query($con,$vacancy_query);
                             if (!$vacancy_list)
-                                echo mysql_error();
+                                echo mysqli_error($con);
                             //upcoming vacancies
-                            if (mysql_num_rows($vacancy_list) > 0) {
+                            if (mysqli_num_rows($vacancy_list) > 0) {
                                 echo('<div class="vacancyBox">');
                                 echo('<p><strong>Upcoming Vacancies:</strong><ul>');
-                                while ($thisRow = mysql_fetch_array($vacancy_list, MYSQL_ASSOC)) {
+                                while ($thisRow = mysqli_fetch_assoc($vacancy_list)) {
                                     $shift_date = mktime(0, 0, 0, substr($thisRow['id'], 0, 2), substr($thisRow['id'], 3, 2), substr($thisRow['id'], 6, 2));
                                     if ($shift_date > $today && $shift_date < $two_weeks) {
                                         echo('<li type="circle"><a href="' . $path . 'editShift.php?shift=' . $thisRow['id'] . '">' . get_shift_name_from_id($thisRow['id']) . '</a></li>');
@@ -149,30 +149,30 @@ session_cache_expire(30);
                                 echo('</ul></p></div><br>');
                             }
                             //active applicants
-                            connect();
+                            $con=connect();
                             $app_query = "SELECT first_name,last_name,id,start_date FROM dbPersons WHERE status LIKE '%applicant%' order by start_date desc";
-                            $applicants_tab = mysql_query($app_query);
+                            $applicants_tab = mysqli_query($con,$app_query);
                             $numLines = 0;
-                         //   if (mysql_num_rows($applicants_tab) > 0) {
+                         //   if (mysqli_num_rows($applicants_tab) > 0) {
                                 echo('<div class="applicantsBox"><p><strong>Open Applications / Dates:</strong><ul>');
-                                while ($thisRow = mysql_fetch_array($applicants_tab, MYSQL_ASSOC)) {
+                                while ($thisRow = mysqli_fetch_assoc($applicants_tab)) {
                                     echo('<li type="circle"><a href="' . $path . 'personEdit.php?id=' . $thisRow['id'] .'" id = "appLink">' . 
                                           $thisRow['last_name'] . ', ' . $thisRow['first_name'] . '</a> / '.
                                           $thisRow['start_date'] . '</li>');
                                 }
                                 echo('</ul></p></div><br>');
                         //    }
-                            mysql_close();
+                                mysqli_close($con);
                            
                         // active volunteers who haven't worked recently
                             $everyone = getall_names("active", "volunteer");
-                            if ($everyone && mysql_num_rows($everyone) > 0) {
+                            if ($everyone && mysqli_num_rows($everyone) > 0) {
                                 //active volunteers who haven't worked for the last two months
                                 $two_months_ago = $today - 60 * 86400;
                                 echo('<div class="inactiveBox">');
                                 echo('<p><strong>Unscheduled active house volunteers who haven\'t worked during the last two months:</strong>');
                                 echo('<table class="searchResults"><tr><td class="searchResults"><u>Name</u></td><td class="searchResults"><u>Date Last Worked</u></td></tr>');
-                                while ($thisRow = mysql_fetch_array($everyone, MYSQL_ASSOC)) {
+                                while ($thisRow = mysqli_fetch_assoc($everyone)) {
                                     if (!preg_match("/manager/", $thisRow['type'])) {
                                         $shifts = selectScheduled_dbShifts($thisRow['id']);
                                         $havent_worked = true;

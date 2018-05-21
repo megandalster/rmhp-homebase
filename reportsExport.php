@@ -88,7 +88,7 @@ function process_form() {
 		$_SESSION['phone'], $_SESSION['email']);
 		$returned_people = array();
 
-		while ($result_row = mysql_fetch_assoc($result)) {
+		while ($result_row = mysqli_fetch_assoc($result)) {
 			$person = make_a_person($result_row);
 			$returned_people[] = $person;
 		}
@@ -133,7 +133,7 @@ function process_form() {
 										$_SESSION['zip'], $_SESSION['phone'], $_SESSION['email']);
 		
 		$export_data = array();
-		while ($result_row = mysql_fetch_assoc($result)) {
+		while ($result_row = mysqli_fetch_assoc($result)) {
 			if (in_array($result_row['id'], $_SESSION['selected_people'])){
 				$temp_person = array($result_row['id']);
 				foreach($result_row as $row) {

@@ -27,13 +27,13 @@ include_once('domain/SCL.php');
  * time - used to sort sub call lists properly
  */
 function create_dbSCL() {
-    connect();
-    mysql_query("DROP TABLE IF EXISTS dbSCL");
+    $con=connect();
+    mysqli_query($con,"DROP TABLE IF EXISTS dbSCL");
     //NOTE: primary key set to id.  id is text in the form: mm-dd-yy-ss-se,  ss=shift start,  se=shift end
-    $result = mysql_query("CREATE TABLE dbSCL (id CHAR(20) NOT NULL,persons TEXT, status TEXT, vacancies TEXT, time TEXT, PRIMARY KEY(id))");
+    $result = mysqli_query($con,"CREATE TABLE dbSCL (id CHAR(20) NOT NULL,persons TEXT, status TEXT, vacancies TEXT, time TEXT, PRIMARY KEY(id))");
     if (!$result)
-        echo mysql_error();
-    mysql_close();
+        echo mysqli_error();
+    mysqli_close($con);
 }
 
 /**
@@ -52,16 +52,16 @@ function insert_dbSCL($scl) {
         }
         $persons = implode(",", $persons);
     }
-    connect();
+    $con=connect();
     $query = "INSERT INTO dbSCL VALUES
 				(\"" . $scl->get_id() . "\",\"" . $persons . "\",\"" . $scl->get_status() . "\",\"" . $scl->get_vacancies() . "\",\"" . $scl->get_time() . "\")";
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     if (!$result) {
-        echo "unable to insert into dbSCL: " . $scl->get_id() . mysql_error();
-        mysql_close();
+        echo "unable to insert into dbSCL: " . $scl->get_id() . mysqli_error();
+        mysqli_close($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     return true;
 }
 
@@ -71,15 +71,15 @@ function insert_dbSCL($scl) {
 function delete_dbSCL($scl) {
     if (!$scl instanceof SCL)
         die("Invalid argument for dbSCL->delete_dbSCL($scl) function call");
-    connect();
+    $con=connect();
     $query = "DELETE FROM dbSCL WHERE id=\"" . $scl->get_id() . "\"";
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     if (!$result) {
-        echo "unable to delete dbSCL: " . $scl->get_id() . mysql_error();
-        mysql_close();
+        echo "unable to delete dbSCL: " . $scl->get_id() . mysqli_error();
+        mysqli_close($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     return true;
 }
 
@@ -97,18 +97,18 @@ function update_dbSCL($scl) {
 }
 
 /**
- * @return returns a SCL object, or an error string if the SubCallList is not in the database
+ * @return SCL object, or an error string if the SubCallList is not in the database
  */
 function select_dbSCL($id) {
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbSCL WHERE id=\"" . $id . "\"";
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     if (!$result) {
-        echo "Entry " . $id . " is not in the database. " . mysql_error();
+        echo "Entry " . $id . " is not in the database. " . mysqli_error();
         return null;
     } else {
-        $result_row = mysql_fetch_row($result);
+        $result_row = mysqli_fetch_row($result);
         if ($result_row) {
             $persons = explode(",", $result_row[1]);
             for ($i = 0; $i < count($persons); ++$i) {

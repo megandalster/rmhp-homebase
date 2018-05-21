@@ -76,12 +76,12 @@
 		$shift_persons=$shift->get_persons();  		
 		if(!$shift_persons[0])
 			array_shift($shift_persons);
-		connect();
+		$con=connect();
 		$query="SELECT * FROM dbPersons WHERE (status = 'active' AND type LIKE '%sub%' AND availability LIKE '%".$day.":".$time.":".$venue."%') ORDER BY last_name,first_name";
-		$persons_result=mysql_query($query);		
-		mysql_close(); 
-		for($i=0;$i<mysql_num_rows($persons_result);++$i) {
-			$row=mysql_fetch_row($persons_result);
+		$persons_result=mysqli_query($con,$query);		
+		mysqli_close($con); 
+		for($i=0;$i<mysqli_num_rows($persons_result);++$i) {
+			$row=mysqli_fetch_row($persons_result);
 			$id_and_name=$row[0]."+".$row[1]."+".$row[2];	
 			$match=false;
 //			for($j=0;$j<count($shift_persons);++$j) {
@@ -110,17 +110,17 @@
 
 	function do_scl_index($id,$venue) {
 		//$venue = substr(strrchr($id,":"),1);
-		connect();
+	    $con=connect();
 		$query="SELECT * FROM dbSCL  ORDER BY time";
-		$result=mysql_query($query);
-		mysql_close();
+		$result=mysqli_query($con,$query);
+		mysqli_close($con);
 		$cur_date=date("Ymd",time());
 		if(array_key_exists('_shiftid',$_POST))
 			show_back_navigation($_POST['_shiftid'],494,$venue);
 		echo "<p><table width=\"600\" align=\"center\" border=\"1px\"><tr><td align=\"center\" colspan=\"2\"><b>Index of Sub Call Lists with Vacancies</b></td></tr>
 		<tr><td>&nbsp;Shift<br>&nbsp;</td><td>&nbsp;Vacancies<br>&nbsp;</td></tr>";
-		for($i=0;$i<mysql_num_rows($result);++$i) {
-			$row=mysql_fetch_row($result);
+		for($i=0;$i<mysqli_num_rows($result);++$i) {
+			$row=mysqli_fetch_row($result);
 			$scl_date_formatted=substr($row[4], 0, strlen(date("Ymd",time())));
 			if($row[2]=="open" && $scl_date_formatted<=$cur_date) {
 				$scl=select_dbSCL($row[0]);

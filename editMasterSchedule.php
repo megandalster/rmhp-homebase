@@ -214,11 +214,11 @@ session_cache_expire(30);
                     	if (array_key_exists('_submit_filled_slot_' . $i, $post)) {
                     		if (is_array($persons[$i])) {
                                 unschedule_person($msentry, $persons[$i]['id']);
-                                remove_from_future_shifts($persons[$i]['id']);
+                                remove_from_future_shifts($msentry,$persons[$i]['id']);
                     		}
                             else {
                                 unschedule_person($msentry, $persons[$i]);
-                                remove_from_future_shifts($persons[$i]);
+                                remove_from_future_shifts($msentry,$persons[$i]);
                             }
                             return true;
                         }
@@ -245,16 +245,16 @@ session_cache_expire(30);
                 function get_available_volunteer_options($msentry, $persons) {
                     if (!$persons[0])
                         array_shift($persons);
-                    connect();
+                    $con=connect();
                     $chrtime =  $msentry->get_week_no().":" . $msentry ->get_day() . ":" . $msentry->get_hours().":".$msentry->get_venue();
 
                     $query = "SELECT * FROM dbPersons WHERE status = 'active' " .
                             "AND availability LIKE '%" . $chrtime . "%' ORDER BY last_name,first_name";
-                    $result = mysql_query($query);
-                    mysql_close();
+                    $result = mysqli_query($query);
+                    mysqli_close($con);
                     $s = "";
-                    for ($i = 0; $i < mysql_num_rows($result); ++$i) {
-                        $row = mysql_fetch_row($result);
+                    for ($i = 0; $i < mysqli_num_rows($result); ++$i) {
+                        $row = mysqli_fetch_row($result);
                         $value = $row[0];
                         $label = $row[2] . ", " . $row[1];
                         $match = false;
@@ -274,14 +274,14 @@ session_cache_expire(30);
                 function get_all_volunteer_options($persons, $venue) {
                     if (!$persons[0])
                         array_shift($persons);
-                    connect();
+                    $con=connect();
                     $query = "SELECT * FROM dbPersons WHERE status = 'active' ".
                       	" AND availability LIKE '%" . $venue . "%' ORDER BY last_name,first_name";
-                    $result = mysql_query($query);
-                    mysql_close();
+                    $result = mysqli_query($con,$query);
+                    mysqli_close($con);
                     $s = "";
-                    for ($i = 0; $i < mysql_num_rows($result); ++$i) {
-                        $row = mysql_fetch_row($result);
+                    for ($i = 0; $i < mysqli_num_rows($result); ++$i) {
+                        $row = mysqli_fetch_row($result);
                         $value = $row[0];
                         $label = $row[2] . ", " . $row[1];
                         $match = false;

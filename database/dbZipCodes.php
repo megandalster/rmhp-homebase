@@ -6,7 +6,7 @@
  * This program is part of RMH Homebase, which is free software.  It comes with 
  * absolutely no warranty. You can redistribute and/or modify it under the terms 
  * of the GNU General Public License as published by the Free Software Foundation
- * (see <http://www.gnu.org/licenses/ for more information).
+ * (see <http://www.gnu.org/licenses/ for more information). dbZipCodes
  * 
  */
 
@@ -27,12 +27,12 @@ include_once(dirname(__FILE__).'/dbinfo.php');
  * county: Maine county where this city resices
  */
 function create_dbZipCodes() {
-    connect();
-    mysql_query("DROP TABLE IF EXISTS dbZipCodes");
-    $result=mysql_query("CREATE TABLE dbZipCodes (zip text NOT NULL, district VARCHAR(30),
+    $con=connect();
+    mysqli_query($con,"DROP TABLE IF EXISTS dbZipCodes");
+    $result=mysqli_query($con,"CREATE TABLE dbZipCodes (zip text NOT NULL, district VARCHAR(30),
 								city TEXT, county TEXT)");
     if(!$result) {
-		echo mysql_error() . ">>>Error creating dbZipCodes table. <br>";
+		echo mysqli_error() . ">>>Error creating dbZipCodes table. <br>";
 	    return false;
     }
     $filename = "mainezipcodes.csv";
@@ -48,7 +48,7 @@ function create_dbZipCodes() {
 	    insert_dbZipCode($aline[0],$district,$city,$county);
 	}
     fclose($handle);
-	mysql_close();	
+	mysqli_close($con);	
     
     return true;
 }
@@ -59,25 +59,25 @@ function create_dbZipCodes() {
  */
 function insert_dbZipCode ($zip,$district,$city,$county) {
     
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbZipCodes WHERE zip ='".$zip."'";
-    $result = mysql_query ($query);
-    if (mysql_num_rows($result)!=0) {
+    $result = mysqli_query($con,$query);
+    if (mysqli_num_rows($result)!=0) {
         delete_dbZipCodes ($zip);
-        connect();
+        $con=connect();
     }
     $query="INSERT INTO dbZipCodes VALUES ('".
 				$zip."','".
 				$district."','".
 				$city."','".
 				$county."')";
-	$result=mysql_query($query);
+	$result=mysqli_query($con,$query);
     if (!$result) {
-		echo (mysql_error()."unable to insert into dbZipCodes: ".$zip."\n");
-		mysql_close();
+		echo (mysqli_error()."unable to insert into dbZipCodes: ".$zip."\n");
+		mysqli_close($con);
         return false;
     }
-    mysql_close();
+    mysqli_close($con);
     return true;
  }
 
@@ -86,31 +86,31 @@ function insert_dbZipCode ($zip,$district,$city,$county) {
  * result is a 4-entry associative array [zip, district, city, county]
  */
 function retrieve_dbZipCodes ($zip, $district) {
-	connect();
+	$con=connect();
 	if ($district=="")
         $query = "SELECT * FROM dbZipCodes WHERE zip = \"".$zip."\"";
     else 
         $query = "SELECT * FROM dbZipCodes WHERE district =\"".$district."\"";
-    $result = mysql_query ($query);
-    if (mysql_num_rows($result)==0) {
-	    mysql_close();
+    $result = mysqli_query($con,$query);
+    if (mysqli_num_rows($result)==0) {
+	    mysqli_close($con);
 		return false;
 	}
-	$result_row = mysql_fetch_assoc($result);
-	mysql_close();
+	$result_row = mysqli_fetch_assoc($result);
+	mysqli_close($con);
 	return array($result_row['zip'], $result_row['district'], $result_row['city'], $result_row['county']);
 }
 
 /**
- * Updates a loaner in the dbLoaners table by deleting it and re-inserting it
- * @param $loaner the week to update
+ * Updates a zip code in the dbZipCodes table by deleting it and re-inserting it
+ * @param the zip to be updated
  */
 function update_dbZipCodes ($zip, $district, $city, $county) {
 	
 	if (delete_dbZipCodes($zip))
 	   return insert_dbZipCodes($zip, $district, $city, $county);
 	else {
-	   echo (mysql_error()."unable to update dbZipCodes table: ".$zip);
+	   echo (mysqli_error()."unable to update dbZipCodes table: ".$zip);
 	   return false;
 	}
 }
@@ -119,12 +119,12 @@ function update_dbZipCodes ($zip, $district, $city, $county) {
  * Deletes an entry from the dbZipCodes table
  */
 function delete_dbZipCodes($zip) {
-	connect();
+	$con=connect();
     $query="DELETE FROM dbZipCodes WHERE id=\"".$zip."\"";
-	$result=mysql_query($query);
-	mysql_close();
+	$result=mysqli_query($con,$query);
+	mysqli_close($con);
 	if (!$result) {
-//		echo (mysql_error()."unable to delete from dbZipCodes: ".$id);
+//		echo (mysqli_error()."unable to delete from dbZipCodes: ".$id);
 		return false;
 	}
     return true;

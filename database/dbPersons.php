@@ -18,9 +18,9 @@ include_once('dbinfo.php');
 include_once('domain/Person.php');
 
 function create_dbPersons() {
-    connect();
-    mysql_query("DROP TABLE IF EXISTS dbPersons");
-    $result = mysql_query("CREATE TABLE dbPersons(id TEXT NOT NULL, first_name TEXT NOT NULL, last_name TEXT, gender TEXT, " .
+    $con=connect();
+    mysqli_query($con,"DROP TABLE IF EXISTS dbPersons");
+    $result = mysqli_query($con,"CREATE TABLE dbPersons(id TEXT NOT NULL, first_name TEXT NOT NULL, last_name TEXT, gender TEXT, " .
             "    address TEXT, city TEXT, state VARCHAR(2), zip TEXT, phone1 VARCHAR(12) NOT NULL, phone2 VARCHAR(12), " .
             "    work_phone VARCHAR(12), email TEXT, " .
             "    type TEXT, screening_type TEXT, screening_status TEXT, status TEXT, refs TEXT, maywecontact TEXT," .
@@ -28,7 +28,7 @@ function create_dbPersons() {
             "    availability TEXT, schedule TEXT, hours TEXT, " .
             "    birthday TEXT, start_date TEXT, end_date TEXT, reason_left TEXT, notes TEXT, password TEXT)"); 
     if (!$result)
-        echo mysql_error() . "Error creating dbPersons table<br>";
+        echo mysqli_error($con) . "Error creating dbPersons table<br>";
 }
 
 /*
@@ -38,12 +38,12 @@ function create_dbPersons() {
 function add_person($person) {
     if (!$person instanceof Person)
         die("Error: add_person type mismatch");
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbPersons WHERE id = '" . $person->get_id() . "'";
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     //if there's no entry for this id, add it
-    if ($result == null || mysql_num_rows($result) == 0) {
-        mysql_query('INSERT INTO dbPersons VALUES("' .
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        mysqli_query($con,'INSERT INTO dbPersons VALUES("' .
                 $person->get_id() . '","' .
                 $person->get_first_name() . '","' .
                 $person->get_last_name() . '","' .
@@ -74,10 +74,10 @@ function add_person($person) {
                 $person->get_notes() . '","' .
                 $person->get_password() .
                 '");');							
-        mysql_close();
+        mysqli_close($con);
         return true;
     }
-    mysql_close();
+    mysqli_close($con);
     return false;
 }
 
@@ -86,16 +86,16 @@ function add_person($person) {
  */
 
 function remove_person($id) {
-    connect();
+    $con=connect();
     $query = 'SELECT * FROM dbPersons WHERE id = "' . $id . '"';
-    $result = mysql_query($query);
-    if ($result == null || mysql_num_rows($result) == 0) {
-        mysql_close();
+    $result = mysqli_query($con,$query);
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        mysqli_close($con);
         return false;
     }
     $query = 'DELETE FROM dbPersons WHERE id = "' . $id . '"';
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     return true;
 }
 
@@ -105,17 +105,17 @@ function remove_person($id) {
  */
 
 function retrieve_person($id) {
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbPersons WHERE id = '" . $id . "'";
-    $result = mysql_query($query);
-    if (mysql_num_rows($result) !== 1) {
-        mysql_close();
+    $result = mysqli_query($con,$query);
+    if (mysqli_num_rows($result) !== 1) {
+        mysqli_close($con);
         return false;
     }
-    $result_row = mysql_fetch_assoc($result);
+    $result_row = mysqli_fetch_assoc($result);
     // var_dump($result_row);
     $thePerson = make_a_person($result_row);
-//    mysql_close();
+//    mysqli_close($con);
     return $thePerson;
 }
 // Name is first concat with last name. Example 'James Jones'
@@ -123,13 +123,13 @@ function retrieve_person($id) {
 function retrieve_persons_by_name ($name) {
 	$persons = array();
 	if (!isset($name) || $name == "" || $name == null) return $persons;
-	connect();
+	$con=connect();
 	$name = explode(" ", $name);
 	$first_name = $name[0];
 	$last_name = $name[1];
     $query = "SELECT * FROM dbPersons WHERE first_name = '" . $first_name . "' AND last_name = '". $last_name ."'";
-    $result = mysql_query($query);
-    while ($result_row = mysql_fetch_assoc($result)) {
+    $result = mysqli_query($con,$query);
+    while ($result_row = mysqli_fetch_assoc($result)) {
         $the_person = make_a_person($result_row);
         $persons[] = $the_person;
     }
@@ -137,39 +137,39 @@ function retrieve_persons_by_name ($name) {
 }
 
 function change_password($id, $newPass) {
-    connect();
+    $con=connect();
     $query = 'UPDATE dbPersons SET password = "' . $newPass . '" WHERE id = "' . $id . '"';
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     return $result;
 }
 
 function update_hours($id, $new_hours) {
-    connect();
+    $con=connect();
     $query = 'UPDATE dbPersons SET hours = "' . $new_hours . '" WHERE id = "' . $id . '"';
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     return $result;
 }
 
 /*
  * @return all rows from dbPersons table ordered by last name
- * if none there, return false
+ * if none there, return false -- only active volunteers are included
  */
 
 function getall_dbPersons($name_from, $name_to) {
-    connect();
+    $con=connect();
     $query = "SELECT * FROM dbPersons";
     $query.= " WHERE last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'"; 
-    $query.= " ORDER BY last_name,first_name";
-    $result = mysql_query($query);
-    if ($result == null || mysql_num_rows($result) == 0) {
-        mysql_close();
+    $query.= " AND status = 'active' ORDER BY last_name,first_name";
+    $result = mysqli_query($con,$query);
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        mysqli_close($con);
         return false;
     }
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     $thePersons = array();
-    while ($result_row = mysql_fetch_assoc($result)) {
+    while ($result_row = mysqli_fetch_assoc($result)) {
         $thePerson = make_a_person($result_row);
         $thePersons[] = $thePerson;
     }
@@ -178,19 +178,19 @@ function getall_dbPersons($name_from, $name_to) {
 }
 
 function getall_volunteer_names() {
-	connect();
+	$con=connect();
 	$query = "SELECT first_name, last_name FROM dbPersons ORDER BY last_name,first_name";
-    $result = mysql_query($query);
-    if ($result == null || mysql_num_rows($result) == 0) {
-        mysql_close();
+    $result = mysqli_query($con,$query);
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        mysqli_close($con);
         return false;
     }
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     $names = array();
-    while ($result_row = mysql_fetch_assoc($result)) {
+    while ($result_row = mysqli_fetch_assoc($result)) {
         $names[] = $result_row['first_name'].' '.$result_row['last_name'];
     }
-    mysql_close();
+    mysqli_close($con);
     return $names;   	
 }
 
@@ -228,10 +228,10 @@ function make_a_person($result_row) {
 }
 
 function getall_names($status, $type) {
-    connect();
-    $result = mysql_query("SELECT id,first_name,last_name,type FROM dbPersons " .
+    $con=connect();
+    $result = mysqli_query($con,"SELECT id,first_name,last_name,type FROM dbPersons " .
             "WHERE status = '" . $status . "' AND TYPE LIKE '%" . $type . "%' ORDER BY last_name,first_name");
-    mysql_close();
+    mysqli_close($con);
     return $result;
 }
 
@@ -240,16 +240,16 @@ function getall_names($status, $type) {
  */
 
 function getall_type($t) {
-    connect();
+    $con=connect();
     if ($_SESSION['access_level']==2)
     	$query = "SELECT * FROM dbPersons WHERE (type LIKE '%" . $t . "%' OR type LIKE '%sub%') AND status = 'active'  ORDER BY last_name,first_name";
     else $query = "SELECT * FROM dbPersons WHERE id='".$_SESSION['_id']."'";
-    $result = mysql_query($query);
-    if ($result == null || mysql_num_rows($result) == 0) {
-        mysql_close();
+    $result = mysqli_query($con,$query);
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        mysqli_close($con);
         return false;
     }
-    mysql_close;
+    mysqli_close($con);
     return $result;
 }
 
@@ -258,21 +258,21 @@ function getall_type($t) {
  */
 
 function getall_available($type, $day, $shift, $venue) {
-    connect();
+    $con=connect();
     if ($_SESSION['access_level']==2)
        $query = "SELECT * FROM dbPersons WHERE (type LIKE '%" . $type . "%' OR type LIKE '%sub%')" .
             " AND availability LIKE '%" . $day .":". $shift .
             "%' AND status = 'active' AND availability LIKE '%" . $venue . "%' ORDER BY last_name,first_name";
     else $query = "SELECT * FROM dbPersons WHERE id='".$_SESSION['_id']."'";
-    $result = mysql_query($query);
-    mysql_close();
+    $result = mysqli_query($con,$query);
+    mysqli_close($con);
     return $result;
 }
 
 
 // retrieve only those persons that match the criteria given in the arguments
 function getonlythose_dbPersons($type, $status, $name, $day, $shift, $venue) {
-   Connect();
+   $con=connect();
    $query = "SELECT * FROM dbPersons WHERE type LIKE '%" . $type . "%'" .
            " AND status LIKE '%" . $status . "%'" .
            " AND (first_name LIKE '%" . $name . "%' OR last_name LIKE'%" . $name . "%')" .
@@ -280,13 +280,13 @@ function getonlythose_dbPersons($type, $status, $name, $day, $shift, $venue) {
            " AND availability LIKE '%" . $shift . "%'" . 
            " AND availability LIKE '%" . $venue . "%'" . 
            " ORDER BY last_name,first_name";
-   $result = mysql_query($query);
+   $result = mysqli_query($con,$query);
    $thePersons = array();
-   while ($result_row = mysql_fetch_assoc($result)) {
+   while ($result_row = mysqli_fetch_assoc($result)) {
        $thePerson = make_a_person($result_row);
        $thePersons[] = $thePerson;
    }
-   mysql_close();
+   mysqli_close($con);
    return $thePersons;
 }
 
@@ -322,7 +322,7 @@ function get_people_for_export($attr, $first_name, $last_name, $gender, $type, $
     error_log("query for gender is ". $gender);
     error_log("query for type is ". $type_query);
     
-   	connect();
+   	$con=connect();
     $query = "SELECT ". $attr ." FROM dbPersons WHERE 
     			first_name REGEXP ". $first_name . 
     			" and last_name REGEXP ". $last_name . 
@@ -336,39 +336,39 @@ function get_people_for_export($attr, $first_name, $last_name, $gender, $type, $
     			" and (email REGEXP ". $email .") ORDER BY last_name, first_name";
 	error_log("Querying database for exporting");
 	error_log("query = " .$query);
-    $result = mysql_query($query);
+    $result = mysqli_query($con,$query);
     return $result;
 
 }
 
-//return an array of "last_name:first_name:birth_date", and sorted by month and day
+//return an array of "last_name:first_name:birth_date", and sorted by month and day -- only active volunteers are included
 function get_birthdays($from, $to, $name_from, $name_to, $venue) {
-	connect();
+    $con=connect();
    	$query = "SELECT * FROM dbPersons WHERE availability LIKE '%" . $venue . "%'" . 
    	$query.= " AND birthday BETWEEN '" .$from. "' AND '" .$to. "'";
     $query.= " AND last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'";
-    $query.= " ORDER BY birthday";
-	$result = mysql_query($query);
+    $query.= " AND status = 'active' ORDER BY birthday";
+	$result = mysqli_query($con,$query);
 	$thePersons = array();
-	while ($result_row = mysql_fetch_assoc($result)) {
+	while ($result_row = mysqli_fetch_assoc($result)) {
     	$thePerson = make_a_person($result_row);
         $thePersons[] = $thePerson;
 	}
-   	mysql_close();
+   	mysqli_close($con);
    	return $thePersons;
 }
 
 //return an array of "last_name;first_name;hours", which is "last_name;first_name;date:start_time-end_time:venue:totalhours"
-// and sorted alphabetically
+// and sorted alphabetically -- only active volunteers are included
 function get_logged_hours($from, $to, $name_from, $name_to, $venue) {
-	connect();
+	$con=connect();
    	$query = "SELECT first_name,last_name,hours FROM dbPersons "; 
    	$query.= " WHERE hours LIKE '%" .$venue . "%'";
    	$query.= " AND last_name BETWEEN '" .$name_from. "' AND '" .$name_to. "'";
-   	$query.= " ORDER BY last_name,first_name";
-	$result = mysql_query($query);
+   	$query.= " AND status = 'active' ORDER BY last_name,first_name";
+	$result = mysqli_query($con,$query);
 	$thePersons = array();
-	while ($result_row = mysql_fetch_assoc($result)) {
+	while ($result_row = mysqli_fetch_assoc($result)) {
 		if ($result_row['hours']!="") {
 			$shifts = explode(',',$result_row['hours']);
 			$goodshifts = array();
@@ -383,7 +383,7 @@ function get_logged_hours($from, $to, $name_from, $name_to, $venue) {
 			}   // we've just selected those shifts that follow within a date range for the given venue
 		}
 	}
-   	mysql_close();
+   	mysqli_close($con);
    	return $thePersons;
 }
 
