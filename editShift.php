@@ -56,12 +56,12 @@
 							echo "<p align=\"center\"><a href=\"calendar.php?id=".substr($shiftid,0,8).":".$venue."&edit=true&venue=".$venue."\">
 									Back to Calendar</a>";
 						}
-						else {
+						else {						    
 							if(!process_fill_vacancy($_POST,$shift,$venue) &&
 							   !process_add_volunteer($_POST,$shift,$venue) &&
 							   !process_move_shift($_POST, $shift) &&
 							   !process_delete_shift($_POST, $shift) &&
-							   !process_change_times($_POST, $shift)){
+							   !process_change_times($_POST, $shift,$venue)){
 								if (process_unfill_shift($_POST,$shift,$venue))
 									$shift=select_dbShifts($shiftid);
 								else if (process_add_slot($_POST,$shift,$venue))
