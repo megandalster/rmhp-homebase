@@ -14,7 +14,9 @@
 <style type="text/css">
     h1 {padding-left: 0px; padding-right:165px;}
 </style>
-<div id="header">
+<div id="header-new">
+ 	 	<h1>Homebase</h1>
+ 	 	<h2>A Volunteer Scheduling Assistant</h2>
 <!--<br><br><img src="images/rmhHeader.gif" align="center"><br>
 <h1><br><br>Homebase <br></h1>-->
 

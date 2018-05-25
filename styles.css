@@ -4,10 +4,10 @@
 /* GENERAL STYLES */
 body{
     /* background:#001460; */
-    background:#FFFFDD;
-    font-family:verdana, arial, sans-serif;
-    font-size:12px;
-    color: 	#000000;
+    font-family: 'Open Sans', HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size:13px;
+    line-height: 21.45px;
+    color: 	#666;
 }
 
 p {padding-left: 15px; padding-right:15px;}
@@ -46,11 +46,16 @@ table#spacedRowTable td{
 }
 
 /* LINK STYLES */
-A			{ color: #001460; text-decoration: none; img-decoration: none; }
-A:link		{ color: #018AFEE; text-decoration: none; img-decoration: none; }
-A:visited	{ color: #001460; text-decoration: none; img-decoration: none; }
-A:active	{ color: #BE0000;  }
-A:hover		{ color: #BE0000;  }
+a {
+	text-decoration: none;
+	outline: 0;
+	color:#a81010;
+}
+a:hover { color:#eb3b3b; }
+a:hover, a:focus, a:visited {
+ 	outline: 0;
+ 	text-decoration: underline;
+}
 
 /*INFO BOXES*/
 .infobox{
@@ -131,29 +136,21 @@ p.error {color: #FF0000;}
 
 #header{
     height: 150px;
-    border-left:2px solid #264576;
-    border-top:2px solid #264576;
-    border-right:2px solid #264576;
     padding: 10px;
     background:url("images/rmhHeader.gif") #FCFCFC;
     background-repeat:no-repeat;
     background-position:top left;
     overflow:hidden;
 }
-
+#header-new h2 {
+ 	color:#a81010;
+}
 #navigationLinks{
     font-size:11pt;
-    border-left:2px solid #264576;
-    border-right:2px solid #264576;
-    background:#FCFCFC;
 }
 
 #content{
-    border-left:2px solid #264576;
-    border-bottom:2px solid #264576;
-    border-right:2px solid #264576;
     align:center;
     padding: 10px;
-    background:#FCFCFC;
     overflow:hidden;
 }
