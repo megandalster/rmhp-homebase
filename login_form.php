@@ -35,7 +35,7 @@
         echo('(If you are having difficulty logging in or if you have forgotten your Password, please contact the <a href="mailto:jpowers@rmhprovidence.org"><i>Volunteer Coordinator</i></a>.) ');
         echo ('<li><i>If you need to cancel your volunteer shift, you may do so here (after logging in), or else you may call the House at 401-274-4447.</i>');
         echo '</ul>';
-        echo('<p><table><form method="post"><input type="hidden" name="_submit_check" value="true"><tr><td>Username:</td><td><input type="text" name="user" tabindex="1"></td></tr><tr><td>Password:</td><td><input type="password" name="pass" tabindex="2"></td></tr><tr><td colspan="2" align="center"><input type="submit" name="Login" value="Login"></td></tr></table>');
+        echo('<p><table><form method="post"><input type="hidden" name="_submit_check" value="true"><tr><td>Username:</td><td><input type="text" name="user" tabindex="1"></td></tr><tr><td>Password:</td><td><input type="password" name="pass" autocomplete="off" tabindex="2"></td></tr><tr><td colspan="2" align="center"><input type="submit" name="Login" value="Login"></td></tr></table>');
     } else {
         //check if they logged in as a guest:
         if ($_POST['user'] == "guest" && $_POST['pass'] == "") {
