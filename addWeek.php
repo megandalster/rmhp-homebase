@@ -126,7 +126,6 @@ session_cache_expire(45);
         				$weekno = date("W",$my_date);
 						if ($weekno==53)   // one in 7 years will have a 53rd week, so punt when that happens
 							$weekno==52;
-						$weekno--;         // all years start at week 0 so we can't get 2 odds in a row
 						if ($weekno%2==1)
             				$week_of_year= "odd";
         				else 
